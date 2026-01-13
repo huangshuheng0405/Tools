@@ -1,0 +1,49 @@
+/**
+ * 自定义样式 - VitePress 官网风格
+ * 优化首页 Hero Logo 显示效果
+ */
+
+/* Hero Logo 容器样式 */
+.VPHero .VPImage {
+  max-width: 130px !important;
+  max-height: 130px !important;
+}
+
+/* Hero Logo 样式 */
+.VPHero .image img {
+  position: relative;
+  z-index: 2;
+}
+
+/* 调整 logo 位置 */
+.VPHero .image,
+.VPHero .VPImage {
+  transform: translate(-150px, -56px); /* 向左移动 */
+}
+
+/* 响应式调整 */
+@media (min-width: 640px) {
+  .VPHero .VPImage {
+    max-width: 256px !important;
+    max-height: 256px !important;
+  }
+
+  .VPHero .image::before {
+    width: 256px;
+    height: 256px;
+    filter: blur(96px);
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHero .VPImage {
+    max-width: 270px !important;
+    max-height: 270px !important;
+  }
+
+  .VPHero .image::before {
+    width: 320px;
+    height: 320px;
+    filter: blur(120px);
+  }
+}
