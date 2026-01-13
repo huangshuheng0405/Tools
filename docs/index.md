@@ -7,7 +7,7 @@ hero:
   text: '前端笔记'
   tagline: 探索最新的前端技术栈，提升你的开发技能
   image:
-    src: vitepress-logo-large.svg
+    src: /vitepress-logo-large.svg
     alt: Tutorial Logo
   actions:
     - theme: brand
