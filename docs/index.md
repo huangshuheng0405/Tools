@@ -4,17 +4,17 @@ layout: home
 
 hero:
   name: 'huangshuheng'
-  text: '前端笔记'
-  tagline: 探索最新的前端技术栈，提升你的开发技能
+  text: 'Tutorial'
+  tagline: Algorithm Front-end
   image:
     src: /vitepress-logo-large.svg
     alt: Tutorial Logo
   actions:
     - theme: brand
-      text: 开始学习 →
+      text: Get Started →
       link: /markdown-examples
     - theme: alt
-      text: 工具库导航
+      text: Front-end tools
       link: /tool
     - theme: alt
       text: 查看示例

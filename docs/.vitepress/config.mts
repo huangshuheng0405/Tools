@@ -21,8 +21,12 @@ export default defineConfig({
         ]
       },
       {
-        text: 'Tutorials',
+        text: 'Front-end',
         items: [{ text: 'Tools', link: '/tool' }]
+      },
+      {
+        text: 'Algorithm',
+        items: [{ text: 'Tutorial', link: '/Tutorial' }]
       }
     ],
 
