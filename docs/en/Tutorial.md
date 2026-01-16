@@ -1,35 +1,35 @@
-# IDE Setting
+# IDE Settings
 
 ## VsCode
 
-### 编译器版本
+### Compiler Version
 
-- 按 `Ctrl+Shift+P` 打开命令面板，输入 `C/C++: Edit Configurations (UI)`。
-- 在配置界面中：
-  - **编译器路径**：自动检测或手动指定（如 Windows 下的 `C:\mingw64\bin\g++.exe`）。
-  - **IntelliSense 模式**：选择对应编译器（如 `gcc-x64` 或 `clang-x64`）。
-- `C++ standard`中选择`c++26`
+- Press `Ctrl+Shift+P` to open command palette, type `C/C++: Edit Configurations (UI)`
+- In configuration interface:
+  - **Compiler path**: Auto-detect or manually specify (e.g., `C:\mingw64\bin\g++.exe` on Windows)
+  - **IntelliSense mode**: Select corresponding compiler (e.g., `gcc-x64` or `clang-x64`)
+- Select `c++26` in `C++ standard`
 
-## 插件
+## Plugins
 
 - Chinese (Simplified) (简体中文) Language Pack for Visual Studio Code
-- Code Spell Checker （单词拼写检查）
-- CSS Peek （CSS 路径追踪）
-- HTML CSS Support （CSS）
-- Image Preview （图片预览）
-- JavaScript(E65) code snippets （JS）
-- Live Server （网页实时预览）
-- Prettier-Code formatter （格式化）
-- code-translator （翻译工具）
-- CodeSnap （代码截图）
-- Sublime Text KeyMap and Setting Importer （sublime 快捷键）
-- Code Runner （运行插件）
-- indent-rainbow（彩虹缩进）
+- Code Spell Checker (Spelling check)
+- CSS Peek (CSS path tracking)
+- HTML CSS Support (CSS)
+- Image Preview (Image preview)
+- JavaScript(E65) code snippets (JS)
+- Live Server (Live webpage preview)
+- Prettier-Code formatter (Formatter)
+- code-translator (Translation tool)
+- CodeSnap (Code screenshots)
+- Sublime Text KeyMap and Setting Importer (Sublime shortcuts)
+- Code Runner (Run plugin)
+- indent-rainbow (Rainbow indentation)
 - ESlint
 - IntelliSense for CSS class names in HTML
 - Path Intellisense
 
-## C++运行脚本
+## C++ Run Script
 
 ```shell
 #!/bin/bash
@@ -44,21 +44,21 @@ g++ -std=c++23 -O2 -Wall -Wextra "$src" -o "$target"
 
 ## C++
 
-`g++`解释器[msys2](https://www.msys2.org/)
+`g++` compiler: [msys2](https://www.msys2.org/)
 
 ## Python
 
-`python`解释器:[pypy](https://pypy.org/) （这个要快一点）
+`python` interpreter: [pypy](https://pypy.org/) (faster)
 
-## 梯子
+## VPN
 
 [cute cloud](https://main.cute-cloud.de/)
 
 [Clash for Windows](https://www.clashforwindows.net/)
 
-## sublime
+## Sublime
 
-### 插件
+### Plugins
 
 [CppFastOlympicCoding](https://github.com/Jatana/FastOlympicCoding)
 
@@ -66,9 +66,9 @@ g++ -std=c++23 -O2 -Wall -Wextra "$src" -o "$target"
 
 [Hook](https://github.com/DrSwad/FastOlympicCodingHook?tab=readme-ov-file)
 
-把压缩包解压完放到`Packages`里
+Extract the compressed package to the `Packages` folder
 
-代码片段（模板）
+Code snippet (template)
 
 ```
 <snippet>
@@ -89,13 +89,13 @@ int main() {
 ]]></content>
     <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
     <tabTrigger>acm</tabTrigger>
-    <!-- 这个是触发词，输入acm就可以按下tab 或者 enter 触发 -->
+    <!-- This is the trigger word, type acm and press tab or enter to trigger -->
     <!-- Optional: Set a scope to limit where the snippet will trigger -->
     <!-- <scope>source.cpp</scope> -->
 </snippet>
 ```
 
-字体（不含斜体）
+Font (no italics)
 
 ```
 {
@@ -435,7 +435,7 @@ int main() {
 
 ```
 
-## 字体
+## Fonts
 
 [FiraCode](https://github.com/tonsky/FiraCode)
 
@@ -449,15 +449,15 @@ int main() {
 - AtCode Better
 - CodeForces Better
 - Emojiforce
-- Github 汉化插件
+- Github Chinese Plugin
 - Nowcoder Better
 
-## other
+## Other
 
-[清华大学开源软件镜像站](https://mirrors.tuna.tsinghua.edu.cn/#)
+[Tsinghua Open Source Mirror](https://mirrors.tuna.tsinghua.edu.cn/#)
 
-录屏软件[OBS](https://obsproject.com/)
+Screen recording software [OBS](https://obsproject.com/)
 
-截图软件[Snipaste](https://obszcjjf-iuim-fdigvmrbchd.org/)
+Screenshot software [Snipaste](https://obszcjjf-iuim-fdigvmrbchd.org/)
 
-压缩软件[7-Zip](https://www.7-zip.org/)
+Compression software [7-Zip](https://www.7-zip.org/)

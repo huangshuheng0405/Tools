@@ -130,6 +130,7 @@
 - [VuePress](https://vuepress.vuejs.org/zh/) - Vue 驱动的静态网站生成器
 - [Docusaurus](https://docusaurus.io/zh-CN/) - Facebook 出品的文档网站生成器
 - [Astro](https://astro.build/) - 现代化的静态网站构建器
+- [Rspress](https://rspress.dev/) - 基于 Rsbuild 的高性能静态站点生成器
 
 ### 进程管理
 

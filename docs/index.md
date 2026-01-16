@@ -19,6 +19,7 @@ hero:
     - theme: alt
       text: 查看示例
       link: /api-examples
+    - theme: alt
 
 features:
   - icon: 🚀
