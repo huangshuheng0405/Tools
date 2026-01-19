@@ -2,6 +2,9 @@
 import { h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
+// 忽略对虚拟模块的类型检查
+// @ts-ignore
+import 'virtual:group-icons.css'
 
 export default {
   extends: DefaultTheme,

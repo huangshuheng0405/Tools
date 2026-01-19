@@ -9,29 +9,25 @@
 
 ## 创建项目
 
-### 方法一：使用 npx
+::: code-group
 
-```bash
+```sh [npm]
 npm create nuxt@latest <project-name>
 ```
 
-### 方法二：使用 yarn
-
-```bash
+```sh [yarn]
 yarn create nuxt <project-name>
 ```
 
-### 方法三： 使用 pnpm
-
-```bash
+```sh [pnpm]
 pnpm create nuxt@latest <project-name>
 ```
 
-### 方法四：使用 bun
-
-```bash
+```sh [bun]
 bun create nuxt@latest <project-name>
 ```
+
+:::
 
 ## 安装依赖
 
@@ -43,37 +39,49 @@ cd <project-name>
 
 根据您使用的包管理器选择对应命令：
 
-```bash
-# 使用 npm
+::: code-group
+
+```sh [npm]
 npm install
+```
 
-# 使用 yarn
+```sh [yarn]
 yarn install
+```
 
-# 使用 pnpm
+```sh [pnpm]
 pnpm install
+```
 
-# 使用 bun
+```sh [bun]
 bun install
 ```
+
+:::
 
 ## 启动开发服务器
 
 安装完成后，启动开发服务器：
 
-```bash
-# 使用 npm
+::: code-group
+
+```sh [npm]
 npm run dev
+```
 
-# 使用 yarn
+```sh [yarn]
 yarn dev
+```
 
-# 使用 pnpm
+```sh [pnpm]
 pnpm dev
+```
 
-# 使用 bun
+```sh [bun]
 bun run dev
 ```
+
+:::
 
 开发服务器默认运行在 `http://localhost:3000`
 

@@ -1,7 +1,20 @@
 import { defineConfig } from 'vitepress'
+import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  markdown: {
+    config(md) {
+      md.use(groupIconMdPlugin)
+    },
+  },
+  vite: {
+    plugins: [
+      groupIconVitePlugin({
+        defaultLabels: ['npm', 'yarn', 'pnpm', 'bun', 'deno'],
+      }),
+    ],
+  },
   title: 'Tutorial',
   description: 'A VitePress Site',
   head: [
@@ -31,10 +44,6 @@ export default defineConfig({
           {
             text: '前端',
             items: [{ text: '工具', link: '/tool' }]
-          },
-          {
-            text: '算法',
-            items: [{ text: '教程', link: '/Tutorial' }]
           },
           {
             text: 'Nuxt',
