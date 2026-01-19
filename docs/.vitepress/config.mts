@@ -1,19 +1,22 @@
 import { defineConfig } from 'vitepress'
-import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
+import {
+  groupIconMdPlugin,
+  groupIconVitePlugin
+} from 'vitepress-plugin-group-icons'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   markdown: {
     config(md) {
       md.use(groupIconMdPlugin)
-    },
+    }
   },
   vite: {
     plugins: [
       groupIconVitePlugin({
-        defaultLabels: ['npm', 'yarn', 'pnpm', 'bun', 'deno'],
-      }),
-    ],
+        defaultLabels: ['npm', 'yarn', 'pnpm', 'bun', 'deno']
+      })
+    ]
   },
   title: 'Tutorial',
   description: 'A VitePress Site',
@@ -31,7 +34,8 @@ export default defineConfig({
         nav: [
           { text: '首页', link: '/' },
           { text: '示例', link: '/markdown-examples' },
-          { text: '工具', link: '/tool' }
+          { text: '工具', link: '/tool' },
+          { text: 'Nuxt', link: '/nuxt/Structure/app/nuxt' }
         ],
         sidebar: [
           {
@@ -48,10 +52,48 @@ export default defineConfig({
           {
             text: 'Nuxt',
             items: [
-              { text: 'Nuxt 起步', link: '/nuxt-start' },
               {
-                text: '路由',
-                link: '/Routing'
+                text: '快速开始',
+                link: '/nuxt/Structure/app/nuxt-start'
+              },
+              {
+                text: 'Routing',
+                link: '/nuxt/Routing'
+              },
+              {
+                text: 'Structure',
+                collapsed: false,
+                items: [
+                  {
+                    text: 'app',
+                    collapsed: false,
+                    items: [
+                      { text: 'pages', link: '/nuxt/Structure/app/pages' },
+                      { text: 'layouts', link: '/nuxt/Structure/app/layout' },
+                      {
+                        text: 'components',
+                        link: '/nuxt/Structure/app/components'
+                      },
+                      {
+                        text: 'composables',
+                        link: '/nuxt/Structure/app/composables'
+                      },
+                      {
+                        text: 'middleware',
+                        link: '/nuxt/Structure/app/middleware'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            text: 'Tips',
+            items: [
+              {
+                text: '默认导出 vs 命名导出',
+                link: '/Tips/default-vs-named-export'
               }
             ]
           }
@@ -103,10 +145,39 @@ export default defineConfig({
           {
             text: 'Nuxt',
             items: [
-              { text: 'Nuxt Start', link: '/en/nuxt-start' },
+              { text: 'Nuxt Start', link: '/en/nuxt/nuxt-start' },
               {
                 text: 'Routing',
-                link: '/en/Routing'
+                link: '/en/nuxt/Routing'
+              },
+              {
+                text: 'Structure',
+                collapsed: false,
+                items: [
+                  {
+                    text: 'app',
+                    collapsed: false,
+                    items: [
+                      { text: 'pages', link: '/en/nuxt/Structure/app/pages' },
+                      {
+                        text: 'layouts',
+                        link: '/en/nuxt/Structure/app/layout'
+                      },
+                      {
+                        text: 'components',
+                        link: '/en/nuxt/Structure/app/components'
+                      },
+                      {
+                        text: 'composables',
+                        link: '/en/nuxt/Structure/app/composables'
+                      },
+                      {
+                        text: 'middleware',
+                        link: '/en/nuxt/Structure/app/middleware'
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           }
