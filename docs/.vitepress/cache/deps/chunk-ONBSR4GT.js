@@ -1,4 +1,4 @@
-// node_modules/@vue/shared/dist/shared.esm-bundler.js
+// node_modules/.pnpm/@vue+shared@3.5.27/node_modules/@vue/shared/dist/shared.esm-bundler.js
 function makeMap(str) {
   const map2 = /* @__PURE__ */ Object.create(null);
   for (const key of str.split(",")) map2[key] = 1;
@@ -319,7 +319,7 @@ function normalizeCssVarValue(value) {
   return String(value);
 }
 
-// node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js
+// node_modules/.pnpm/@vue+reactivity@3.5.27/node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js
 function warn(msg, ...args) {
   console.warn(`[Vue warn] ${msg}`, ...args);
 }
@@ -1366,20 +1366,20 @@ function createIterableMethod(method, isReadonly2, isShallow2) {
       "iterate",
       isKeyOnly ? MAP_KEY_ITERATE_KEY : ITERATE_KEY
     );
-    return {
-      // iterator protocol
-      next() {
-        const { value, done } = innerIterator.next();
-        return done ? { value, done } : {
-          value: isPair ? [wrap(value[0]), wrap(value[1])] : wrap(value),
-          done
-        };
-      },
-      // iterable protocol
-      [Symbol.iterator]() {
-        return this;
+    return extend(
+      // inheriting all iterator properties
+      Object.create(innerIterator),
+      {
+        // iterator protocol
+        next() {
+          const { value, done } = innerIterator.next();
+          return done ? { value, done } : {
+            value: isPair ? [wrap(value[0]), wrap(value[1])] : wrap(value),
+            done
+          };
+        }
       }
-    };
+    );
   };
 }
 function createReadonlyMethod(type) {
@@ -2151,7 +2151,7 @@ function traverse(value, depth = Infinity, seen) {
   return value;
 }
 
-// node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js
+// node_modules/.pnpm/@vue+runtime-core@3.5.27/node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js
 var stack = [];
 function pushWarningContext(vnode) {
   stack.push(vnode);
@@ -4298,7 +4298,7 @@ Server rendered element contains more child nodes than client vdom.`
               logMismatchError();
             }
             if (forcePatch && (key.endsWith("value") || key === "indeterminate") || isOn(key) && !isReservedProp(key) || // force hydrate v-bind with .prop modifiers
-            key[0] === "." || isCustomElement) {
+            key[0] === "." || isCustomElement && !isReservedProp(key)) {
               patchProp2(el, key, null, props[key], void 0, parentComponent);
             }
           }
@@ -10687,7 +10687,7 @@ function isMemoSame(cached, memo) {
   }
   return true;
 }
-var version = "3.5.26";
+var version = "3.5.27";
 var warn2 = true ? warn$1 : NOOP;
 var ErrorTypeStrings = ErrorTypeStrings$1;
 var devtools = true ? devtools$1 : void 0;
@@ -10709,7 +10709,7 @@ var resolveFilter = null;
 var compatUtils = null;
 var DeprecationTypes = null;
 
-// node_modules/@vue/runtime-dom/dist/runtime-dom.esm-bundler.js
+// node_modules/.pnpm/@vue+runtime-dom@3.5.27/node_modules/@vue/runtime-dom/dist/runtime-dom.esm-bundler.js
 var policy = void 0;
 var tt = typeof window !== "undefined" && window.trustedTypes;
 if (tt) {
@@ -12594,7 +12594,7 @@ var initDirectivesForSSR = () => {
   }
 };
 
-// node_modules/vue/dist/vue.runtime.esm-bundler.js
+// node_modules/.pnpm/vue@3.5.27/node_modules/vue/dist/vue.runtime.esm-bundler.js
 function initDev() {
   {
     initCustomFormatter();
@@ -12784,4 +12784,4 @@ export {
   initDirectivesForSSR,
   compile2 as compile
 };
-//# sourceMappingURL=chunk-ADVWCYKY.js.map
+//# sourceMappingURL=chunk-ONBSR4GT.js.map

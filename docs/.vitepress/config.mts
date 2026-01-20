@@ -50,6 +50,14 @@ export default defineConfig({
             items: [{ text: '工具', link: '/tool' }]
           },
           {
+            text: 'Vue',
+            items: [
+              { text: '生命周期', link: '/vue/lifecycle' },
+              { text: 'Props (属性)', link: '/vue/Props' },
+              { text: '动态组件', link: '/vue/dynamic-components' }
+            ]
+          },
+          {
             text: 'Nuxt',
             items: [
               {
@@ -81,6 +89,10 @@ export default defineConfig({
                       {
                         text: 'middleware',
                         link: '/nuxt/Structure/app/middleware'
+                      },
+                      {
+                        text: 'plugins',
+                        link: '/nuxt/Structure/app/plugins'
                       }
                     ]
                   }
