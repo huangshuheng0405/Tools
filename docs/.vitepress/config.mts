@@ -18,7 +18,7 @@ export default defineConfig({
       })
     ]
   },
-  title: 'Tutorial',
+  title: 'Vue',
   description: 'A VitePress Site',
   head: [
     // 使用你指定的图标（把 vitepress.ico 放到 docs/public/vitepress.ico）
@@ -34,82 +34,160 @@ export default defineConfig({
         nav: [
           { text: '首页', link: '/' },
           { text: '示例', link: '/markdown-examples' },
-          { text: '工具', link: '/tool' },
+          { text: 'JavaScript', link: '/JavaScript/' },
+          { text: 'Vue', link: '/vue/lifecycle' },
+          { text: 'Tips', link: '/Tips/' },
           { text: 'Nuxt', link: '/nuxt/Structure/app/nuxt' }
         ],
-        sidebar: [
-          {
-            text: '示例',
-            items: [
-              { text: 'Markdown 示例', link: '/markdown-examples' },
-              { text: 'API 示例', link: '/api-examples' }
-            ]
-          },
-          {
-            text: '前端',
-            items: [{ text: '工具', link: '/tool' }]
-          },
-          {
-            text: 'Vue',
-            items: [
-              { text: '生命周期', link: '/vue/lifecycle' },
-              { text: 'Props (属性)', link: '/vue/Props' },
-              { text: '动态组件', link: '/vue/dynamic-components' }
-            ]
-          },
-          {
-            text: 'Nuxt',
-            items: [
-              {
-                text: '快速开始',
-                link: '/nuxt/Structure/app/nuxt-start'
-              },
-              {
-                text: 'Routing',
-                link: '/nuxt/Routing'
-              },
-              {
-                text: 'Structure',
-                collapsed: false,
-                items: [
-                  {
-                    text: 'app',
-                    collapsed: false,
-                    items: [
-                      { text: 'pages', link: '/nuxt/Structure/app/pages' },
-                      { text: 'layouts', link: '/nuxt/Structure/app/layout' },
-                      {
-                        text: 'components',
-                        link: '/nuxt/Structure/app/components'
-                      },
-                      {
-                        text: 'composables',
-                        link: '/nuxt/Structure/app/composables'
-                      },
-                      {
-                        text: 'middleware',
-                        link: '/nuxt/Structure/app/middleware'
-                      },
-                      {
-                        text: 'plugins',
-                        link: '/nuxt/Structure/app/plugins'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            text: 'Tips',
-            items: [
-              {
-                text: '默认导出 vs 命名导出',
-                link: '/Tips/default-vs-named-export'
-              }
-            ]
-          }
-        ],
+        sidebar: {
+          '/Tips/': [
+            {
+              text: 'Tips',
+              items: [
+                {
+                  text: '默认导出 vs 命名导出',
+                  link: '/Tips/default-vs-named-export'
+                },
+                {
+                  text: 'Axios 请求中断与重试',
+                  link: '/Tips/axios-cancel-retry'
+                },
+                {
+                  text: '虚拟列表 (Virtual List)',
+                  link: '/Tips/virtual-list'
+                },
+                {
+                  text: '事件委托 (Event Delegation)',
+                  link: '/Tips/event-delegation'
+                }
+              ]
+            }
+          ],
+          '/nuxt/': [
+            {
+              text: 'Nuxt',
+              items: [
+                {
+                  text: '快速开始',
+                  link: '/nuxt/Structure/app/nuxt-start'
+                },
+                {
+                  text: 'Routing',
+                  link: '/nuxt/Routing'
+                },
+                {
+                  text: 'Structure',
+                  collapsed: false,
+                  items: [
+                    {
+                      text: 'app',
+                      collapsed: false,
+                      items: [
+                        { text: 'pages', link: '/nuxt/Structure/app/pages' },
+                        { text: 'layouts', link: '/nuxt/Structure/app/layout' },
+                        {
+                          text: 'components',
+                          link: '/nuxt/Structure/app/components'
+                        },
+                        {
+                          text: 'composables',
+                          link: '/nuxt/Structure/app/composables'
+                        },
+                        {
+                          text: 'middleware',
+                          link: '/nuxt/Structure/app/middleware'
+                        },
+                        {
+                          text: 'plugins',
+                          link: '/nuxt/Structure/app/plugins'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          '/vue/': [
+            {
+              text: 'Vue',
+              items: [
+                { text: '生命周期', link: '/vue/lifecycle' },
+                { text: 'Props (属性)', link: '/vue/Props' },
+                { text: '动态组件', link: '/vue/dynamic-components' }
+              ]
+            }
+          ],
+          '/JavaScript/': [
+            {
+              text: 'JavaScript',
+              items: [
+                { text: '隐藏类 (Hidden Classes)', link: '/JavaScript/' },
+                {
+                  text: '数组快速模式与字典模式',
+                  link: '/JavaScript/array-fast-dict-mode'
+                },
+                {
+                  text: '如何判断object为空',
+                  link: '/JavaScript/judge-object'
+                },
+                {
+                  text: '类型转换',
+                  link: '/JavaScript/TypeConversion'
+                },
+                {
+                  text: '== 和 === 的区别',
+                  link: '/JavaScript/==&==='
+                },
+                {
+                  text: '数据类型',
+                  link: '/JavaScript/DataTypes'
+                },
+                {
+                  text: '变量在内存中的堆栈存储',
+                  link: '/JavaScript/stack-heap'
+                },
+                {
+                  text: '如何判断JavaScript的数据类型',
+                  link: '/JavaScript/JudgeType'
+                },
+                {
+                  text: 'ES 版本特性 (ES6+)',
+                  link: '/JavaScript/ESVersion'
+                },
+                {
+                  text: 'let 声明变量的特性',
+                  link: '/JavaScript/let'
+                },
+                {
+                  text: '变量提升 & 函数提升（优先级）',
+                  link: '/JavaScript/FunctionPromoting'
+                },
+                {
+                  text: '判断两个对象是否相等',
+                  link: '/JavaScript/JudgeObjectEqual'
+                },
+                {
+                  text: 'null和undefined的区别',
+                  link: '/JavaScript/nullUndefined'
+                }
+              ]
+            }
+          ],
+          '/': [
+            {
+              text: '示例',
+              items: [
+                { text: 'Markdown 示例', link: '/markdown-examples' },
+                { text: 'API 示例', link: '/api-examples' }
+              ]
+            },
+            {
+              text: '前端',
+              items: [{ text: '工具', link: '/tool' }]
+            }
+          ]
+        },
         socialLinks: [
           { icon: 'github', link: 'https://github.com/huangshuheng0405' }
         ],

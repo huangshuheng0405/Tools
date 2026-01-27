@@ -4,11 +4,11 @@ layout: home
 
 hero:
   name: 'huangshuheng'
-  text: 'Tutorial'
-  tagline: Algorithm Front-end
+  text: 'Vue'
+  tagline: Vue JavaScript Nuxt
   image:
     src: /vitepress-logo-large.svg
-    alt: Tutorial Logo
+    alt: Vue Logo
   actions:
     - theme: brand
       text: Get Started →
