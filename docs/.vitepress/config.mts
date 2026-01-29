@@ -36,10 +36,17 @@ export default defineConfig({
           { text: '示例', link: '/markdown-examples' },
           { text: 'JavaScript', link: '/JavaScript/' },
           { text: 'Vue', link: '/vue/lifecycle' },
+          { text: 'Nuxt', link: '/nuxt/Structure/app/nuxt' },
           { text: 'Tips', link: '/Tips/' },
-          { text: 'Nuxt', link: '/nuxt/Structure/app/nuxt' }
+          { text: 'Git', link: '/Git/reset_revert' }
         ],
         sidebar: {
+          '/Git/': [
+            {
+              text: 'Git',
+              items: [{ text: 'Reset vs Revert', link: '/Git/reset_revert' }]
+            }
+          ],
           '/Tips/': [
             {
               text: 'Tips',
@@ -170,6 +177,10 @@ export default defineConfig({
                 {
                   text: 'null和undefined的区别',
                   link: '/JavaScript/nullUndefined'
+                },
+                {
+                  text: 'Repaint & Reflow',
+                  link: '/JavaScript/Repaint_Reflow'
                 }
               ]
             }
