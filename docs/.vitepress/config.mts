@@ -44,7 +44,10 @@ export default defineConfig({
           '/Git/': [
             {
               text: 'Git',
-              items: [{ text: 'Reset vs Revert', link: '/Git/reset_revert' }]
+              items: [
+                { text: 'Reset vs Revert', link: '/Git/reset_revert' },
+                { text: 'Merge vs Rebase', link: '/Git/rebase-merge' }
+              ]
             }
           ],
           '/Tips/': [
