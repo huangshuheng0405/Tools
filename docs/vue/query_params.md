@@ -59,7 +59,43 @@ console.log(this.$route.params.id)
 
 ---
 
-## 3. 什么时候用哪个？
+## 3. History API 状态传参 (State)
+
+除了 `query` 和 `params`，Vue Router 还支持通过 `history.state` 传递参数。这种方式非常适合传递**不希望显示在 URL 中**，但又需要保留的复杂对象数据。
+
+### 特点
+
+- **隐式传递**：参数不会显示在 URL 中。
+- **刷新保留**：利用浏览器 History API 特性，页面刷新后 `state` **依然存在**。
+- **类型支持**：可以传递对象，不需要像 query 那样手动序列化。
+
+### 使用方法
+
+**发送方：**
+
+```javascript
+// router.push 的第二个参数可以包含 state
+router.push({
+  path: '/user/profile',
+  state: {
+    from: 'homepage',
+    userInfo: { name: 'Alice', role: 'admin' }
+  }
+})
+```
+
+**接收方：**
+
+```javascript
+// 在组件中获取
+console.log(history.state.userInfo)
+```
+
+> **注意**：虽然刷新页面数据会保留，但如果是**新开标签页**或**分享链接**，state 是无法获取到的。它依赖于浏览器的历史记录栈。
+
+---
+
+## 4. 什么时候用哪个？
 
 1. **使用 Query 的场景**：
 
