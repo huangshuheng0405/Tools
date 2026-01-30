@@ -124,6 +124,9 @@ export default defineConfig({
               items: [
                 { text: '生命周期', link: '/vue/lifecycle' },
                 { text: 'Props (属性)', link: '/vue/Props' },
+                { text: '组件通信方式', link: '/vue/Components-connect' },
+                { text: 'Key 的作用', link: '/vue/Key' },
+                { text: 'Query 与 Params', link: '/vue/query_params' },
                 { text: '动态组件', link: '/vue/dynamic-components' }
               ]
             }
