@@ -126,6 +126,7 @@ export default defineConfig({
                 { text: 'Props (属性)', link: '/vue/Props' },
                 { text: '组件通信方式', link: '/vue/Components-connect' },
                 { text: 'Key 的作用', link: '/vue/Key' },
+                { text: 'Reflect 与响应式', link: '/vue/Reflect' },
                 { text: 'Query 与 Params', link: '/vue/query_params' },
                 { text: '动态组件', link: '/vue/dynamic-components' }
               ]
@@ -187,6 +188,10 @@ export default defineConfig({
                 {
                   text: 'Repaint & Reflow',
                   link: '/JavaScript/Repaint_Reflow'
+                },
+                {
+                  text: '模块系统',
+                  link: '/JavaScript/module_commonJS'
                 }
               ]
             }
