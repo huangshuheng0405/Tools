@@ -71,4 +71,4 @@ console.log(o.m)
 
 ### 总结图示
 
-![stack-heap](./stack-heap.png)
+![stack-heap](../public/JavaScript/stack-heap.png)
