@@ -29,6 +29,11 @@
 - **ESM** 的 `import` 必须写在文件顶层。引擎在执行代码前（编译阶段）就知道模块的依赖关系。这使得 **Tree-shaking（剔除无用代码）** 成为可能。
 - **CommonJS** 的 `require` 可以写在 `if` 语句或函数里。这意味着它必须等代码**运行到这一行**才知道加载什么，无法进行静态优化。
 
+`this`的指向
+
+- 在Commonjs中，顶层的`this`指向当前模块（`moudule.exports`）
+- 在ESM中，顶层的`this`是`undefined`
+
 ---
 
 ### 3. 代码对比示例

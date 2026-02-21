@@ -128,7 +128,29 @@ export default defineConfig({
                 { text: 'Key 的作用', link: '/vue/Key' },
                 { text: 'Reflect 与响应式', link: '/vue/Reflect' },
                 { text: 'Query 与 Params', link: '/vue/query_params' },
-                { text: '动态组件', link: '/vue/dynamic-components' }
+                { text: '动态组件', link: '/vue/dynamic-components' },
+                {
+                  text: '手写Vue',
+                  collapsed: false,
+                  items: [
+                    {
+                      text: 'Vue2-jindu',
+                      link: '/vue/handwriting/vue2-jindu'
+                    },
+                    {
+                      text: 'Vue3-jindu',
+                      link: '/vue/handwriting/vue3-jindu'
+                    },
+                    {
+                      text: 'Vue-Router',
+                      link: '/vue/handwriting/vue-router'
+                    },
+                    {
+                      text: 'Promise',
+                      link: '/vue/handwriting/Promise'
+                    }
+                  ]
+                }
               ]
             }
           ],
@@ -192,6 +214,42 @@ export default defineConfig({
                 {
                   text: '模块系统',
                   link: '/JavaScript/module_commonJS'
+                },
+                {
+                  text: '事件循环',
+                  link: '/JavaScript/EventLoop'
+                },
+                {
+                  text: '冒泡和捕获',
+                  link: '/JavaScript/Bubbling_Capturing'
+                },
+                {
+                  text: '事件委托',
+                  link: '/JavaScript/EventDelegation'
+                },
+                {
+                  text: 'ES6 类继承',
+                  link: '/JavaScript/ES6Inherit'
+                },
+                {
+                  text: '可迭代对象',
+                  link: '/JavaScript/IterableObject'
+                },
+                {
+                  text: 'Promise',
+                  link: '/JavaScript/Promise'
+                },
+                {
+                  text: '链式调用',
+                  link: '/JavaScript/ChainedCall'
+                },
+                {
+                  text: 'new 操作符',
+                  link: '/JavaScript/New'
+                },
+                {
+                  text: 'bind, apply, call的区别及实现',
+                  link: '/JavaScript/bind_apply_call'
                 }
               ]
             }
