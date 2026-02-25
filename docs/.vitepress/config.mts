@@ -18,7 +18,7 @@ export default defineConfig({
       })
     ]
   },
-  title: 'Vue',
+  title: 'front-end',
   description: 'A VitePress Site',
   head: [
     // 使用你指定的图标（把 vitepress.ico 放到 docs/public/vitepress.ico）
@@ -32,8 +32,7 @@ export default defineConfig({
       lang: 'zh-CN',
       themeConfig: {
         nav: [
-          { text: '首页', link: '/' },
-          { text: '示例', link: '/markdown-examples' },
+          { text: 'Home', link: '/' },
           { text: 'JavaScript', link: '/JavaScript/' },
           { text: 'Vue', link: '/vue/lifecycle' },
           { text: 'Nuxt', link: '/nuxt/Structure/app/nuxt' },
@@ -250,6 +249,39 @@ export default defineConfig({
                 {
                   text: 'bind, apply, call的区别及实现',
                   link: '/JavaScript/bind_apply_call'
+                },
+                {
+                  text: 'JS监听对象属性的改变',
+                  link: '/JavaScript/defineProperty_Proxy'
+                },
+                {
+                  text: 'prototype 和 __proto__',
+                  link: '/JavaScript/prototype___proto__'
+                },
+                {
+                  text: '原型链',
+                  link: '/JavaScript/prototypeChain'
+                },
+                {
+                  text: 'this指向',
+                  link: '/JavaScript/this'
+                },
+                {
+                  text: 'Function',
+                  collapsed: true,
+                  items: [
+                    { text: 'trim()', link: '/JavaScript/trim' },
+                    { text: 'parseInt()', link: '/JavaScript/parseInt' }
+                  ]
+                },
+                { text: 'Symbol', link: '/JavaScript/Stmbol' },
+                {
+                  text: 'startWith和indexOf的区别',
+                  link: '/JavaScript/startwith_indexof'
+                },
+                {
+                  text: '装箱机制',
+                  link: '/JavaScript/boxing'
                 }
               ]
             }
@@ -269,7 +301,7 @@ export default defineConfig({
           ]
         },
         socialLinks: [
-          { icon: 'github', link: 'https://github.com/huangshuheng0405' }
+          { icon: 'github', link: 'https://github.com/huangshuheng0405/Tools' }
         ],
         // 中文界面文本配置
         outline: {

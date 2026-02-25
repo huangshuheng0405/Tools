@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: 'huangshuheng'
-  text: 'Vue'
+  text: 'front-end'
   tagline: Vue JavaScript Nuxt
   image:
     src: /vitepress-logo-large.svg
