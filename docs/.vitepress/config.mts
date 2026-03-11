@@ -18,6 +18,11 @@ export default defineConfig({
       })
     ]
   },
+  themeConfig: {
+    outline: {
+      level: [2, 5]
+    }
+  },
   title: 'front-end',
   description: 'A VitePress Site',
   head: [
@@ -130,7 +135,7 @@ export default defineConfig({
                 { text: '动态组件', link: '/vue/dynamic-components' },
                 {
                   text: '手写Vue',
-                  collapsed: false,
+                  collapsed: true,
                   items: [
                     {
                       text: 'Vue2-jindu',
@@ -147,6 +152,32 @@ export default defineConfig({
                     {
                       text: 'Promise',
                       link: '/vue/handwriting/Promise'
+                    }
+                  ]
+                },
+                {
+                  text: 'Vue2不监听数组下标原因',
+                  link: '/vue/vue2_ArrayIndex'
+                },
+                {
+                  text: '修饰符',
+                  link: '/vue/modifier'
+                },
+                {
+                  text: 'created 与 mounted 区别',
+                  link: '/vue/created_mounted'
+                },
+                {
+                  text: 'vue-router',
+                  collapsed: true,
+                  items: [
+                    {
+                      text: '路由模式',
+                      link: '/vue/vue-router/mode'
+                    },
+                    {
+                      text: '路由跳转',
+                      link: '/vue/vue-router/routerLink'
                     }
                   ]
                 }
@@ -191,12 +222,12 @@ export default defineConfig({
                   link: '/JavaScript/ESVersion'
                 },
                 {
-                  text: 'let 声明变量的特性',
-                  link: '/JavaScript/let'
+                  text: 'let、var、const',
+                  link: '/JavaScript/let_var_const'
                 },
                 {
-                  text: '变量提升 & 函数提升（优先级）',
-                  link: '/JavaScript/FunctionPromoting'
+                  text: '变量提升和TDZ',
+                  link: '/JavaScript/Hoisting_TDZ'
                 },
                 {
                   text: '判断两个对象是否相等',
@@ -282,6 +313,14 @@ export default defineConfig({
                 {
                   text: '装箱机制',
                   link: '/JavaScript/boxing'
+                },
+                {
+                  text: '假值和真值',
+                  link: '/JavaScript/falsy_truthy'
+                },
+                {
+                  text: '命名规范',
+                  link: '/JavaScript/NameConvention'
                 }
               ]
             }
