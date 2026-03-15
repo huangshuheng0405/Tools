@@ -41,6 +41,7 @@ export default defineConfig({
           { text: 'JavaScript', link: '/JavaScript/' },
           { text: 'Vue', link: '/vue/lifecycle' },
           { text: 'Nuxt', link: '/nuxt/Structure/app/nuxt' },
+          { text: 'Engineering', link: '/Engineering/' },
           { text: 'Tips', link: '/Tips/' },
           { text: 'Git', link: '/Git/reset_revert' }
         ],
@@ -51,6 +52,22 @@ export default defineConfig({
               items: [
                 { text: 'Reset vs Revert', link: '/Git/reset_revert' },
                 { text: 'Merge vs Rebase', link: '/Git/rebase-merge' }
+              ]
+            }
+          ],
+          '/Engineering/': [
+            {
+              text: 'Engineering',
+              items: [
+                { text: 'Overview', link: '/Engineering/' },
+                {
+                  text: 'git-cz',
+                  link: '/Engineering/git-cz'
+                },
+                {
+                  text: 'Husky',
+                  link: '/Engineering/Husky'
+                }
               ]
             }
           ],
@@ -73,6 +90,10 @@ export default defineConfig({
                 {
                   text: '事件委托 (Event Delegation)',
                   link: '/Tips/event-delegation'
+                },
+                {
+                  text: 'vscode 插件',
+                  link: '/Tips/vscodePlugin'
                 }
               ]
             }
