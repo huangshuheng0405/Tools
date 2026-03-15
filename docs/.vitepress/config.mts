@@ -15,7 +15,7 @@ export default defineConfig({
     plugins: [
       groupIconVitePlugin({
         defaultLabels: ['npm', 'yarn', 'pnpm', 'bun', 'deno']
-      })
+      }) as any
     ]
   },
   themeConfig: {
