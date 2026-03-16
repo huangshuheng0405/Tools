@@ -67,6 +67,14 @@ export default defineConfig({
                 {
                   text: 'Husky',
                   link: '/Engineering/Husky'
+                },
+                {
+                  text: 'Webpack',
+                  items: [
+                    { text: 'notes', link: '/Engineering/Webpack/notes' },
+                    { text: 'loader', link: '/Engineering/Webpack/loader' },
+                    { text: 'plugin', link: '/Engineering/Webpack/plugin' }
+                  ]
                 }
               ]
             }
