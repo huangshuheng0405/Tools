@@ -20,7 +20,7 @@ export default defineConfig({
   },
   themeConfig: {
     outline: {
-      level: [2, 5]
+      level: [1, 5]
     }
   },
   title: 'front-end',
@@ -75,6 +75,18 @@ export default defineConfig({
                     { text: 'loader', link: '/Engineering/Webpack/loader' },
                     { text: 'plugin', link: '/Engineering/Webpack/plugin' }
                   ]
+                },
+                {
+                  text: 'Vite',
+                  items: [{ text: 'notes', link: '/Engineering/Vite/notes' }]
+                },
+                {
+                  text: 'CommonJS vs ESM',
+                  link: '/Engineering/Webpack/CommonJS_ESMA'
+                },
+                {
+                  text: 'dependencies 和 devDependencies 的区别',
+                  link: '/Engineering/dependencies_devDependencies'
                 }
               ]
             }
