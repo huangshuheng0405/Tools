@@ -3,12 +3,14 @@ import {
   groupIconMdPlugin,
   groupIconVitePlugin
 } from 'vitepress-plugin-group-icons'
+import mathjax from 'markdown-it-mathjax3'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   markdown: {
+    math: true,
     config(md) {
-      md.use(groupIconMdPlugin)
+      md.use(groupIconMdPlugin).use(mathjax)
     }
   },
   vite: {
@@ -71,6 +73,7 @@ export default defineConfig({
                 {
                   text: 'Webpack',
                   items: [
+                    { text: 'index', link: '/Engineering/Webpack/index' },
                     { text: 'notes', link: '/Engineering/Webpack/notes' },
                     { text: 'loader', link: '/Engineering/Webpack/loader' },
                     { text: 'plugin', link: '/Engineering/Webpack/plugin' }
@@ -78,7 +81,10 @@ export default defineConfig({
                 },
                 {
                   text: 'Vite',
-                  items: [{ text: 'notes', link: '/Engineering/Vite/notes' }]
+                  items: [
+                    { text: 'index', link: '/Engineering/Vite/index' },
+                    { text: 'notes', link: '/Engineering/Vite/notes' }
+                  ]
                 },
                 {
                   text: 'CommonJS vs ESM',
