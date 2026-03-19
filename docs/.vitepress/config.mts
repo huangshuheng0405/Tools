@@ -93,6 +93,14 @@ export default defineConfig({
                 {
                   text: 'dependencies 和 devDependencies 的区别',
                   link: '/Engineering/dependencies_devDependencies'
+                },
+                {
+                  text: '脚手架',
+                  link: '/Engineering/scaffold'
+                },
+                {
+                  text: 'cspell',
+                  link: '/Engineering/cspell'
                 }
               ]
             }
