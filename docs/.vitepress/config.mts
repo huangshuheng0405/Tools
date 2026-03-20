@@ -22,7 +22,8 @@ export default defineConfig({
   },
   themeConfig: {
     outline: {
-      level: [1, 5]
+      level: [2, 6],
+      label: '目录'
     }
   },
   title: 'front-end',
@@ -38,6 +39,10 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
+        outline: {
+          level: [2, 6],
+          label: '目录'
+        },
         nav: [
           { text: 'Home', link: '/' },
           { text: 'JavaScript', link: '/JavaScript/' },
@@ -99,8 +104,12 @@ export default defineConfig({
                   link: '/Engineering/scaffold'
                 },
                 {
-                  text: 'cspell',
+                  text: 'CSpell',
                   link: '/Engineering/cspell'
+                },
+                {
+                  text: 'tsup',
+                  link: '/Engineering/tsup'
                 }
               ]
             }

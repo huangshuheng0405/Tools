@@ -2,6 +2,8 @@
 
 [cz-git](https://cz-git.qbb.sh/zh/)
 
+## 快速开始
+
 1. 安装
 
 ```bash
@@ -10,7 +12,7 @@ bun add -D cz-git
 
 2. 修改 `package.json`添加config指定使用的适配器
 
-```json [package.json]
+```json [package.json] {3,7}
 {
   "scripts": {
     "commit": "git-cz"
@@ -44,7 +46,9 @@ bun add -D @commitlint/config-conventional @commitlint/cli commitlint
 }
 ```
 
-配置`commitlint.config.js`
+## 配置文件
+
+直接当模板使用
 
 ```js [commitlint.config.js]
 // Emoji

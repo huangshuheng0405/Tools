@@ -3,14 +3,16 @@
 1. 安装
 
 ```bash
-npm install --save-dev husky
+npm install -D husky
 ```
 
 2. 初始化husky
 
 ```bash
-npx husky install
+npx husky init
 ```
+
+> 在初始化之前 要先创建仓库 -> `git init`
 
 它会做两件事
 
@@ -47,7 +49,7 @@ pnpm run lint:vue && pnpm lint:style && pnpm spellcheck
 1. 安装
 
 ```bash
-npm install --save-dev lint-staged
+npm install -D lint-staged
 ```
 
 2. `package.json` 里加
