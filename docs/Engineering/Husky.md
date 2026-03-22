@@ -57,7 +57,7 @@ npm install -D lint-staged
 ```json
 "lint-staged": {
     "*.{vue,js,ts,jsx,tsx}": [
-        "exlint --fix",
+        "eslint --fix",
         "prettier --write"
     ]
 }

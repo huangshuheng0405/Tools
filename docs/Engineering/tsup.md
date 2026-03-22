@@ -33,7 +33,9 @@ export default defineConfig({
   dts: true, // 生成 .d.ts 类型文件
   splitting: false, // 代码分割（库模式通常关闭）
   sourcemap: true, // 生成 sourcemap 供调试
-  clean: true // 每次打包前先清理 dist 目录
+  clean: true, // 每次打包前先清理 dist 目录
+  outDir: 'dist', // 指定输出目录的名字
+  shims: true // 确保 __dirname __filename 不会出错 因为node.js 原生不支持
 })
 ```
 

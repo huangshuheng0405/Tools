@@ -100,7 +100,7 @@ export default defineConfig({
                   link: '/Engineering/dependencies_devDependencies'
                 },
                 {
-                  text: '脚手架',
+                  text: 'CLI',
                   link: '/Engineering/scaffold'
                 },
                 {
@@ -110,6 +110,10 @@ export default defineConfig({
                 {
                   text: 'tsup',
                   link: '/Engineering/tsup'
+                },
+                {
+                  text: 'ESlint',
+                  link: '/Engineering/ESlint'
                 }
               ]
             }
@@ -407,9 +411,6 @@ export default defineConfig({
           { icon: 'github', link: 'https://github.com/huangshuheng0405/Tools' }
         ],
         // 中文界面文本配置
-        outline: {
-          label: '页面导航'
-        },
         docFooter: {
           prev: '上一页',
           next: '下一页'
