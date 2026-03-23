@@ -94,14 +94,6 @@ export default defineConfig({
                   ]
                 },
                 {
-                  text: 'CommonJS vs ESM',
-                  link: '/Engineering/Webpack/CommonJS_ESMA'
-                },
-                {
-                  text: 'dependencies 和 devDependencies 的区别',
-                  link: '/Engineering/dependencies_devDependencies'
-                },
-                {
                   text: 'CLI',
                   link: '/Engineering/scaffold'
                 },
@@ -120,6 +112,10 @@ export default defineConfig({
                 {
                   text: 'Commander',
                   link: '/Engineering/Commander'
+                },
+                {
+                  text: 'consola',
+                  link: '/Engineering/consola'
                 }
               ]
             }
@@ -147,6 +143,14 @@ export default defineConfig({
                 {
                   text: 'vscode 插件',
                   link: '/Tips/vscodePlugin'
+                },
+                {
+                  text: 'CommonJS vs ESM',
+                  link: '/Tips/CommonJS_ESMA'
+                },
+                {
+                  text: 'dependencies 和 devDependencies 的区别',
+                  link: '/Tips/dependencies_devDependencies'
                 }
               ]
             }
