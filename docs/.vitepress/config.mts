@@ -77,6 +77,7 @@ export default defineConfig({
                 },
                 {
                   text: 'Webpack',
+                  collapsed: true,
                   items: [
                     { text: 'index', link: '/Engineering/Webpack/index' },
                     { text: 'notes', link: '/Engineering/Webpack/notes' },
@@ -86,6 +87,7 @@ export default defineConfig({
                 },
                 {
                   text: 'Vite',
+                  collapsed: true,
                   items: [
                     { text: 'index', link: '/Engineering/Vite/index' },
                     { text: 'notes', link: '/Engineering/Vite/notes' }
@@ -114,6 +116,10 @@ export default defineConfig({
                 {
                   text: 'ESlint',
                   link: '/Engineering/ESlint'
+                },
+                {
+                  text: 'Commander',
+                  link: '/Engineering/Commander'
                 }
               ]
             }
