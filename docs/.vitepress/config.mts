@@ -116,6 +116,10 @@ export default defineConfig({
                 {
                   text: 'consola',
                   link: '/Engineering/consola'
+                },
+                {
+                  text: 'prompts',
+                  link: '/Engineering/prompts'
                 }
               ]
             }
@@ -151,6 +155,10 @@ export default defineConfig({
                 {
                   text: 'dependencies 和 devDependencies 的区别',
                   link: '/Tips/dependencies_devDependencies'
+                },
+                {
+                  text: 'performanceOptimization',
+                  link: '/Tips/performanceOptimization'
                 }
               ]
             }
