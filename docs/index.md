@@ -5,21 +5,17 @@ layout: home
 hero:
   name: 'huangshuheng'
   text: 'front-end'
-  tagline: Vue JavaScript Nuxt
+  tagline: notes
   image:
-    src: /vitepress-logo-large.svg
+    # src: /vitepress-logo-large.svg
     alt: Vue Logo
   actions:
     - theme: brand
-      text: Get Started →
-      link: /markdown-examples
+      text: notes
+      link: /tool
     - theme: alt
       text: Front-end tools
       link: /tool
-    - theme: alt
-      text: 查看示例
-      link: /api-examples
-    - theme: alt
 
 features:
   - icon: 🚀

@@ -46,8 +46,13 @@ export default defineConfig({
         nav: [
           { text: 'Home', link: '/' },
           { text: 'JavaScript', link: '/JavaScript/' },
-          { text: 'Vue', link: '/vue/lifecycle' },
-          { text: 'Nuxt', link: '/nuxt/Structure/app/nuxt' },
+          {
+            text: 'Vue',
+            items: [
+              { text: 'Vue', link: '/vue/lifecycle' },
+              { text: 'Nuxt', link: '/vue/nuxt/Structure/app/nuxt' }
+            ]
+          },
           { text: 'Engineering', link: '/Engineering/' },
           { text: 'Tips', link: '/Tips/' },
           { text: 'Git', link: '/Git/reset_revert' }
@@ -163,17 +168,17 @@ export default defineConfig({
               ]
             }
           ],
-          '/nuxt/': [
+          '/vue/nuxt/': [
             {
               text: 'Nuxt',
               items: [
                 {
                   text: '快速开始',
-                  link: '/nuxt/Structure/app/nuxt-start'
+                  link: '/vue/nuxt/Structure/app/nuxt-start'
                 },
                 {
                   text: 'Routing',
-                  link: '/nuxt/Routing'
+                  link: '/vue/nuxt/Routing'
                 },
                 {
                   text: 'Structure',
@@ -183,23 +188,29 @@ export default defineConfig({
                       text: 'app',
                       collapsed: false,
                       items: [
-                        { text: 'pages', link: '/nuxt/Structure/app/pages' },
-                        { text: 'layouts', link: '/nuxt/Structure/app/layout' },
+                        {
+                          text: 'pages',
+                          link: '/vue/nuxt/Structure/app/pages'
+                        },
+                        {
+                          text: 'layouts',
+                          link: '/vue/nuxt/Structure/app/layout'
+                        },
                         {
                           text: 'components',
-                          link: '/nuxt/Structure/app/components'
+                          link: '/vue/nuxt/Structure/app/components'
                         },
                         {
                           text: 'composables',
-                          link: '/nuxt/Structure/app/composables'
+                          link: '/vue/nuxt/Structure/app/composables'
                         },
                         {
                           text: 'middleware',
-                          link: '/nuxt/Structure/app/middleware'
+                          link: '/vue/nuxt/Structure/app/middleware'
                         },
                         {
                           text: 'plugins',
-                          link: '/nuxt/Structure/app/plugins'
+                          link: '/vue/nuxt/Structure/app/plugins'
                         }
                       ]
                     }
@@ -266,6 +277,10 @@ export default defineConfig({
                       link: '/vue/vue-router/routerLink'
                     }
                   ]
+                },
+                {
+                  text: 'SSR',
+                  link: '/vue/SSR'
                 }
               ]
             }
