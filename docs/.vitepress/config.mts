@@ -125,6 +125,10 @@ export default defineConfig({
                 {
                   text: 'prompts',
                   link: '/Engineering/prompts'
+                },
+                {
+                  text: 'Prettier',
+                  link: '/Engineering/Prettier'
                 }
               ]
             }
