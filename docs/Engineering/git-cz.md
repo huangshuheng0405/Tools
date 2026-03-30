@@ -30,7 +30,7 @@ bun add -D cz-git
 3. 安装commitlint
 
 ```bash
-bun add -D @commitlint/config-conventional @commitlint/cli commitlint
+bun add -D @commitlint/config-conventional @commitlint/cli commitlint commitizen
 ```
 
 在 `package.json` 添加 commitlint 配置
