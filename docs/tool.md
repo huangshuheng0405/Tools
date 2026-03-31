@@ -1,5 +1,7 @@
 # tool
 
+[DesignPatterns](/DesignPatterns/index.md)
+
 ## 🎨 UI 组件库
 
 ### Vue 生态

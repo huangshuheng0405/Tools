@@ -436,15 +436,27 @@ export default defineConfig({
           ],
           '/': [
             {
-              text: '示例',
-              items: [
-                { text: 'Markdown 示例', link: '/markdown-examples' },
-                { text: 'API 示例', link: '/api-examples' }
-              ]
-            },
-            {
               text: '前端',
               items: [{ text: '工具', link: '/tool' }]
+            }
+          ],
+          '/DesignPatterns/': [
+            {
+              text: '设计模式',
+              items: [
+                {
+                  text: 'index',
+                  link: '/DesignPatterns/index'
+                },
+                {
+                  text: 'Singleton Pattern',
+                  link: '/DesignPatterns/Singleton'
+                },
+                { text: 'Factory Pattern', link: '/DesignPatterns/Factory' },
+                { text: 'Pub-Sub Pattern', link: '/DesignPatterns/Pub-Sub' },
+                { text: 'Observer Pattern', link: '/DesignPatterns/Observer' },
+                { text: 'Strategy Pattern', link: '/DesignPatterns/Strategy' }
+              ]
             }
           ]
         },
