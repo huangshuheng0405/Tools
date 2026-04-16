@@ -2,9 +2,25 @@
 
 ## 安装
 
-```bash
+::: code-group
+
+```bash [npm]
+npm i -D cspell
+```
+
+```bash [yarn]
+yarn add -D cspell
+```
+
+```bash [pnpm]
 pnpm add -D cspell
 ```
+
+```bash [bun]
+bun add -D cspell
+```
+
+:::
 
 ## 初始化
 

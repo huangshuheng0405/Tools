@@ -6,9 +6,25 @@
 
 1. 安装
 
-```bash
+::: code-group
+
+```bash [npm]
+npm i -D cz-git
+```
+
+```bash [yarn]
+yarn add -D cz-git
+```
+
+```bash [pnpm]
+pnpm add -D cz-git
+```
+
+```bash [bun]
 bun add -D cz-git
 ```
+
+:::
 
 2. 修改 `package.json`添加config指定使用的适配器
 

@@ -4,9 +4,25 @@
 
 ## Installation
 
-```bash
-npm install consola
+::: code-group
+
+```bash [npm]
+npm i consola
 ```
+
+```bash [yarn]
+yarn add consola
+```
+
+```bash [pnpm]
+pnpm add consola
+```
+
+```bash [bun]
+bun add consola
+```
+
+:::
 
 ## Getting Started
 

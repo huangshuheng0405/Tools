@@ -5,6 +5,8 @@ import DefaultTheme from 'vitepress/theme'
 // 忽略对虚拟模块的类型检查
 // @ts-ignore
 import 'virtual:group-icons.css'
+// @ts-ignore
+import './style.css'
 
 export default {
   extends: DefaultTheme,

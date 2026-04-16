@@ -4,9 +4,25 @@
 
 ## Installation
 
-```bash
-npm install -d prompts
+::: code-group
+
+```bash [npm]
+npm i prompts
 ```
+
+```bash [yarn]
+yarn add prompts
+```
+
+```bash [pnpm]
+pnpm add prompts
+```
+
+```bash [bun]
+bun add prompts
+```
+
+:::
 
 ## Usages
 

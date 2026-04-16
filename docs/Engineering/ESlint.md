@@ -78,9 +78,25 @@ export default [
 
 1. 安装依赖
 
-```bash
-npm add -D typescript-eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+::: code-group
+
+```bash [npm]
+npm i -D typescript-eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
+
+```bash [yarn]
+yarn add -D typescript-eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+
+```bash [pnpm]
+pnpm add -D typescript-eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+
+```bash [bun]
+bun add -D typescript-eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+
+:::
 
 2. 配置 `eslint.config.js`
 
@@ -108,9 +124,25 @@ ESLint 负责代码质量，Prettier 负责代码格式。两者可能冲突，�
 
 1. 安装依赖
 
-```bash
-npm add -D eslint-config-prettier
+::: code-group
+
+```bash [npm]
+npm i -D eslint-config-prettier
 ```
+
+```bash [yarn]
+yarn add -D eslint-config-prettier
+```
+
+```bash [pnpm]
+pnpm add -D eslint-config-prettier
+```
+
+```bash [bun]
+bun add -D eslint-config-prettier
+```
+
+:::
 
 2. 在 `eslint.config.js` 最后加入
 
@@ -129,8 +161,27 @@ export default [
 
 1. 安装依赖
 
+::: code-group
+
+```bash [npm]
+npm i -D husky lint-staged
+```
+
+```bash [yarn]
+yarn add -D husky lint-staged
+```
+
+```bash [pnpm]
+pnpm add -D husky lint-staged
+```
+
+```bash [bun]
+bun add -D husky lint-staged
+```
+
+:::
+
 ```bash
-npm add -D husky lint-staged
 npx husky init
 ```
 

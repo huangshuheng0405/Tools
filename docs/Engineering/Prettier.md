@@ -2,9 +2,25 @@
 
 ## Installation
 
-```bash
-npm install -d prettier
+::: code-group
+
+```bash [npm]
+npm i -D prettier
 ```
+
+```bash [yarn]
+yarn add -D prettier
+```
+
+```bash [pnpm]
+pnpm add -D prettier
+```
+
+```bash [bun]
+bun add -D prettier
+```
+
+:::
 
 Then,create an empty config file `.prettierrc`
 

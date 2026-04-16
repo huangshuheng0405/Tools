@@ -2,9 +2,25 @@
 
 1. 安装
 
-```bash
-npm install -D husky
+::: code-group
+
+```bash [npm]
+npm i -D husky
 ```
+
+```bash [yarn]
+yarn add -D husky
+```
+
+```bash [pnpm]
+pnpm add -D husky
+```
+
+```bash [bun]
+bun add -D husky
+```
+
+:::
 
 2. 初始化husky
 
@@ -48,9 +64,25 @@ pnpm run lint:vue && pnpm lint:style && pnpm spellcheck
 
 1. 安装
 
-```bash
-npm install -D lint-staged
+::: code-group
+
+```bash [npm]
+npm i -D lint-staged
 ```
+
+```bash [yarn]
+yarn add -D lint-staged
+```
+
+```bash [pnpm]
+pnpm add -D lint-staged
+```
+
+```bash [bun]
+bun add -D lint-staged
+```
+
+:::
 
 2. `package.json` 里加
 

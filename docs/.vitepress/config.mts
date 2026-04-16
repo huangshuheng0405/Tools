@@ -45,7 +45,13 @@ export default defineConfig({
         },
         nav: [
           { text: 'Home', link: '/' },
-          { text: 'JavaScript', link: '/JavaScript/' },
+          {
+            text: 'JavaScript',
+            items: [
+              { text: 'JavaScript', link: '/JavaScript/' },
+              { text: 'TypeScript', link: '/TypeScript/index' }
+            ]
+          },
           {
             text: 'Vue',
             items: [
@@ -285,6 +291,22 @@ export default defineConfig({
                 {
                   text: 'SSR',
                   link: '/vue/SSR'
+                },
+                {
+                  text: 'computed',
+                  link: '/vue/computed'
+                },
+                {
+                  text: 'watch',
+                  link: '/vue/watch'
+                },
+                {
+                  text: 'effect',
+                  link: '/vue/effect'
+                },
+                {
+                  text: 'h',
+                  link: '/vue/h'
                 }
               ]
             }
@@ -430,6 +452,14 @@ export default defineConfig({
                 {
                   text: '隐藏类 (Hidden Classes)',
                   link: '/JavaScript/hiddenClasses'
+                },
+                {
+                  text: 'for',
+                  link: '/JavaScript/for'
+                },
+                {
+                  text: 'Reflect',
+                  link: '/JavaScript/Reflect'
                 }
               ]
             }
@@ -438,6 +468,19 @@ export default defineConfig({
             {
               text: '前端',
               items: [{ text: '工具', link: '/tool' }]
+            }
+          ],
+          '/TypeScript/': [
+            {
+              text: 'TypeScript',
+              items: [
+                { text: 'index', link: '/TypeScript/index' },
+                { text: 'Start', link: '/TypeScript/Start' },
+                {
+                  text: 'tsconfig.json',
+                  link: '/TypeScript/tsconfig'
+                }
+              ]
             }
           ],
           '/DesignPatterns/': [
@@ -455,7 +498,12 @@ export default defineConfig({
                 { text: 'Factory Pattern', link: '/DesignPatterns/Factory' },
                 { text: 'Pub-Sub Pattern', link: '/DesignPatterns/Pub-Sub' },
                 { text: 'Observer Pattern', link: '/DesignPatterns/Observer' },
-                { text: 'Strategy Pattern', link: '/DesignPatterns/Strategy' }
+                { text: 'Strategy Pattern', link: '/DesignPatterns/Strategy' },
+                {
+                  text: 'Decorator Pattern',
+                  link: '/DesignPatterns/Decorator'
+                },
+                { text: 'MVVM', link: '/DesignPatterns/MVVM' }
               ]
             }
           ]

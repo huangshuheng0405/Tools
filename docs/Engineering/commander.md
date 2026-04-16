@@ -4,9 +4,25 @@
 
 ## 安装
 
-```bash
-npm install commander
+::: code-group
+
+```bash [npm]
+npm i commander
 ```
+
+```bash [yarn]
+yarn add commander
+```
+
+```bash [pnpm]
+pnpm add commander
+```
+
+```bash [bun]
+bun add commander
+```
+
+:::
 
 ## version
 
