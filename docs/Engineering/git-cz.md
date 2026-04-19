@@ -2,31 +2,33 @@
 
 [cz-git](https://cz-git.qbb.sh/zh/)
 
+> 全局安装`commitizen`可以快速使用`cz`或`git cz`命令来启动
+
 ## 快速开始
 
-1. 安装
+1. 安装（没有全局安装`commitizen`，需要在下方一起安装）
 
 ::: code-group
 
 ```bash [npm]
-npm i -D cz-git
+npm i -D cz-git 
 ```
 
 ```bash [yarn]
-yarn add -D cz-git
+yarn add -D cz-git 
 ```
 
 ```bash [pnpm]
-pnpm add -D cz-git
+pnpm add -D cz-git 
 ```
 
 ```bash [bun]
-bun add -D cz-git
+bun add -D cz-git 
 ```
 
 :::
 
-2. 修改 `package.json`添加config指定使用的适配器
+2. 修改 `package.json`中配置路径指向`cz-git`
 
 ```json [package.json] {3,7}
 {
@@ -46,7 +48,7 @@ bun add -D cz-git
 3. 安装commitlint
 
 ```bash
-bun add -D @commitlint/config-conventional @commitlint/cli commitlint commitizen
+bun add -D @commitlint/config-conventional @commitlint/cli commitlint
 ```
 
 在 `package.json` 添加 commitlint 配置
@@ -247,3 +249,7 @@ export default {
 //     }
 // }
 ```
+
+## commitizen 
+
+它是用来生成符合规范的提交信息的
