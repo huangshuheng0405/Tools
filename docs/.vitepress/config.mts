@@ -477,6 +477,10 @@ export default defineConfig({
                 {
                   text: '垃圾回收',
                   link: '/JavaScript/Garbage_Collection'
+                },
+                {
+                  text: 'globalThis',
+                  link: '/JavaScript/globalThis'
                 }
               ]
             }
