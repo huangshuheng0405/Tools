@@ -1,16 +1,28 @@
 # new 操作符
 
 ```js
-function myNew(constructor, ...args) {
-  const obj = Object.create(constructor.prototype) // 创建一个新对象并链接到构造函数的原型
-  const result = constructor.apply(obj, args) // 将构造函数的this指向新对象并执行构造函数
-  return result instanceof Object ? result : obj // 确保构造函数返回一个对象 如果没有则返回新对象
+function myNew(contstructor, ...args) {
+  const obj = Object.create(contstructor.prototype)
+  const result = contstructor.apply(obj, args)
+  return (result ！== null && typeof result === 'object') ? result : obj
 }
 
-function Person(name) {
+let flag = undefined
+
+function Person(name, age) {
   this.name = name
+  this.age = age
+  flag = this
 }
 
-const person1 = myNew(Person, 'Alice')
-console.log(person1.name) // Alice
+const p = myNew(Person, 'xiaoming', 20)
+console.log(p.name) // xiaoming
+console.log(p instanceof Person) // true
+console.log(flag === p) // true
+
 ```
+
+1. 在内存中创建一个空对象（例如（`{}`）
+2. 将这个新对象的`__proto__`指向构造函数的`prototype`属性。这一步确保示例可以访问构造函数原型上的方法
+3. 执行构造函数，同时将函数内部`this`绑定到这个新对象上。此时，构造函数的`this.xxx = yyy`开始为新对象赋值
+4. 如果构造函数返回了一个**非空对象**，则返回该对象；否则，默认返回第一步创建的对象

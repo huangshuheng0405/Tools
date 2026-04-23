@@ -362,7 +362,7 @@ export default defineConfig({
                   link: '/JavaScript/ESVersion'
                 },
                 {
-                  text: 'let、var、const',
+                  text: 'let var const',
                   link: '/JavaScript/let_var_const'
                 },
                 {
@@ -414,7 +414,7 @@ export default defineConfig({
                   link: '/JavaScript/ChainedCall'
                 },
                 {
-                  text: 'new 操作符',
+                  text: 'new',
                   link: '/JavaScript/New'
                 },
                 {
@@ -434,7 +434,7 @@ export default defineConfig({
                   link: '/JavaScript/prototypeChain'
                 },
                 {
-                  text: 'this指向',
+                  text: 'this',
                   link: '/JavaScript/this'
                 },
                 {
@@ -475,7 +475,7 @@ export default defineConfig({
                   link: '/JavaScript/Reflect'
                 },
                 {
-                  text: '垃圾回收',
+                  text: 'Garbage Collection',
                   link: '/JavaScript/Garbage_Collection'
                 },
                 {
