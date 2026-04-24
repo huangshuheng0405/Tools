@@ -1,10 +1,12 @@
-# new 操作符
+# new
+
+手写`new`操作符
 
 ```js
-function myNew(contstructor, ...args) {
-  const obj = Object.create(contstructor.prototype)
-  const result = contstructor.apply(obj, args)
-  return (result ！== null && typeof result === 'object') ? result : obj
+function myNew(constructor, ...args) {
+  const obj = Object.create(constructor.prototype)
+  const result = constructor.apply(obj, args)
+  return result !== null && typeof result === 'object' ? result : obj
 }
 
 let flag = undefined
@@ -19,7 +21,6 @@ const p = myNew(Person, 'xiaoming', 20)
 console.log(p.name) // xiaoming
 console.log(p instanceof Person) // true
 console.log(flag === p) // true
-
 ```
 
 1. 在内存中创建一个空对象（例如（`{}`）

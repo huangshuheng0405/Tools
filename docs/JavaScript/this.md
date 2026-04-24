@@ -2,8 +2,6 @@
 
 > 以下代码只要涉及到window，必须在浏览器环境下执行
 
-
-
 this的几种模式：
 
 1. 方法调用模式下，`this`总是指向调用它所在方法的对象，`this`的指向与所在方法的调用位置有关，而与方法的声明位置无关
@@ -12,6 +10,40 @@ this的几种模式：
 4. `apply`、`call`、`bind`调用模式下，`this`指向第一个参数
 5. 箭头函数，在**声明**的时候绑定`this`，而非取决调用的位置
 6. 严格模式下，如果`this`没有被执行环境（execution context）定义，那`this`是`undefined`
+
+## 优先级
+
+| **优先级**   | **绑定方式** | **示例**                                 |
+| ------------ | ------------ | ---------------------------------------- |
+| **1 (最高)** | `new` 绑定   | `new Foo()`                              |
+| **2**        | **显式绑定** | `foo.call(obj)`, `foo.bind(obj)`         |
+| **3**        | **隐式绑定** | `obj.foo()`                              |
+| **4 (最低)** | 默认绑定     | `foo()` (非严格模式下指向 window/global) |
+
+```js
+var obj = {
+  name: 'obj',
+  foo: function () {
+    console.log(this)
+  }
+}
+
+var f = new obj.foo() // foo {}
+```
+
+`new`优先级高于隐式绑定的
+
+```js
+function foo() {
+  console.log(this)
+}
+
+var bar = foo.bind('aaa')
+
+var obj = new bar() // foo {}
+```
+
+
 
 ## 方法调用模式
 

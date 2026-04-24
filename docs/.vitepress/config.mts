@@ -418,7 +418,7 @@ export default defineConfig({
                   link: '/JavaScript/New'
                 },
                 {
-                  text: 'bind, apply, call的区别及实现',
+                  text: 'bind apply call',
                   link: '/JavaScript/bind_apply_call'
                 },
                 {
@@ -426,12 +426,8 @@ export default defineConfig({
                   link: '/JavaScript/defineProperty_Proxy'
                 },
                 {
-                  text: 'prototype 和 __proto__',
-                  link: '/JavaScript/prototype___proto__'
-                },
-                {
-                  text: '原型链',
-                  link: '/JavaScript/prototypeChain'
+                  text: 'Prototype Chain',
+                  link: '/JavaScript/Prototype_Chain'
                 },
                 {
                   text: 'this',
