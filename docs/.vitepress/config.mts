@@ -486,6 +486,10 @@ export default defineConfig({
                   text: 'WeakMap and WeakSet',
                   link: '/JavaScript/WeakMap_WeakSet',
                 },
+                {
+                  text: 'ToPrimitive',
+                  link: '/JavaScript/ToPrimitive',
+                },
               ],
             },
           ],
