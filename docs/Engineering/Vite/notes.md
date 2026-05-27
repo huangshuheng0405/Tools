@@ -55,3 +55,57 @@ export default defineConfig({
 3. 两端
    1. 开发阶段，本地通过开打服务实现
    2. rollup打包进行处理
+
+## 手动分包（Manual Chunk）
+
+vite 生产构建使用 rollup，所以“分包”本质上是 rollup 的 chunk 策略。
+
+常见做法有两类：
+
+1. **动态导入**：用 `import()` 触发按需加载（最推荐、最符合路由/功能模块拆分）
+2. **manualChunks**：在构建配置里手动指定哪些模块要打到同一个 chunk（更偏工程优化）
+
+### 1）动态导入分包
+
+```js
+const { heavy } = await import('./heavy-module')
+```
+
+常见应用：路由懒加载、低频功能（编辑器/图表/富文本）按需加载。
+
+### 2）build.rollupOptions.output.manualChunks
+
+在 `vite.config` 里配置：
+
+```ts [vite.config.ts]
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('/react/') || id.includes('/react-dom/'))
+              return 'react'
+            if (id.includes('/lodash-es/')) return 'lodash'
+            return 'vendor'
+          }
+        }
+      }
+    }
+  }
+})
+```
+
+### 分包策略速记
+
+- **优先业务维度**：按路由/功能模块分（动态导入），让首屏更轻、低频更晚加载
+- **再做大依赖隔离**：把更新不频繁、体积大的库单独 chunk（例如图表、编辑器、UI 库）
+- **vendor 不要太碎**：拆得过细会增加请求数和调度开销，HTTP/2 下也不是越碎越好
+
+### 常见坑
+
+- **共享依赖重复**：拆包不当会让某些依赖在多个 chunk 里重复，导致总体体积变大
+- **缓存失效**：随便把业务和 vendor 混在一起，会导致业务改动引起 vendor chunk hash 改变
+- **只在 build 生效**：manualChunks 主要影响生产构建，开发态模块加载机制不同

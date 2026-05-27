@@ -61,9 +61,22 @@ export default defineConfig({
           },
           { text: 'Engineering', link: '/Engineering/' },
           { text: 'Tips', link: '/Tips/' },
-          { text: 'Git', link: '/Git/reset_revert' }
+          { text: 'Git', link: '/Git/reset_revert' },
+          { text: 'Backend', link: '/backend' }
         ],
         sidebar: {
+          '/backend/': [
+            {
+              text: 'Backend',
+              items: [
+                { text: 'Overview', link: '/backend/' },
+                { text: 'Koa', link: '/backend/koa' },
+                { text: 'Node.js', link: '/backend/Node.js' },
+                { text: 'Express', link: '/backend/express' },
+                { text: 'Sequelize', link: '/backend/sequelize' }
+              ]
+            }
+          ],
           '/Git/': [
             {
               text: 'Git',
@@ -143,6 +156,10 @@ export default defineConfig({
                 {
                   text: 'Axios',
                   link: '/Engineering/Axios'
+                },
+                {
+                  text: 'Rollup',
+                  link: '/Engineering/rollup'
                 }
               ]
             }
@@ -191,6 +208,23 @@ export default defineConfig({
                 {
                   text: 'Getting Started',
                   link: '/Tips/vitepress-icon'
+                }
+              ]
+            },
+            {
+              text: '面试题',
+              items: [
+                {
+                  text: 'ref reactive',
+                  link: '/Tips/ref-reactive'
+                },
+                {
+                  text: '图片懒加载',
+                  link: '/Tips/lazyImages'
+                },
+                {
+                  text: '文件上传',
+                  link: '/Tips/fileUpload'
                 }
               ]
             }
