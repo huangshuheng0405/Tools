@@ -60,7 +60,7 @@ export default defineConfig({
             ]
           },
           { text: 'Engineering', link: '/Engineering/' },
-          { text: 'Tips', link: '/Tips/' },
+          { text: 'Other', link: '/Other/' },
           { text: 'Git', link: '/Git/reset_revert' },
           { text: 'Backend', link: '/backend' }
         ],
@@ -164,41 +164,41 @@ export default defineConfig({
               ]
             }
           ],
-          '/Tips/': [
+          '/Other/': [
             {
               text: 'Tips',
               items: [
                 {
                   text: '默认导出 vs 命名导出',
-                  link: '/Tips/default-vs-named-export'
+                  link: '/Other/default-vs-named-export'
                 },
                 {
                   text: 'Axios 请求中断与重试',
-                  link: '/Tips/axios-cancel-retry'
+                  link: '/Other/axios-cancel-retry'
                 },
                 {
                   text: '虚拟列表 (Virtual List)',
-                  link: '/Tips/virtual-list'
+                  link: '/Other/virtual-list'
                 },
                 {
                   text: '事件委托 (Event Delegation)',
-                  link: '/Tips/event-delegation'
+                  link: '/Other/event-delegation'
                 },
                 {
                   text: 'vscode 插件',
-                  link: '/Tips/vscodePlugin'
+                  link: '/Other/vscodePlugin'
                 },
                 {
                   text: 'CommonJS vs ESM',
-                  link: '/Tips/CommonJS_ESMA'
+                  link: '/Other/CommonJS_ESMA'
                 },
                 {
                   text: 'dependencies 和 devDependencies 的区别',
-                  link: '/Tips/dependencies_devDependencies'
+                  link: '/Other/dependencies_devDependencies'
                 },
                 {
                   text: 'performanceOptimization',
-                  link: '/Tips/performanceOptimization'
+                  link: '/Other/performanceOptimization'
                 }
               ]
             },
@@ -207,7 +207,7 @@ export default defineConfig({
               items: [
                 {
                   text: 'Getting Started',
-                  link: '/Tips/vitepress-icon'
+                  link: '/Other/vitepress-icon'
                 }
               ]
             },
@@ -216,15 +216,19 @@ export default defineConfig({
               items: [
                 {
                   text: 'ref reactive',
-                  link: '/Tips/ref-reactive'
+                  link: '/Other/ref-reactive'
                 },
                 {
                   text: '图片懒加载',
-                  link: '/Tips/lazyImages'
+                  link: '/Other/lazyImages'
                 },
                 {
                   text: '文件上传',
-                  link: '/Tips/fileUpload'
+                  link: '/Other/fileUpload'
+                },
+                {
+                  text: 'Web API',
+                  link: '/Other/WebAPI'
                 }
               ]
             }
@@ -531,6 +535,10 @@ export default defineConfig({
                 {
                   text: 'MapAndSet',
                   link: '/JavaScript/MapAndSet'
+                },
+                {
+                  text: '高阶函数',
+                  link: '/JavaScript/High-Order'
                 }
               ]
             }
