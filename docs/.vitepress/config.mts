@@ -537,8 +537,28 @@ export default defineConfig({
                   link: '/JavaScript/MapAndSet'
                 },
                 {
-                  text: '高阶函数',
+                  text: 'HOF',
                   link: '/JavaScript/High-Order'
+                },
+                {
+                  text: 'Throttle',
+                  link: '/JavaScript/Throttle'
+                },
+                {
+                  text: 'Lazy Function',
+                  link: '/JavaScript/Lazy_Function'
+                },
+                {
+                  text: 'Currying',
+                  link: '/JavaScript/Curring'
+                },
+                {
+                  text: 'Function Composition',
+                  link: '/JavaScript/Function_Composition'
+                },
+                {
+                  text: 'Canvas',
+                  link: '/JavaScript/Canvas'
                 }
               ]
             }

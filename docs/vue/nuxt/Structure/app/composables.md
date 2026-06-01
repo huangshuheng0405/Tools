@@ -58,7 +58,7 @@ export default function () {
 }
 ```
 
-_注意：使用默认导出时，自动导入的名称就是文件名（不带扩展名）。_ 详见 [默认导出与命名导出的区别](/Tips/default-vs-named-export)
+\_注意：使用默认导出时，自动导入的名称就是文件名（不带扩展名）。
 
 ## 状态共享 (useState)
 

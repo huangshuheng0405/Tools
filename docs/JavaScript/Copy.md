@@ -194,7 +194,41 @@ const newObj = JSON.parse(JSON.stringify(obj))
 console.log(newObj) // error
 ```
 
+会把`Data`对象转换成字符串
+
+```js
+const obj = {
+    a: new Data()
+}
+
+const deepClone = JSON.parse(JSON.stringfy(obj))
+
+console.log(typeof obj.a) // object
+console.log(typeof deepClone.a) // string
+```
+
 这种适合深拷贝一些简单对象
+
+## structedClone
+
+一个内置、专门用于深拷贝的全局函数
+
+- 标准API、高效、支持循环引用、等处理`Date`,`RegExp`,`Map`,`Set`等多种类型
+- 不支持拷贝函数、`Error`对象、DOM节点
+
+```js
+const ori = {
+  a: new Date(),
+  b: 1,
+  c: {
+    d: 2
+  }
+}
+
+const deepCopy = structuredClone(ori)
+
+console.log(deepCopy)
+```
 
 ### 简单版本
 

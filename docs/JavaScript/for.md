@@ -5,12 +5,40 @@
 `for...in`主要用于循环遍历**对象的可枚举属性**。如果用于数组，他遍历的是数组的索引
 
 ```js
-const list = ['a', 'b', 'c']
-list.name = 'my-list' // 为数组添加一个自定义属性
+const sym = Symbol('demo')
 
-for (let key in list) {
-  console.log(key) // 输出: "0", "1", "2", "name"
+const proto = {
+  protoProp: 'proto value'
 }
+
+const obj = Object.create(proto)
+obj.ownProp = 'own value'
+obj[sym] = 'symbol'
+
+Object.defineProperty(obj, 'nonEnumProp', {
+  value: 'nonEnumerable value',
+  enumerable: false
+})
+
+const result = []
+
+for (let key in obj) {
+  result.push(key)
+}
+
+const ownResult = []
+for (let key in obj) {
+  if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    ownResult.push(key)
+  }
+}
+
+console.log(result) // [ 'ownProp', 'protoProp' ] 包含了原型链上的属性
+console.log(ownResult) // [ 'ownProp' ]
+
+console.log(Object.keys(obj)) // [ 'ownProp' ]
+
+console.log(Reflect.ownKeys(obj)) // [ 'ownProp', 'nonEnumProp', Symbol(demo) ]
 ```
 
 - 它返回的是字符串类型的**键名**（即使是数字索引也是字符串`"0"`）

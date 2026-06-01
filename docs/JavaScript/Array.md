@@ -73,6 +73,19 @@ console.log('0' == '') // false
 
 它从索引 `start` 开始修改 `arr`：删除 `deleteCount` 个元素并在当前位置插入 `elem1, ..., elemN`。最后返回被删除的元素所组成的数组。
 
+```js
+const months = ['Jan', 'March', 'April', 'June']
+
+const removed = months.splice(1, 0, 'Feb')
+
+console.log(months) // [ 'Jan', 'Feb', 'March', 'April', 'June' ]
+console.log(removed) // []
+
+const removedItem = months.splice(3, 1)
+console.log(months) // [ 'Jan', 'Feb', 'March' ]
+console.log(removedItem) // [ 'April' ]
+```
+
 ## slice
 
 语法：`arra.slice(start, end)`
