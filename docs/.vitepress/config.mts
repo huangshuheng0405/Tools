@@ -60,7 +60,7 @@ export default defineConfig({
             ]
           },
           { text: 'Engineering', link: '/Engineering/' },
-          { text: 'Other', link: '/Other/' },
+          { text: 'Misc', link: '/Misc/' },
           { text: 'Git', link: '/Git/reset_revert' },
           { text: 'Backend', link: '/backend' }
         ],
@@ -71,7 +71,15 @@ export default defineConfig({
               items: [
                 { text: 'Overview', link: '/backend/' },
                 { text: 'Koa', link: '/backend/koa' },
-                { text: 'Node.js', link: '/backend/Node.js' },
+                {
+                  text: 'Node.js',
+                  link: '/backend/nodejs',
+                  items: [
+                    { text: '__dirname', link: '/backend/nodejs/__dirname' },
+                    { text: '__filename', link: '/backend/nodejs/__filename' },
+                    { text: 'modularity', link: '/backend/nodejs/modularity' }
+                  ]
+                },
                 { text: 'Express', link: '/backend/express' },
                 { text: 'Sequelize', link: '/backend/sequelize' }
               ]
@@ -160,45 +168,49 @@ export default defineConfig({
                 {
                   text: 'Rollup',
                   link: '/Engineering/rollup'
+                },
+                {
+                  text: 'nrm',
+                  link: '/Engineering/nrm'
                 }
               ]
             }
           ],
-          '/Other/': [
+          '/Misc/': [
             {
               text: 'Tips',
               items: [
                 {
                   text: '默认导出 vs 命名导出',
-                  link: '/Other/default-vs-named-export'
+                  link: '/Misc/default-vs-named-export'
                 },
                 {
                   text: 'Axios 请求中断与重试',
-                  link: '/Other/axios-cancel-retry'
+                  link: '/Misc/axios-cancel-retry'
                 },
                 {
                   text: '虚拟列表 (Virtual List)',
-                  link: '/Other/virtual-list'
+                  link: '/Misc/virtual-list'
                 },
                 {
                   text: '事件委托 (Event Delegation)',
-                  link: '/Other/event-delegation'
+                  link: '/Misc/event-delegation'
                 },
                 {
                   text: 'vscode 插件',
-                  link: '/Other/vscodePlugin'
+                  link: '/Misc/vscodePlugin'
                 },
                 {
                   text: 'CommonJS vs ESM',
-                  link: '/Other/CommonJS_ESMA'
+                  link: '/Misc/CommonJS_ESMA'
                 },
                 {
                   text: 'dependencies 和 devDependencies 的区别',
-                  link: '/Other/dependencies_devDependencies'
+                  link: '/Misc/dependencies_devDependencies'
                 },
                 {
                   text: 'performanceOptimization',
-                  link: '/Other/performanceOptimization'
+                  link: '/Misc/performanceOptimization'
                 }
               ]
             },
@@ -424,7 +436,7 @@ export default defineConfig({
                   link: '/JavaScript/module_commonJS'
                 },
                 {
-                  text: '事件循环',
+                  text: 'EventLoop',
                   link: '/JavaScript/EventLoop'
                 },
                 {
@@ -559,6 +571,10 @@ export default defineConfig({
                 {
                   text: 'Canvas',
                   link: '/JavaScript/Canvas'
+                },
+                {
+                  text: 'URL',
+                  link: '/JavaScript/URL'
                 }
               ]
             }
