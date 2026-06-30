@@ -10,6 +10,8 @@ npm install -g nrm
 
 ## basic
 
+几种基本操作
+
 ```bash
 nrm -V 查看版本号
 nrm ls 列出所有镜像源 并标记当前使用的镜像源（带*）

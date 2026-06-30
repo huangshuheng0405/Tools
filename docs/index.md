@@ -12,7 +12,7 @@ hero:
   actions:
     - theme: brand
       text: notes
-      link: /tool
+      link: /Start
     - theme: alt
       text: Front-end tools
       link: /tool

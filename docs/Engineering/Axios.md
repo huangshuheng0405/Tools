@@ -174,3 +174,52 @@ await api.post('/upload', form, {
 ```ts
 const [a, b] = await Promise.all([api.get('/a'), api.get('/b')])
 ```
+
+## result with TypeScript
+
+给axios返回的结果添加泛型接口
+
+1. 假设后端返回的 JSON 数据构例如下：
+
+```json
+{
+  "code": 1,
+  "message": "success",
+  "data": { ... }
+}
+```
+
+2. 可以这样定义泛型接口(根据后端返回的 JSON 结构来定义data的类型)
+
+```ts [/types/api.ts]
+export interface ApiResponse<T> {
+  code: number
+  message: string
+  data: T
+}
+```
+
+3. 封装`request`函数
+
+```ts [request.ts] (9-11)
+import axios, { AxiosRequestConfig } from 'axios'
+import type { ApiResponse } from '@/types/api'
+
+const service = axios.create({
+  baseURL: import.meta.env.VITE_BASE_URL,
+  timeout: 5000
+})
+
+function request<T>(config: AxiosRequestConfig): Promise<ApiResponse<T>> {
+  return service.request<ApiResponse<T>>(config)
+}
+
+export default request
+```
+
+4. 使用`request`函数
+
+```ts
+const res = await request<User>('/users/1')
+console.log(res.data, res.message, res.code)
+```

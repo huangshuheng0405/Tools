@@ -81,7 +81,9 @@ export default defineConfig({
                   ]
                 },
                 { text: 'Express', link: '/backend/express' },
-                { text: 'Sequelize', link: '/backend/sequelize' }
+                { text: 'Sequelize', link: '/backend/sequelize' },
+                { text: 'MongoDB', link: '/backend/MongoDB' },
+                { text: 'Mongoose', link: '/backend/mongoose' }
               ]
             }
           ],
@@ -241,6 +243,15 @@ export default defineConfig({
                 {
                   text: 'Web API',
                   link: '/Other/WebAPI'
+                }
+              ]
+            },
+            {
+              text: 'Claude Code',
+              items: [
+                {
+                  text: 'Getting Started',
+                  link: '/Misc/Toturial_ClaudeCode'
                 }
               ]
             }
@@ -509,10 +520,6 @@ export default defineConfig({
                   link: '/JavaScript/NameConvention'
                 },
                 {
-                  text: '隐藏类 (Hidden Classes)',
-                  link: '/JavaScript/hiddenClasses'
-                },
-                {
                   text: 'for',
                   link: '/JavaScript/for'
                 },
@@ -581,8 +588,8 @@ export default defineConfig({
           ],
           '/': [
             {
-              text: '前端',
-              items: [{ text: '工具', link: '/tool' }]
+              text: '首页',
+              items: [{ text: 'Start', link: '/Start' }]
             }
           ],
           '/TypeScript/': [
@@ -620,6 +627,12 @@ export default defineConfig({
                 },
                 { text: 'MVVM', link: '/DesignPatterns/MVVM' }
               ]
+            }
+          ],
+          '/network/': [
+            {
+              text: '计算机网络',
+              items: [{ text: 'SSE', link: '/network/SSE' }]
             }
           ]
         },
