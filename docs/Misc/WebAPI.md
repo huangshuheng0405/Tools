@@ -301,3 +301,7 @@ document.addEventListener('visibilitychange', (e) => {
 - 文本：`e.clipboardData.getData('text/plain')`
 - HTML：`e.clipboardData.getData('text/html')`
 - 文件/图片：`e.clipboardData.files`或`e.clipboardData.items`
+
+## requestidlecallback
+
+它提供了 一种机制

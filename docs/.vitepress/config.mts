@@ -59,6 +59,7 @@ export default defineConfig({
               { text: 'Nuxt', link: '/vue/nuxt/Structure/app/nuxt' }
             ]
           },
+          { text: 'React', link: '/react/index' },
           { text: 'Engineering', link: '/Engineering/' },
           { text: 'Misc', link: '/Misc/' },
           { text: 'Git', link: '/Git/reset_revert' },
@@ -91,6 +92,7 @@ export default defineConfig({
             {
               text: 'Git',
               items: [
+                { text: 'Overview', link: '/Git/' },
                 { text: 'Reset vs Revert', link: '/Git/reset_revert' },
                 { text: 'Merge vs Rebase', link: '/Git/rebase-merge' }
               ]
@@ -221,7 +223,7 @@ export default defineConfig({
               items: [
                 {
                   text: 'Getting Started',
-                  link: '/Other/vitepress-icon'
+                  link: '/Misc/vitepress-icon'
                 }
               ]
             },
@@ -230,19 +232,19 @@ export default defineConfig({
               items: [
                 {
                   text: 'ref reactive',
-                  link: '/Other/ref-reactive'
+                  link: '/Misc/ref-reactive'
                 },
                 {
                   text: '图片懒加载',
-                  link: '/Other/lazyImages'
+                  link: '/Misc/lazyImages'
                 },
                 {
                   text: '文件上传',
-                  link: '/Other/fileUpload'
+                  link: '/Misc/fileUpload'
                 },
                 {
                   text: 'Web API',
-                  link: '/Other/WebAPI'
+                  link: '/Misc/WebAPI'
                 }
               ]
             },
@@ -431,10 +433,6 @@ export default defineConfig({
                   link: '/JavaScript/Hoisting_TDZ'
                 },
                 {
-                  text: '判断两个对象是否相等',
-                  link: '/JavaScript/JudgeObjectEqual'
-                },
-                {
                   text: 'null和undefined的区别',
                   link: '/JavaScript/nullUndefined'
                 },
@@ -582,6 +580,10 @@ export default defineConfig({
                 {
                   text: 'URL',
                   link: '/JavaScript/URL'
+                },
+                {
+                  text: 'Closure',
+                  link: '/JavaScript/Closure'
                 }
               ]
             }
@@ -633,6 +635,39 @@ export default defineConfig({
             {
               text: '计算机网络',
               items: [{ text: 'SSE', link: '/network/SSE' }]
+            }
+          ],
+          '/react/': [
+            {
+              text: 'React',
+              items: [{ text: 'index', link: '/react/index' }]
+            },
+            {
+              text: 'Hooks',
+              items: [
+                { text: 'index', link: '/react/hooks/index' },
+                { text: 'useState', link: '/react/hooks/useState' },
+                {
+                  text: 'useSyncExternalStore',
+                  link: '/react/hooks/useSyncExternalStore'
+                },
+                {
+                  text: 'useTransition',
+                  link: '/react/hooks/useTransition'
+                },
+                {
+                  text: 'useDeferredValue',
+                  link: '/react/hooks/useDeferredValue'
+                },
+                {
+                  text: 'useEffect',
+                  link: '/react/hooks/useEffect'
+                },
+                {
+                  text: 'useLayoutEffect',
+                  link: '/react/hooks/useLayoutEffect'
+                }
+              ]
             }
           ]
         },

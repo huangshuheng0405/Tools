@@ -228,17 +228,20 @@ const ori = {
 const deepCopy = structuredClone(ori)
 
 console.log(deepCopy)
+console.log(typeof deepCopy.a) // object
 ```
 
 ### 简单版本
 
 ```js
 function deepClone(target) {
+  // 不是object直接返回即可
   if (typeof target !== 'object') {
     return target
   }
 
   const cloneTarget = {}
+  // 递归复制
   for (const key in target) {
     cloneTarget[key] = deepClone(target[key])
   }
@@ -267,7 +270,7 @@ console.log(obj.person === newObj.person)
 
 ### 处理数组、日期、正则、null
 
-null、日期、正则直接返回即可
+`null`、日期、正则直接返回即可
 
 对于这一行代码
 
@@ -282,13 +285,9 @@ class Person {}
 
 const p = new Person()
 
-console.log(p.constructor === Person)
+console.log(p.constructor === Person) // tr
 console.log([].constructor === Array)
 console.log({}.constructor === Object)
-
-// true
-// true
-// true
 ```
 
 ```js
