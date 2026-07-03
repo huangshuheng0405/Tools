@@ -21,6 +21,7 @@ export default defineConfig({
     ]
   },
   themeConfig: {
+    logo: '/nodejs-icon.svg',
     outline: {
       level: [2, 6],
       label: '目录'
@@ -245,15 +246,6 @@ export default defineConfig({
                 {
                   text: 'Web API',
                   link: '/Misc/WebAPI'
-                }
-              ]
-            },
-            {
-              text: 'Claude Code',
-              items: [
-                {
-                  text: 'Getting Started',
-                  link: '/Misc/Toturial_ClaudeCode'
                 }
               ]
             }
@@ -666,6 +658,18 @@ export default defineConfig({
                 {
                   text: 'useLayoutEffect',
                   link: '/react/hooks/useLayoutEffect'
+                },
+                {
+                  text: 'useRef',
+                  link: '/react/hooks/useRef'
+                },
+                {
+                  text: 'useImperativeHandle',
+                  link: '/react/hooks/useImperativeHandle'
+                },
+                {
+                  text: 'useContext',
+                  link: '/react/hooks/useContext'
                 }
               ]
             }

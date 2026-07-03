@@ -3,3 +3,14 @@
     Consolas, 'Fira Code', 'JetBrains Mono', 'SFMono-Regular', Menlo, Monaco,
     'Liberation Mono', 'Courier New', monospace;
 }
+
+:root {
+  --vp-home-hero-image-background-image: radial-gradient(
+    circle at center,
+    rgba(140, 200, 75, 0.95) 0%,
+    rgba(111, 184, 72, 0.72) 35%,
+    rgba(59, 130, 44, 0.45) 60%,
+    transparent 75%
+  );
+  --vp-home-hero-image-filter: blur(72px);
+}

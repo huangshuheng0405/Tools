@@ -7,8 +7,10 @@ hero:
   text: 'front-end'
   tagline: notes
   image:
-    # src: /vitepress-logo-large.svg
-    alt: Vue Logo
+    src: /nodejs-icon.svg
+    alt: Node.js Logo
+    width: 230
+    height: 230
   actions:
     - theme: brand
       text: notes
@@ -19,21 +21,12 @@ hero:
 
 features:
   - icon: 🚀
-    title: 快速上手
+    title: Vue
     details: 通过精心设计的教程和示例，快速掌握现代前端开发技术，从基础到进阶逐步提升
   - icon: 🛠️
-    title: 丰富工具库
+    title: React
     details: 整理了前端开发必备的工具库、框架和平台，涵盖UI组件、构建工具、测试框架等各个领域
   - icon: 📚
-    title: 系统化学习
+    title: Javascript
     details: 提供完整的学习路径和实践案例，帮助你构建扎实的前端技术体系
-  - icon: ⚡
-    title: 实时通信
-    details: 集成Socket.IO等实时通信技术，学习构建现代化的实时应用
-  - icon: 🎨
-    title: 现代化UI
-    details: 探索Vue、React等主流框架，学习如何构建美观且高性能的用户界面
-  - icon: 🔧
-    title: 最佳实践
-    details: 分享业界最佳实践和代码规范，帮助你写出更优雅、更易维护的代码
 ---
