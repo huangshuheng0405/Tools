@@ -4,13 +4,92 @@
     'Liberation Mono', 'Courier New', monospace;
 }
 
+/* Hero image background glow */
 :root {
   --vp-home-hero-image-background-image: radial-gradient(
     circle at center,
-    rgba(140, 200, 75, 0.95) 0%,
-    rgba(111, 184, 72, 0.72) 35%,
-    rgba(59, 130, 44, 0.45) 60%,
-    transparent 75%
+    rgba(64, 128, 255, 0.45) 0%,
+    rgba(100, 149, 237, 0.28) 30%,
+    rgba(120, 80, 200, 0.15) 55%,
+    transparent 72%
   );
-  --vp-home-hero-image-filter: blur(72px);
+  --vp-home-hero-image-filter: blur(64px);
+}
+
+/* Hero name gradient text */
+.VPHomeHero .name {
+  background: linear-gradient(135deg, #42b883 0%, #3c8772 30%, #61dafb 70%, #3178c6 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Hero tagline styling */
+.VPHomeHero .tagline {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Feature cards hover effect */
+.VPFeature {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 12px;
+  border: 1px solid var(--vp-c-bg-soft);
+}
+
+.VPFeature:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--vp-c-brand-1);
+}
+
+/* Feature icon styling */
+.VPFeature .icon {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+/* Feature title */
+.VPFeature .title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Feature link text */
+.VPFeature .link-text {
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+/* Vue button */
+.VPHomeHero .actions .action:nth-child(2) .VPButton.vue {
+  background-color: #42b883;
+  border-color: #42b883;
+  color: #fff;
+}
+
+.VPHomeHero .actions .action:nth-child(2) .VPButton.vue:hover {
+  background-color: #369870;
+  border-color: #369870;
+}
+
+/* React button */
+.VPHomeHero .actions .action:nth-child(3) .VPButton.react {
+  background-color: #61dafb;
+  border-color: #61dafb;
+  color: #1a1a2e;
+}
+
+.VPHomeHero .actions .action:nth-child(3) .VPButton.react:hover {
+  background-color: #42c8ee;
+  border-color: #42c8ee;
 }

@@ -1,11 +1,41 @@
 # useState
 
-`useState`接受一个参数作为状态的初始值，并返回一个包含两个元素的数组：
+它允许你向组件里添加一个状态变量
 
-- 当前状态的值
-- 更新该状态的函数 
+## 语法
 
-通常我们使用**解构**来获取它们
+```tsx
+const [state, setState] = useState(initialState)
+```
+
+### 参数
+
+- `initialState`：你希望state初始化的值。它可以是任何类型的值，但对于函数有特殊的行为。在初始渲染后，此参数将被忽略
+  - 如果传递函数作为`initialState`，则它被视为**初始化函数**。它应该是纯函数，不应该接受任何参数，并且应该返回一个任何类型的值。当初始化组件时，React 将调用你的初始化函数，并将其返回值存储为初始状态。
+
+### 返回
+
+`useState`返回一个由两个值组成的数组：
+
+1. 当前的`state`。在首次渲染时，它将与你传递的`initialState`相匹配
+2. `set`函数，它可以让你将`state`更新为不同的值并且触发重新渲染
+
+### set函数
+
+`useState` 返回的 `set` 函数允许你将 state 更新为不同的值并触发重新渲染。你可以直接传递新状态，也可以传递一个根据先前状态来计算新状态的函数：
+
+```tsx
+const [name, setName] = useState('Edward');
+
+function handleClick() {
+  setName('Taylor');
+  setAge(a => a + 1);
+  // ...
+```
+
+## 注意事项
+
+- 严格模式下，React将**两次调用初始化函数**，以帮你找到意外的不纯性。这只是开发时的行为，不影响生产。
 
 ```js
 import React, { useState } from 'react';

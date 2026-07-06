@@ -29,10 +29,7 @@ export default defineConfig({
   },
   title: 'front-end',
   description: 'A VitePress Site',
-  head: [
-    // 使用你指定的图标（把 vitepress.ico 放到 docs/public/vitepress.ico）
-    ['link', { rel: 'icon', href: '/vitepress.ico', sizes: 'any' }]
-  ],
+  head: [['link', { rel: 'icon', href: '/nodejs-icon.svg', sizes: 'any' }]],
 
   // 多语言配置
   locales: {
@@ -635,7 +632,14 @@ export default defineConfig({
               items: [{ text: 'index', link: '/react/index' }]
             },
             {
-              text: 'Hooks',
+              text: 'CSS',
+              items: [
+                { text: 'CSS Module', link: '/react/css/cssModule' },
+                { text: 'Atomic CSS', link: '/react/css/atomic' }
+              ]
+            },
+            {
+              text: 'Hook',
               items: [
                 { text: 'index', link: '/react/hooks/index' },
                 { text: 'useState', link: '/react/hooks/useState' },
@@ -670,7 +674,44 @@ export default defineConfig({
                 {
                   text: 'useContext',
                   link: '/react/hooks/useContext'
+                },
+                {
+                  text: 'useMemo',
+                  link: '/react/hooks/useMemo'
+                },
+                {
+                  text: 'useCallback',
+                  link: '/react/hooks/useCallback'
+                },
+                {
+                  text: 'useId',
+                  link: '/react/hooks/useId'
                 }
+              ]
+            },
+            {
+              text: 'API',
+              items: [
+                { text: 'memo', link: '/react/apis/memo' },
+                { text: 'use', link: '/react/apis/use' },
+                { text: 'createPortal', link: '/react/apis/createPortal' }
+              ]
+            },
+            {
+              text: 'Component',
+              items: [
+                { text: 'index', link: '/react/component/index' },
+                { text: 'connect', link: '/react/component/connect' },
+                { text: 'controlled', link: '/react/component/controlled' },
+                { text: '&lt;Suspense&gt;', link: '/react/component/suspense' }
+              ]
+            },
+            {
+              text: 'Router',
+              items: [
+                { text: 'index', link: '/react/router/index' },
+                { text: 'Installation', link: '/react/router/installation' },
+                { text: 'Mode', link: '/react/router/mode' }
               ]
             }
           ]
