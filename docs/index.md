@@ -2,8 +2,8 @@
 layout: home
 
 hero:
-  name: 'Front-End Notes'
-  text: 'Esther'
+  name: 'Esther'
+  text: 'font-end'
   tagline: 'Vue、React、JS、Node.js'
   image:
     src: /nodejs-icon.svg

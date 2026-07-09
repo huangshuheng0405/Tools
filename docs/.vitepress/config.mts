@@ -536,7 +536,7 @@ export default defineConfig({
                 },
                 {
                   text: 'Array',
-                  link: '/JavaScript/Array'
+                  items: [{ text: 'Array', link: '/JavaScript/Array' }]
                 },
                 {
                   text: 'MapAndSet',
@@ -573,6 +573,10 @@ export default defineConfig({
                 {
                   text: 'Closure',
                   link: '/JavaScript/Closure'
+                },
+                {
+                  text: 'FormData',
+                  link: '/JavaScript/formData'
                 }
               ]
             }
@@ -711,7 +715,42 @@ export default defineConfig({
               items: [
                 { text: 'index', link: '/react/router/index' },
                 { text: 'Installation', link: '/react/router/installation' },
-                { text: 'Mode', link: '/react/router/mode' }
+                { text: 'Mode', link: '/react/router/mode' },
+                { text: 'Router', link: '/react/router/router' },
+                { text: 'Transfer', link: '/react/router/transfer' },
+                { text: 'Lazy', link: '/react/router/lazy' },
+                { text: 'Operation', link: '/react/router/operation' }
+              ]
+            },
+            {
+              text: 'Zustand',
+              items: [
+                { text: 'Installation', link: '/react/zustand/installation' },
+                { text: 'handleState', link: '/react/zustand/handleState' },
+                { text: 'overRendering', link: '/react/zustand/overRendering' },
+                {
+                  text: 'Middlewares',
+                  items: [
+                    {
+                      text: 'persist',
+                      link: '/react/zustand/middlewares/persist'
+                    },
+                    {
+                      text: 'devtools',
+                      link: '/react/zustand/middlewares/devtools'
+                    },
+                    {
+                      text: 'subscribeWithSelector',
+                      link: '/react/zustand/middlewares/subscribeWithSelector'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              text: 'Immer',
+              items: [
+                { text: 'Installation', link: '/react/immer/installation' }
               ]
             }
           ]
@@ -729,338 +768,6 @@ export default defineConfig({
         darkModeSwitchLabel: '主题',
         lightModeSwitchTitle: '切换到浅色模式',
         darkModeSwitchTitle: '切换到深色模式'
-      }
-    },
-    en: {
-      label: 'English',
-      lang: 'en-US',
-      link: '/en/',
-      themeConfig: {
-        outline: {
-          level: [2, 6],
-          label: 'On this page'
-        },
-        nav: [
-          { text: 'Home', link: '/en/' },
-          { text: 'JavaScript', link: '/en/JavaScript/' },
-          {
-            text: 'Vue',
-            items: [
-              { text: 'Vue', link: '/en/vue/lifecycle' },
-              { text: 'Nuxt', link: '/en/vue/nuxt/Structure/app/nuxt' }
-            ]
-          },
-          { text: 'Engineering', link: '/en/Engineering/' },
-          { text: 'Tips', link: '/en/Tips/' },
-          { text: 'Git', link: '/en/Git/reset_revert' }
-        ],
-        sidebar: {
-          '/en/Git/': [
-            {
-              text: 'Git',
-              items: [
-                { text: 'Reset vs Revert', link: '/en/Git/reset_revert' },
-                { text: 'Merge vs Rebase', link: '/en/Git/rebase-merge' }
-              ]
-            }
-          ],
-          '/en/Engineering/': [
-            {
-              text: 'Engineering',
-              items: [
-                { text: 'Overview', link: '/en/Engineering/' },
-                { text: 'git-cz', link: '/en/Engineering/git-cz' },
-                { text: 'Husky', link: '/en/Engineering/Husky' },
-                {
-                  text: 'Webpack',
-                  collapsed: true,
-                  items: [
-                    { text: 'index', link: '/en/Engineering/Webpack/index' },
-                    { text: 'notes', link: '/en/Engineering/Webpack/notes' },
-                    { text: 'loader', link: '/en/Engineering/Webpack/loader' },
-                    { text: 'plugin', link: '/en/Engineering/Webpack/plugin' }
-                  ]
-                },
-                {
-                  text: 'Vite',
-                  collapsed: true,
-                  items: [
-                    { text: 'index', link: '/en/Engineering/Vite/index' },
-                    { text: 'notes', link: '/en/Engineering/Vite/notes' }
-                  ]
-                },
-                { text: 'CLI', link: '/en/Engineering/scaffold' },
-                { text: 'CSpell', link: '/en/Engineering/cspell' },
-                { text: 'tsup', link: '/en/Engineering/tsup' },
-                { text: 'ESlint', link: '/en/Engineering/ESlint' },
-                { text: 'Commander', link: '/en/Engineering/Commander' },
-                { text: 'consola', link: '/en/Engineering/consola' },
-                { text: 'prompts', link: '/en/Engineering/prompts' },
-                { text: 'Prettier', link: '/en/Engineering/Prettier' }
-              ]
-            }
-          ],
-          '/en/Tips/': [
-            {
-              text: 'Tips',
-              items: [
-                {
-                  text: 'Default vs Named Export',
-                  link: '/en/Tips/default-vs-named-export'
-                },
-                {
-                  text: 'Axios Cancel & Retry',
-                  link: '/en/Tips/axios-cancel-retry'
-                },
-                { text: 'Virtual List', link: '/en/Tips/virtual-list' },
-                { text: 'Event Delegation', link: '/en/Tips/event-delegation' },
-                { text: 'VSCode Plugin', link: '/en/Tips/vscodePlugin' },
-                { text: 'CommonJS vs ESM', link: '/en/Tips/CommonJS_ESMA' },
-                {
-                  text: 'dependencies vs devDependencies',
-                  link: '/en/Tips/dependencies_devDependencies'
-                },
-                {
-                  text: 'Performance Optimization',
-                  link: '/en/Tips/performanceOptimization'
-                }
-              ]
-            }
-          ],
-          '/en/vue/nuxt/': [
-            {
-              text: 'Nuxt',
-              items: [
-                {
-                  text: 'Quick Start',
-                  link: '/en/vue/nuxt/Structure/app/nuxt-start'
-                },
-                { text: 'Routing', link: '/en/vue/nuxt/Routing' },
-                {
-                  text: 'Structure',
-                  collapsed: false,
-                  items: [
-                    {
-                      text: 'app',
-                      collapsed: false,
-                      items: [
-                        {
-                          text: 'pages',
-                          link: '/en/vue/nuxt/Structure/app/pages'
-                        },
-                        {
-                          text: 'layouts',
-                          link: '/en/vue/nuxt/Structure/app/layout'
-                        },
-                        {
-                          text: 'components',
-                          link: '/en/vue/nuxt/Structure/app/components'
-                        },
-                        {
-                          text: 'composables',
-                          link: '/en/vue/nuxt/Structure/app/composables'
-                        },
-                        {
-                          text: 'middleware',
-                          link: '/en/vue/nuxt/Structure/app/middleware'
-                        },
-                        {
-                          text: 'plugins',
-                          link: '/en/vue/nuxt/Structure/app/plugins'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          '/en/vue/': [
-            {
-              text: 'Vue',
-              items: [
-                { text: 'Lifecycle', link: '/en/vue/lifecycle' },
-                { text: 'Props', link: '/en/vue/Props' },
-                {
-                  text: 'Components Connect',
-                  link: '/en/vue/Components-connect'
-                },
-                { text: 'Role of Key', link: '/en/vue/Key' },
-                { text: 'Reflect & Reactivity', link: '/en/vue/Reflect' },
-                { text: 'Query vs Params', link: '/en/vue/query_params' },
-                {
-                  text: 'Dynamic Components',
-                  link: '/en/vue/dynamic-components'
-                },
-                {
-                  text: 'Handwritten Vue',
-                  collapsed: true,
-                  items: [
-                    {
-                      text: 'Vue2-jindu',
-                      link: '/en/vue/handwriting/vue2-jindu'
-                    },
-                    {
-                      text: 'Vue3-jindu',
-                      link: '/en/vue/handwriting/vue3-jindu'
-                    },
-                    {
-                      text: 'Vue-Router',
-                      link: '/en/vue/handwriting/vue-router'
-                    },
-                    { text: 'Promise', link: '/en/vue/handwriting/Promise' }
-                  ]
-                },
-                {
-                  text: 'Vue2 Array Index Reactivity',
-                  link: '/en/vue/vue2_ArrayIndex'
-                },
-                { text: 'Modifiers', link: '/en/vue/modifier' },
-                { text: 'created vs mounted', link: '/en/vue/created_mounted' },
-                {
-                  text: 'vue-router',
-                  collapsed: true,
-                  items: [
-                    { text: 'Modes', link: '/en/vue/vue-router/mode' },
-                    {
-                      text: 'RouterLink',
-                      link: '/en/vue/vue-router/routerLink'
-                    }
-                  ]
-                },
-                { text: 'SSR', link: '/en/vue/SSR' }
-              ]
-            }
-          ],
-          '/en/JavaScript/': [
-            {
-              text: 'JavaScript',
-              items: [
-                { text: 'Hidden Classes', link: '/en/JavaScript/' },
-                {
-                  text: 'Array Fast/Dict Mode',
-                  link: '/en/JavaScript/array-fast-dict-mode'
-                },
-                {
-                  text: 'Check Empty Object',
-                  link: '/en/JavaScript/judge-object'
-                },
-                {
-                  text: 'Type Conversion',
-                  link: '/en/JavaScript/TypeConversion'
-                },
-                { text: '== vs ===', link: '/en/JavaScript/==&===' },
-                { text: 'Data Types', link: '/en/JavaScript/DataTypes' },
-                { text: 'Stack & Heap', link: '/en/JavaScript/stack-heap' },
-                {
-                  text: 'Determine Data Types',
-                  link: '/en/JavaScript/JudgeType'
-                },
-                {
-                  text: 'ES Versions (ES6+)',
-                  link: '/en/JavaScript/ESVersion'
-                },
-                {
-                  text: 'let, var, const',
-                  link: '/en/JavaScript/let_var_const'
-                },
-                { text: 'Hoisting & TDZ', link: '/en/JavaScript/Hoisting_TDZ' },
-                {
-                  text: 'Object Equality',
-                  link: '/en/JavaScript/JudgeObjectEqual'
-                },
-                {
-                  text: 'null vs undefined',
-                  link: '/en/JavaScript/nullUndefined'
-                },
-                {
-                  text: 'Repaint & Reflow',
-                  link: '/en/JavaScript/Repaint_Reflow'
-                },
-                {
-                  text: 'Module System',
-                  link: '/en/JavaScript/module_commonJS'
-                },
-                { text: 'Event Loop', link: '/en/JavaScript/EventLoop' },
-                {
-                  text: 'Bubbling & Capturing',
-                  link: '/en/JavaScript/Bubbling_Capturing'
-                },
-                {
-                  text: 'Event Delegation',
-                  link: '/en/JavaScript/EventDelegation'
-                },
-                {
-                  text: 'ES6 Class Inheritance',
-                  link: '/en/JavaScript/ES6Inherit'
-                },
-                {
-                  text: 'Iterable Objects',
-                  link: '/en/JavaScript/IterableObject'
-                },
-                { text: 'Promise', link: '/en/JavaScript/Promise' },
-                { text: 'Chained Call', link: '/en/JavaScript/ChainedCall' },
-                { text: 'new Operator', link: '/en/JavaScript/New' },
-                {
-                  text: 'bind, apply, call',
-                  link: '/en/JavaScript/bind_apply_call'
-                },
-                {
-                  text: 'Object Property Monitoring',
-                  link: '/en/JavaScript/defineProperty_Proxy'
-                },
-                {
-                  text: 'prototype & __proto__',
-                  link: '/en/JavaScript/prototype___proto__'
-                },
-                {
-                  text: 'Prototype Chain',
-                  link: '/en/JavaScript/prototypeChain'
-                },
-                { text: 'this Context', link: '/en/JavaScript/this' },
-                {
-                  text: 'Function',
-                  collapsed: true,
-                  items: [
-                    { text: 'trim()', link: '/en/JavaScript/trim' },
-                    { text: 'parseInt()', link: '/en/JavaScript/parseInt' }
-                  ]
-                },
-                { text: 'Symbol', link: '/en/JavaScript/Stmbol' },
-                {
-                  text: 'startsWith vs indexOf',
-                  link: '/en/JavaScript/startwith_indexof'
-                },
-                { text: 'Boxing Mechanism', link: '/en/JavaScript/boxing' },
-                { text: 'Falsy & Truthy', link: '/en/JavaScript/falsy_truthy' },
-                {
-                  text: 'Naming Convention',
-                  link: '/en/JavaScript/NameConvention'
-                },
-                {
-                  text: 'Garbage Collection',
-                  link: '/en/JavaScript/Garbage_Collection'
-                }
-              ]
-            }
-          ],
-          '/en/': [
-            {
-              text: 'Examples',
-              items: [
-                { text: 'Markdown Examples', link: '/en/markdown-examples' },
-                { text: 'API Examples', link: '/en/api-examples' }
-              ]
-            },
-            {
-              text: 'Front-end',
-              items: [{ text: 'Tools', link: '/en/tool' }]
-            }
-          ]
-        },
-        socialLinks: [
-          { icon: 'github', link: 'https://github.com/huangshuheng0405/Tools' }
-        ]
       }
     }
   }

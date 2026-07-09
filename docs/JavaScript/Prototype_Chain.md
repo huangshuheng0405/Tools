@@ -51,7 +51,7 @@ console.log(obj3.say === obj4.say) // true
 console.log(obj3.__proto__ === Test.prototype) // true
 ```
 
-每个js对象的`__proto__`，它指向创建**它的构造函数的原型对象**
+每个js对象的`__proto__`，它指向创建**该对象的构造函数的原型对象**
 
 `__proto__`的意义在于为原型链查找提供方向，原型链查找靠的是`__proto__`，而不是`prototype`
 

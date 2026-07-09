@@ -18,7 +18,7 @@
 
 /* Hero name gradient text */
 .VPHomeHero .name {
-  background: linear-gradient(135deg, #42b883 0%, #3c8772 30%, #61dafb 70%, #3178c6 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #e84393 30%, #f8a5c2 70%, #fd79a8 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;

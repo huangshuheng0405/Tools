@@ -14,20 +14,25 @@
 
 ```javascript [Singleton.js]
 const Singleton = (function () {
-  let instance
+  let instance = null // 私有变量，存储唯一实例
 
-  return function (name) {
-    if (instance) return instance
-    this.name = name
-    return (instance = this)
+  function createInstance() {
+    return { name: 'StorageInstance', data: [] }
+  }
+
+  return {
+    getInstance: function () {
+      if (!instance) {
+        instance = createInstance()
+      }
+      return instance
+    }
   }
 })()
 
-const a = new Singleton('First')
-const b = new Singleton('Second')
-console.log(a.name) // First
-console.log(a === b) // true
-console.log(b.name) // First
+const instance1 = Singleton.getInstance()
+const instance2 = Singleton.getInstance()
+console.log(instance1 === instance2) // true
 ```
 
 ## Conclusion

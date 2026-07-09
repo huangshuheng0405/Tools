@@ -69,6 +69,8 @@
 
 下载地址：[Nginx](https://nginx.org/en/download.html)
 
+通过`npm run build`把`dist`目录下的文件加入到安装`nginx`安装目录下的`html`目录，接着在`nginx`安装目录下打开`cmd`，输入`nginx`启动即可
+
 ```conf [conf/nginx.conf]
 location / {
   try_files $uri $uri/ /index.html;

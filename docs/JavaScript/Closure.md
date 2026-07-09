@@ -1,8 +1,8 @@
 # 闭包
 
-## 闭包是什么
+## 定义
 
-闭包是指有权访问另一个函数作用域中变量的函数
+**闭包是指一个函数有权访问另一个函数作用域中的变量。** 在 JavaScript 中，每当创建一个函数，闭包就会在函数创建的同时被创建出来。通俗来说：**闭包 = 函数 + 该函数能够访问的外部自由变量**。
 
 ## 形成闭包的原因
 
@@ -22,8 +22,7 @@ foo()
 
 ## 闭包的作用
 
-- 保护函数的私有变量不受外部的干扰。形成不销毁的栈内存
-- 保存，把一些函数内的值保存下来。闭包可以实现方法和属性的私有化
+闭包在 JavaScript 进阶开发中几乎无处不在，主要用于**封装私有变量**和**保持状态**。
 
 ## 闭包经典使用场景
 
@@ -71,9 +70,9 @@ f(foo()) // foo
 - `IIFE`（自执行函数）
 
 ```js
-var n = '林一一';
-(function p(){
-    console.log(n)
+var n = '林一一'
+;(function p() {
+  console.log(n)
 })()
 // 林一一
 ```
@@ -106,34 +105,60 @@ setTimeout(function timeHandler() {
 
 在浏览器下运行
 
-- 节流防抖
+- 防抖（Debounce）
+
+在事件被触发 n 秒后再执行回调，如果这 n 秒内又被触发，则重新计时。（常用于搜索框输入打字停止后发送请求）
 
 ```js
-// 节流
-function throttle(fn, timeout) {
-    let timer = null
-    return function (...arg) {
-        if(timer) return
+function debounce(fn, delay) {
+    let timer = null; // 闭包变量，记录定时器
+    return function(...args) {
+        if (timer) clearTimeout(timer); // 重新触发时，清除上一次的定时器
         timer = setTimeout(() => {
-            fn.apply(this, arg)
-            timer = null
-        }, timeout)
-    }
+            fn.apply(this, args);
+        }, delay);
+    };
 }
+```
 
-// 防抖
-function debounce(fn, timeout){
-    let timer = null
-    return function(...arg){
-        clearTimeout(timer)
-        timer = setTimeout(() => {
-            fn.apply(this, arg)
-        }, timeout)
-    }
+- 节流（Throttle）
+
+规定在一个单位时间内，只能触发一次函数。如果这个单位时间内触发了多次函数，只有一次生效。（常用于滚动加载、抢购按钮点击）
+
+```js
+function throttle(fn, delay) {
+    let lastTime = 0; // 闭包变量，记录上一次执行的时间戳
+    return function(...args) {
+        let now = Date.now();
+        if (now - lastTime >= delay) {
+            fn.apply(this, args);
+            lastTime = now; // 更新执行时间
+        }
+    };
 }
 ```
 
 - 柯里化实现
+
+柯里化是一种将接收多个参数的函数转化为接收一个单一参数（最初函数的第一个参数）并返回一个新函数的技术。新函数接收余下的参数。
+
+```js [Curry.js]
+// 普通函数
+function add(x, y) {
+  return x + y
+}
+
+// 柯里化函数
+function curryAdd(x) {
+  return function (y) {
+    return x + y // 闭包记住了 x
+  }
+}
+
+const addTen = curryAdd(10)
+console.log(addTen(5)) // 15
+console.log(addTen(20)) // 30
+```
 
 ## 经典面试题
 
@@ -205,3 +230,35 @@ console.log(obj.getName()()) // my obj
 - 虽然这个匿名函数在全局环境下独立调用的，但因为它是一个**闭包**，但依然记得自己出生时那个环境的变量`that`
 
 - 此时`that`依然执行`obj`，所以`that.name`就是`my obj`
+
+## 内存泄漏
+
+闭包会使得函数中的变量都被保存在内存中，内存消耗很大。如果闭包长期存活，且引用的外部变量占用了大量内存，而你**不再需要**这些变量时，就会造成**内存泄漏**（即该释放的内存没有被释放）。
+
+### 示例
+
+```js
+function outer() {
+    let hugeArray = new Array(1000000).fill("data"); // 大对象
+
+    return function inner() {
+        console.log("I am functional");
+        // 注意：inner 虽然没有显式写 hugeArray，
+        // 但由于 JS 引擎的闭包优化策略，同一父作用域下的闭包共享同一个闭包对象。
+        // 如果 inner 被挂载到全局，hugeArray 将无法被回收。
+    };
+}
+
+window.leak = outer(); // window.leak 持有了 inner 的引用，导致 hugeArray 永远驻留内存
+```
+
+### 解决
+
+- **手动解除引用**：当闭包不再使用时，将其赋值为 `null`，以便垃圾回收器回收。
+
+```js
+window.leak = null; // 切断引用，hugeArray 将被 GC 回收
+```
+
+- **避免滥用全局变量**：尽量少将闭包挂载到全局对象（如 `window`）上。
+- **及时销毁**：在框架（如 Vue、React）中，如果在组件挂载时使用了闭包（如定时器、事件监听），在组件销毁（`unmounted` / `useEffect return`）时务必清除定时器、解绑事件。
