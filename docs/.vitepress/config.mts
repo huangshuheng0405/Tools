@@ -195,7 +195,7 @@ export default defineConfig({
                   link: '/Misc/virtual-list'
                 },
                 {
-                  text: '事件委托 (Event Delegation)',
+                  text: 'Event Delegation',
                   link: '/Misc/event-delegation'
                 },
                 {
@@ -303,8 +303,8 @@ export default defineConfig({
               text: 'Vue',
               items: [
                 { text: '生命周期', link: '/vue/lifecycle' },
-                { text: 'Props (属性)', link: '/vue/Props' },
-                { text: '组件通信方式', link: '/vue/Components-connect' },
+                { text: 'Props', link: '/vue/Props' },
+                { text: 'connect', link: '/vue/Components-connect' },
                 { text: 'Key 的作用', link: '/vue/Key' },
                 { text: 'Reflect 与响应式', link: '/vue/Reflect' },
                 { text: 'Query 与 Params', link: '/vue/query_params' },
@@ -376,7 +376,18 @@ export default defineConfig({
                 {
                   text: 'h',
                   link: '/vue/h'
+                },
+                {
+                  text: 'Attribute',
+                  link: '/vue/attribute'
                 }
+              ]
+            },
+            {
+              text: 'Pinia',
+              items: [
+                { text: 'Installation', link: '/vue/pinia/installation' },
+                { text: 'Store', link: '/vue/pinia/store' }
               ]
             }
           ],
@@ -392,6 +403,10 @@ export default defineConfig({
                 {
                   text: '如何判断object为空',
                   link: '/JavaScript/judge-object'
+                },
+                {
+                  text: 'JSON.stringify',
+                  link: '/JavaScript/JSON.stringify'
                 },
                 {
                   text: 'TypeConversion',
@@ -442,7 +457,7 @@ export default defineConfig({
                   link: '/JavaScript/Bubbling_Capturing'
                 },
                 {
-                  text: '事件委托',
+                  text: 'Event Delegation',
                   link: '/JavaScript/EventDelegation'
                 },
                 {
@@ -577,6 +592,10 @@ export default defineConfig({
                 {
                   text: 'FormData',
                   link: '/JavaScript/formData'
+                },
+                {
+                  text: 'JSON.stringify',
+                  link: '/JavaScript/JSON.stringify'
                 }
               ]
             }
@@ -628,6 +647,12 @@ export default defineConfig({
             {
               text: '计算机网络',
               items: [{ text: 'SSE', link: '/network/SSE' }]
+            }
+          ],
+          '/Security/': [
+            {
+              text: 'Web 安全',
+              items: [{ text: 'XSS 跨站脚本攻击', link: '/Security/xss' }]
             }
           ],
           '/react/': [

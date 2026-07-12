@@ -45,6 +45,11 @@ features:
     details: Webpack、Vite、Rollup、esbuild 构建工具链，ESLint、Prettier、Husky 代码规范与工作流
     link: /Engineering/
     linkText: 开始学习
+  - icon: 🛡️
+    title: Web 安全
+    details: XSS 跨站脚本攻击、CSRF、CSP 内容安全策略等 Web 安全基础知识
+    link: /Security/xss
+    linkText: 开始学习
   - icon: 🗄️
     title: 后端技术
     details: Node.js 基础模块、Express / Koa 框架、MongoDB / Mongoose / Sequelize 数据库操作

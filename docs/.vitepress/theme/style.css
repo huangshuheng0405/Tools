@@ -8,9 +8,9 @@
 :root {
   --vp-home-hero-image-background-image: radial-gradient(
     circle at center,
-    rgba(64, 128, 255, 0.45) 0%,
-    rgba(100, 149, 237, 0.28) 30%,
-    rgba(120, 80, 200, 0.15) 55%,
+    rgba(140, 200, 75, 0.45) 0%,
+    rgba(160, 215, 100, 0.28) 30%,
+    rgba(100, 180, 60, 0.15) 55%,
     transparent 72%
   );
   --vp-home-hero-image-filter: blur(64px);
