@@ -61,14 +61,20 @@ export default defineConfig({
           { text: 'Engineering', link: '/Engineering/' },
           { text: 'Misc', link: '/Misc/' },
           { text: 'Git', link: '/Git/reset_revert' },
-          { text: 'Backend', link: '/backend' }
+          {
+            text: 'Backend',
+            items: [
+              { text: 'Java', link: '/backend/java/' },
+              { text: 'Node.js', link: '/backend/nodejs/index.md' }
+            ]
+          }
         ],
         sidebar: {
-          '/backend/': [
+          '/backend/nodejs/': [
             {
               text: 'Backend',
               items: [
-                { text: 'Overview', link: '/backend/' },
+                { text: 'Overview', link: '/backend/index.md' },
                 { text: 'Koa', link: '/backend/koa' },
                 {
                   text: 'Node.js',
@@ -84,6 +90,12 @@ export default defineConfig({
                 { text: 'MongoDB', link: '/backend/MongoDB' },
                 { text: 'Mongoose', link: '/backend/mongoose' }
               ]
+            }
+          ],
+          '/backend/java/': [
+            {
+              text: 'Java',
+              items: [{ text: 'index', link: '/backend/java/index.md' }]
             }
           ],
           '/Git/': [
