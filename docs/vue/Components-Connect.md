@@ -178,7 +178,6 @@ const openChild = () => {
 </template>
 
 <style scoped></style>
-
 ```
 
 ```vue [Child.vue]
@@ -215,7 +214,6 @@ defineExpose({
   border: 1px solid red;
 }
 </style>
-
 ```
 
 :::
@@ -228,7 +226,7 @@ defineExpose({
 
 ## 6. 全局状态管理 (Pinia)
 
-详情见 [pinia](/vue/pinia.md)
+详情见 [pinia](/vue/pinia/installation)
 
 ## 7. Mitt (事件总线 EventBus)
 
