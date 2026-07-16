@@ -1,5 +1,66 @@
 # 文件上传
 
+## 多文件上传
+
+```html
+<input type="file" multiple />
+```
+
+## 拖拽上传
+
+```html
+<div id="drop">拖到这里上传</div>
+```
+
+```js
+const drop = document.getElementById('drop')
+
+drop.addEventListener('dragover', (e) => {
+  e.preventDefault()
+})
+
+drop.addEventListener('drop', (e) => {
+  e.preventDefault()
+
+  const files = e.dataTransfer.files
+
+  console.log(files)
+})
+```
+
+## 图片预览
+
+上传前通常需要预览
+
+```js
+const img = document.querySelector('img')
+
+input.onchange = () => {
+  const file = input.files[0]
+
+  img.src = URL.createObjectURL(file)
+}
+```
+
+使用结束后建议释放
+
+```js
+const url = URL.createObjectURL(file)
+
+img.src = url
+
+img.onload = () => {
+  URL.revokeObjectURL(url)
+}
+```
+
+## 限制上传类型
+
+```html
+<input type="file" accept="image/*" />
+<!-- accept=".png,.jpg,.jpeg" -->
+```
+
 ## 前端
 
 ::: code-group
@@ -930,3 +991,126 @@ app.listen(3000, () => {
 ```
 
 `fs/promises`模块较`fs`：传统`fs`模块方法都是基于回调的，写起来很繁琐，而`fs/promises`直接`await`，代码写起来像同步一样
+
+## File
+
+最基本的方式就是`<input type="file">`
+
+```js
+<input type="file" id="file">
+```
+
+获取`File`对象
+
+```js
+const input = document.querySelector('input')
+input.addEventListener('change', (e) => {
+  console.log(e.target.files[0])
+})
+```
+
+一个`file`就是一个`File`对象
+
+```js
+File {
+    name: "cat.png",
+    size: 102400,
+    type: "image/png",
+    lastModified: 17123456789
+}
+```
+
+## FormData
+
+上传文件最重要的对象
+
+```js
+const formData = new FormData()
+
+formData.append('file', e.target.files[0])
+```
+
+通过`fetch`上传文件
+
+现代浏览器推荐
+
+```js
+const formData = new FormData()
+
+formData.append('file', file)
+
+fetch('/upload', {
+  method: 'POST',
+  body: formData
+})
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data)
+  })
+```
+
+### 注意
+
+不要自己设置`Content-Type`
+
+```js
+headers: {
+    "Content-Type": "multipart/form-data"
+}
+```
+
+浏览器会自动生成:
+
+```
+multipart/form-data;
+boundary=----WebKitFormBoundaryxxxx
+```
+
+如果自己写,会导致`boundary`丢失,导致上传失败
+
+## base64
+
+常用在**图片预览**
+
+每3个字节编码成4个字节，体积会增大,所以不适合传输特别大的文件
+
+```html
+<img src="cat.png" />
+```
+
+也可以写成
+
+```html
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..." />
+```
+
+结构
+
+```
+data:
+image/png;
+base64,
+真正的数据
+```
+
+浏览器会自动解析
+
+```
+Base64 -> 二进制 -> 图片
+```
+
+### FileReader 与 base64
+
+```js
+const reader = new FileReader()
+
+reader.onload = () => {
+  console.log(reader.result)
+}
+
+reader.readAsDataURL(file)
+```
+
+得到的`reader.result`就是base64编码后的字符串
+
+然后`img.src = reader.result` 就可以显示图片了
