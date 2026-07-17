@@ -4,7 +4,25 @@ list是一个有序、可重复、有索引的容器
 
 因为`List`本身就是一个**接口（Interface）**，所以你不能直接`new List()`。你必须使用它的具体实现类。最常用的实现类`ArrayList`和`LinkedList`
 
+对于`List<E>`接口，可以看到几个主要的方法：
+
+- 末尾添加一个元素：`boolean add(E e)`
+- 在指定索引添加一个元素：`E add(int index, E e)`
+- 删除指定索引的元素：`E remove(int index)`
+- 删除某个元素：`E remove(Object o)`
+- 获取指定索引的元素：`E get(int index)`
+- 获取链表大小（包含元素的个数）：`int size()`
+- 修改指定索引的元素：`E set(int index, E e)`
+
+## 创建List
+
 ## ArrayList
+
+我们还可以通过List接口提供的of()方法，根据给定元素快速创建List：
+
+```java
+List<Integer> list = List.of(1, 2, 5);
+```
 
 ### 用法
 
