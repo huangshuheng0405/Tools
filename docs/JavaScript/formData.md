@@ -125,15 +125,109 @@ xhr.send(formData) // 同样不需要手动设置 Content-Type
 
 ## 文件上传
 
+### 直接上传到服务器
+
 FormData 原生支持 Blob 和 File 对象：
 
-```js
-const formData = new FormData()
-// 从 input[type=file] 获取文件
-formData.append('file', fileInput.files[0])
-// 第三个参数可以指定文件名
-formData.append('file', blobData, 'custom-filename.png')
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="file" />
+    <script>
+      const input = document.querySelector('input')
+      input.addEventListener('change', function (e) {
+        console.log(e.target.result)
+        const file = e.target.files[0]
+
+        const formData = new FormData()
+
+        formData.append('avatar', file)
+
+        fetch('http://localhost:8080/api/upload', {
+          method: 'POST',
+          body: formData
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data)
+          })
+      })
+    </script>
+  </body>
+</html>
+
 ```
+
+后端（`SpringBoot`）
+
+::: code-group
+
+```java [controller/UploadController.java]
+package com.example.demo.controller;
+
+import com.example.demo.service.UploadService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+@RestController
+public class UploadController {
+
+    private final UploadService uploadService;
+
+    public UploadController(UploadService uploadService) {
+        this.uploadService = uploadService;
+    }
+
+    @PostMapping("/api/upload")
+    public String upload(@RequestParam("avatar") MultipartFile file) {
+        return uploadService.upload(file);
+    }
+}
+
+```
+
+```java [service/UploadService.java]
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+
+@Service
+public class UploadService {
+
+    private static final String UPLOAD_DIR = "D:/uploads/";
+
+    public String upload(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("文件不能为空");
+        }
+
+        String filename = file.getOriginalFilename();
+        File dest = new File(UPLOAD_DIR + filename);
+
+        try {
+            file.transferTo(dest);
+            return "上传成功";
+        } catch (IOException e) {
+            throw new RuntimeException("文件保存失败: " + e.getMessage(), e);
+        }
+    }
+}
+
+```
+
+:::
 
 ## 格式转换
 

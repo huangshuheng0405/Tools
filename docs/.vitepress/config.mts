@@ -96,6 +96,59 @@ export default defineConfig({
             {
               text: 'Java',
               items: [{ text: 'index', link: '/backend/java/index.md' }]
+            },
+            {
+              text: 'Java 基础',
+              items: [
+                { text: 'index', link: '/backend/java/base/index.md' },
+                {
+                  text: 'inheritance',
+                  link: '/backend/java/base/inheritance.md'
+                },
+                {
+                  text: 'Ploymorphism',
+                  link: '/backend/java/base/Ploymorphism.md'
+                },
+                {
+                  text: 'interface',
+                  link: '/backend/java/base/interface.md'
+                },
+                {
+                  text: 'abstractClass',
+                  link: '/backend/java/base/abstractClass.md'
+                },
+                {
+                  text: 'list',
+                  link: '/backend/java/base/list.md'
+                },
+                {
+                  text: 'set',
+                  link: '/backend/java/base/set.md'
+                }
+              ]
+            },
+            {
+              text: 'Maven',
+              items: [
+                { text: 'index', link: '/backend/java/maven/index.md' },
+                { text: 'lifeCycle', link: '/backend/java/maven/lifeCycle.md' }
+              ]
+            },
+            {
+              text: 'Unit Test',
+              items: [
+                { text: 'index', link: '/backend/java/unitTest/index.md' },
+                { text: 'Junit', link: '/backend/java/unitTest/junit.md' }
+              ]
+            },
+            {
+              text: 'Spring',
+              items: [
+                {
+                  text: 'three tier',
+                  link: '/backend/java/spring/threeTier.md'
+                }
+              ]
             }
           ],
           '/Git/': [
