@@ -65,7 +65,8 @@ export default defineConfig({
             text: 'Backend',
             items: [
               { text: 'Java', link: '/backend/java/' },
-              { text: 'Node.js', link: '/backend/nodejs/index.md' }
+              { text: 'NodeJS', link: '/backend/nodejs/index.md' },
+              { text: 'DataBase', link: '/backend/database/index.md' }
             ]
           }
         ],
@@ -147,7 +148,21 @@ export default defineConfig({
                 {
                   text: 'three tier',
                   link: '/backend/java/spring/threeTier.md'
+                },
+                {
+                  text: 'IoC DI',
+                  link: '/backend/java/spring/IoC_DI.md'
                 }
+              ]
+            }
+          ],
+          '/backend/database/': [
+            {
+              text: 'Database',
+              items: [
+                { text: 'index', link: '/backend/database/index.md' },
+                { text: 'DDL', link: '/backend/database/DDL.md' },
+                { text: 'DataType', link: '/backend/database/dataType.md' }
               ]
             }
           ],
