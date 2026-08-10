@@ -149,6 +149,23 @@ export default defineConfig({
                   link: '/backend/java/spring/threeTier.md'
                 }
               ]
+            },
+            {
+              text: 'Spring Boot',
+              items: [
+                {
+                  text: 'Filter',
+                  link: '/backend/java/springBoot/filter.md'
+                },
+                {
+                  text: 'JWT',
+                  link: '/backend/java/springBoot/jwt.md'
+                },
+                {
+                  text: 'Interceptor',
+                  link: '/backend/java/springBoot/interceptor.md'
+                }
+              ]
             }
           ],
           '/Git/': [
