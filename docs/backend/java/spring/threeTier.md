@@ -92,7 +92,7 @@ public class UserController {
 不要干的事：
 
 - 写`if (xxx)`判断业务规则$\rightarrow$这是 Service 的事
-- 拼  SQL/调数据库 $\rightarrow$这是 DOA 的事
+- 拼 SQL/调数据库 $\rightarrow$这是 DOA 的事
 - 做复杂的计算$\rightarrow$这是 Service 的事
 
 ## Service
@@ -193,8 +193,6 @@ public interface UserMapper {
 </mapper>
 ```
 
-
-
 ## 注解分析
 
 ### @RestController
@@ -233,6 +231,13 @@ public interface UserMapper {
 
 这是因为，我们在类上加了`@RestController`注解，而这个注解是两个注解组合起来，分别是：`@Controller`、`@ResponseBody`。那也意味着，所以已经添加了上了，而一旦在类上加了`@ResponseBody`，就相当于该类中的所有方法都已经添加了`@ResponseBody`注解
 
+```java
+@PostMapping("/login")
+public void login(@RequestBody LoginDTO dto) {
+
+}
+```
+
 :::tip
 
 在前后端分离的项目，一般直接在请求处理类上加`@RestController`注解，就无需在方法上加`@ResponseBody`注解了
@@ -241,11 +246,28 @@ public interface UserMapper {
 
 ### @RequestParam
 
-接受URL后拼接参数（如`?name=abc`）或表单数据
+接受URL后拼接参数（如`?name=abc`）
+
+```java
+@GetMapping("/user")
+public UserVO getUser(@RequestParam Long id) {
+
+}
+
+// 也可以
+@RequestParam("id") Long userId
+```
 
 ### @PathVariable
 
 接受URL路径中的动态常量（如`/api/user/{id}`）
+
+```java
+@GetMapping("/user/{id}")
+public UserVO getUser(@PathVariable Long id) {
+
+}
+```
 
 ### @Valid
 
@@ -258,3 +280,19 @@ public interface UserMapper {
 ### @Transactional
 
 **事务控制注解**：写在方法或类上。当该方法内包含多个数据库增删改操作时，如果中间任何一步出错抛出异常，Spring 会自动将之前所有的操作回滚（Rollback），确保数据一致性。
+
+### @Value
+
+例如`application.yml`
+
+```yml
+server:
+  port: 8080
+```
+
+```java
+@Value("${server.port}")
+private Integer port;
+```
+
+这样就能拿到8080了

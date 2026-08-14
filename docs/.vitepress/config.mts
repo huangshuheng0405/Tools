@@ -169,6 +169,10 @@ export default defineConfig({
                 {
                   text: 'Interceptor',
                   link: '/backend/java/springBoot/interceptor.md'
+                },
+                {
+                  text: 'Lombok',
+                  link: '/backend/java/springBoot/lombok.md'
                 }
               ]
             }
