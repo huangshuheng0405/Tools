@@ -169,6 +169,10 @@ export default defineConfig({
                 {
                   text: 'Interceptor',
                   link: '/backend/java/springBoot/interceptor.md'
+                },
+                {
+                  text: 'Mybatis',
+                  link: '/backend/java/springBoot/mybatis.md'
                 }
               ]
             }
