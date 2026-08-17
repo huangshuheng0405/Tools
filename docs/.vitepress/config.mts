@@ -171,8 +171,13 @@ export default defineConfig({
                   link: '/backend/java/springBoot/interceptor.md'
                 },
                 {
+<<<<<<< HEAD
                   text: 'Lombok',
                   link: '/backend/java/springBoot/lombok.md'
+=======
+                  text: 'Mybatis',
+                  link: '/backend/java/springBoot/mybatis.md'
+>>>>>>> 643f2ec9cd393110a42ccb022c8864d563e9ad77
                 }
               ]
             }
