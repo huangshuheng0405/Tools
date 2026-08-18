@@ -206,7 +206,7 @@ mybatis:
     map-underscore-to-camel-case: true
 ```
 
-这样`user_name`$\rightarrow$`userName`，Mybatis就能自动映射
+这样`user_name` &rightarrow; `userName`，Mybatis就能自动映射
 
 如果字段完全不一样，那么就需要手动映射了，假设数据库字段`user_name`，Java字段`name`
 

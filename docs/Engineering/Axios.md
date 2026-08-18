@@ -223,3 +223,64 @@ export default request
 const res = await request<User>('/users/1')
 console.log(res.data, res.message, res.code)
 ```
+
+## 请求重试
+
+网络请求可能因为以下原因失败：
+
+- 网络中断
+- 服务器临时故障（503、504等）
+- 请求超时
+- 连接断开
+
+### 插件
+
+[axios-retry](https://github.com/softonic/axios-retry)
+
+基础使用
+
+```js
+import axios from 'axios'
+import axiosRetry from 'axios-retry'
+
+// 创建 axios 实例
+const apiClient = axios.create({
+  baseURL: 'https://api.example.com',
+  timeout: 10000
+})
+
+// 配置重试
+axiosRetry(apiClient, {
+  retries: 3, // 重试次数
+  retryDelay: axiosRetry.exponentialDelay, // 指数退避延迟
+  retryCondition: (error) => {
+    // 默认只对网络错误和 5xx 状态码重试
+    return axiosRetry.isNetworkOrIdempotentRequestError(error)
+  },
+  shouldResetTimeout: false // 重试时是否重置超时计时器
+})
+
+export default apiClient
+```
+
+在请求中使用
+
+```js
+import apiClient from './api'
+
+// 自动重试（默认配置）
+const response = await apiClient.get('/users')
+
+// 单个请求自定义重试配置
+const response2 = await apiClient.get('/users', {
+  'axios-retry': {
+    retries: 5, // 覆盖全局配置
+    retryDelay: (count) => count * 2000,
+    retryCondition: (error) => error.response?.status === 503
+  }
+})
+```
+
+### 拦截器
+
+不引入依赖，用拦截器自己实现
