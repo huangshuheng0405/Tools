@@ -1,6 +1,46 @@
-# Store
+# Pinia
 
-## 定义
+<img src="/Vue/pinia-1.svg" alt="pinia-1" width="200" height="200" />
+
+## Installation
+
+::: code-group
+
+```bash [npm]
+npm install pinia
+```
+
+```bash [yarn]
+yarn add pinia
+```
+
+```bash [pnpm]
+pnpm add pinia
+```
+
+```bash [bun]
+bun add pinia
+```
+
+:::
+
+创建一个`pinia`实例，并将其传递给应用
+
+```ts [main.ts] {2,5,6,8}
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import App from './App.vue'
+
+const pinia = createPinia()
+const app = createApp(App)
+
+app.use(pinia)
+app.mount('#app')
+```
+
+## Store
+
+### 定义
 
 在深入研究核心概念之前，我们得知道 Store 是用 `defineStore()` 定义的，它的第一个参数要求是一个**独一无二的**名字：
 
@@ -20,7 +60,7 @@ export const useAlertsStore = defineStore('alerts', {
 
 `defineStore()` 的第二个参数可接受两类值：Setup 函数或 Option 对象。
 
-## Option Store
+### Option Store
 
 与 Vue 的选项式 API 类似，我们也可以传入一个带有 `state`、`actions` 与 `getters` 属性的 Option 对象
 
@@ -42,7 +82,7 @@ export const useCounterStore = defineStore('counter', {
 
 为方便上手使用，Option Store 应尽可能直观简单。
 
-## Setup Store
+### Setup Store
 
 与Vue组合式API的setup函数相似，我们可以传入一个函数，该函数定义了一些响应式属性和方法，并且返回一个带有我们想暴露出去的属性和方法的对象。
 
@@ -85,13 +125,12 @@ export const useSearchFilters = defineStore('search-filters', () => {
 
 :::
 
-## 使用 Store
+### 使用 Store
 
 ```js
 <script setup>
-import { useCounterStore } from '@/stores/counter'
-// 在组件内部的任何地方均可以访问变量 `store` ✨
-const store = useCounterStore()
+  import {useCounterStore} from '@/stores/counter' //
+  在组件内部的任何地方均可以访问变量 `store` ✨ const store = useCounterStore()
 </script>
 ```
 
@@ -117,7 +156,7 @@ const doubleValue = computed(() => store.doubleCount)
 </script>
 ```
 
-## 从 Store 解构
+### 从 Store 解构
 
 为了从 store 中提取属性时保持其响应性，你需要使用 `storeToRefs()`。它将为每一个响应式属性创建引用。当你只使用 store 的状态而不调用任何 action 时，它会非常有用。请注意，你可以直接从 store 中解构 action，因为它们也被绑定到 store 上：
 
@@ -134,3 +173,85 @@ const { increment } = store
 </script>
 ```
 
+## 结构设计
+
+一个业务领域一个Store
+
+```
+├── stores/
+│   ├── index.ts
+│   ├── modules/
+│   │   ├── user.ts
+│   │   ├── app.ts
+│   │   ├── cart.ts
+│   │   └── permission.ts
+│   │
+│   └── types/
+│       └── user.ts
+```
+
+比如用户登录
+
+```ts [user.ts]
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+
+export const useUserStore = defineStore('user', () => {
+  const token = ref('')
+  const userInfo = ref<User | null>(null)
+
+  const isLogin = computed(() => !!token.value)
+
+  function setToken(value: string) {
+    token.value = value
+  }
+
+  function setUserInfo(user: User) {
+    userInfo.value = user
+  }
+
+  function logout() {
+    token.value = ''
+    userInfo.value = null
+  }
+
+  return {
+    token,
+    userInfo,
+    isLogin,
+    setToken,
+    setUserInfo,
+    logout,
+  }
+})
+```
+
+而 `app.ts`放一些全局的配置，比如语言、主题等
+
+```ts [app.ts]
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+
+export const useAppStore = defineStore('app', () => {
+  const sidebarCollapsed = ref(false)
+  const loading = ref(false)
+
+  function toggleSidebar() {
+    sidebarCollapsed.value = !sidebarCollapsed.value
+  }
+
+  return {
+    sidebarCollapsed,
+    loading,
+    toggleSidebar,
+  }
+})
+```
+
+`index.ts`做统一导出
+
+```ts [stores/index.ts]
+export { useUserStore } from './modules/user'
+export { useAppStore } from './modules/app'
+export { useCartStore } from './modules/cart'
+```
