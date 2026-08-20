@@ -46,3 +46,5 @@ docker rm my-nginx
 -e，环境变量，`-e MYSQL_ROOT_PASSWORD=123456`，设置MySQL根密码为123456
 
 -v，
+
+TODO leaflet 组件

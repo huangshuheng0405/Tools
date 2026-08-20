@@ -23,8 +23,7 @@ export default defineConfig({
   themeConfig: {
     logo: '/nodejs-icon.svg',
     outline: {
-      level: [2, 6],
-      label: '目录',
+      level: [2, 3],
     },
   },
   title: 'front-end',
@@ -37,10 +36,6 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
-        outline: {
-          level: [2, 6],
-          label: '目录',
-        },
         nav: [
           { text: 'Home', link: '/' },
           {
@@ -209,11 +204,7 @@ export default defineConfig({
                 },
                 {
                   text: 'Vite',
-                  collapsed: true,
-                  items: [
-                    { text: 'index', link: '/Engineering/Vite/index' },
-                    { text: 'notes', link: '/Engineering/Vite/notes' },
-                  ],
+                  link: '/Engineering/vite',
                 },
                 {
                   text: 'CLI',
@@ -424,20 +415,6 @@ export default defineConfig({
                   link: '/vue/created_mounted',
                 },
                 {
-                  text: 'vue-router',
-                  collapsed: true,
-                  items: [
-                    {
-                      text: '路由模式',
-                      link: '/vue/vue-router/mode',
-                    },
-                    {
-                      text: '路由跳转',
-                      link: '/vue/vue-router/routerLink',
-                    },
-                  ],
-                },
-                {
                   text: 'SSR',
                   link: '/vue/SSR',
                 },
@@ -468,6 +445,10 @@ export default defineConfig({
                 {
                   text: 'Pinia',
                   link: '/vue/pinia',
+                },
+                {
+                  text: 'vue-router',
+                  link: '/vue/vueRouter',
                 },
               ],
             },
