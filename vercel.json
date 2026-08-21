@@ -3,6 +3,9 @@
   "outputDirectory": "docs/.vitepress/dist",
   "installCommand": "npm install",
   "framework": "vitepress",
+  "redirects": [
+    { "source": "/", "destination": "/zh/", "permanent": false }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
