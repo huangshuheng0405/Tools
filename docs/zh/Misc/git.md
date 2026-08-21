@@ -95,3 +95,19 @@ git branch -d <branch-name>
 ```bash
 git push origin --delete <branch-name>
 ```
+
+## reset
+
+本地未推送的提交，撤销提交保留修改
+
+```bash
+git reset --soft HEAD~1
+```
+
+如果已经`git push`到远程仓库，不要使用`reset`
+
+```bash
+git revert HEAD
+```
+
+- 生成一个新的提交，内容正好是撤销最近一次提交的改动

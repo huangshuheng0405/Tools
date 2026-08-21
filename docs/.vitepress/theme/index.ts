@@ -16,6 +16,9 @@ export default {
     })
   },
   enhanceApp({ app, router, siteData }) {
-    // ...
+    // 未配置 root locale，访问首页时重定向到默认语言 zh
+    if (typeof window !== 'undefined' && window.location.pathname === '/') {
+      window.location.replace('/zh/')
+    }
   }
 } satisfies Theme

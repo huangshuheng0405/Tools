@@ -260,3 +260,85 @@ export default defineConfig({
 - **共享依赖重复**：拆包不当会让某些依赖在多个 chunk 里重复，导致总体体积变大
 - **缓存失效**：随便把业务和 vendor 混在一起，会导致业务改动引起 vendor chunk hash 改变
 - **只在 build 生效**：manualChunks 主要影响生产构建，开发态模块加载机制不同
+
+## Auto Import
+
+### unplugin-vue-components
+
+自动按需导入vue组件（包括UI库和你自己的组件），无需手动`import`和`components`注册
+
+安装
+
+```bash [npm]
+npm install unplugin-vue-components -D
+```
+
+配置
+
+```ts [vite.config.ts]
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
+export default defineConfig({
+  plugins: [
+    Components({
+      // 自动扫描 src/components 下的组件（默认已包括）
+      dirs: ['src/components'],
+      // 扩展名（默认 .vue）
+      extensions: ['vue'],
+      // 生成类型声明文件（TS 支持）
+      dts: 'src/typings/components.d.ts',
+      // 解析器：支持按需导入 Element Plus、Antd、Vant 等
+      resolvers: [
+        ElementPlusResolver(), // Element Plus 按需加载
+        // 也可以自定义： (name) => ({ name, from: `@/components/${name}` })
+      ],
+      // 深度扫描（包括子目录）
+      deep: true,
+    }),
+  ],
+})
+```
+
+#### 类型支持
+
+`dst`选项会生成`components.d.ts`文件，配合TS获得完整的类型提示
+
+### unplugin-auto-import
+
+自动导入vue\vue-router\pinia等API（如`ref`、`computed`、`useRouter`），无需手动`import`
+
+#### 安装
+
+```bash [npm]
+npm install unplugin-auto-import -D
+```
+
+#### 配置
+
+```ts [vite.config.ts]
+import AutoImport from 'unplugin-auto-import/vite'
+
+export default defineConfig({
+  plugins: [
+    AutoImport({
+      // 预设：自动导入哪些库的 API
+      imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
+      // 生成类型声明文件
+      dts: 'src/typings/auto-imports.d.ts',
+      // 解析器（与 Components 配合）
+      resolvers: [ElementPlusResolver()],
+      // 自动导入文件夹下的模块（可选）
+      dirs: ['src/composables/**', 'src/stores/**'],
+      // 是否在 ESLint 中忽略自动导入（避免 ESLint 报错“未定义”）
+      eslintrc: {
+        enabled: true, // 生成 .eslintrc-auto-import.json
+        filepath: './.eslintrc-auto-import.json',
+        globalsPropValue: true,
+      },
+    }),
+  ],
+})
+```
+
+通常两者配合使用

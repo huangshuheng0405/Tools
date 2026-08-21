@@ -28,111 +28,115 @@ export default defineConfig({
   },
   title: 'front-end',
   description: 'A VitePress Site',
+  ignoreDeadLinks: true,
   head: [['link', { rel: 'icon', href: '/nodejs-icon.svg', sizes: 'any' }]],
 
   // 多语言配置
   locales: {
-    root: {
+    zh: {
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
         nav: [
-          { text: 'Home', link: '/' },
-          {
-            text: 'JavaScript',
-            items: [
-              { text: 'JavaScript', link: '/JavaScript/' },
-              { text: 'TypeScript', link: '/TypeScript/index' },
-            ],
-          },
+          { text: 'Home', link: '/zh/' },
+          { text: 'JavaScript', link: '/zh/JavaScript/' },
           {
             text: 'Vue',
             items: [
-              { text: 'Vue', link: '/vue/lifecycle' },
-              { text: 'Nuxt', link: '/vue/nuxt/Structure/app/nuxt' },
+              { text: 'Vue', link: '/zh/vue/lifecycle' },
+              { text: 'Nuxt', link: '/zh/vue/nuxt/Structure/app/nuxt' },
             ],
           },
-          { text: 'React', link: '/react/index' },
-          { text: 'Engineering', link: '/Engineering/' },
-          { text: 'Misc', link: '/Misc/' },
+          { text: 'React', link: '/zh/react/index' },
+          { text: 'Engineering', link: '/zh/Engineering/' },
+          { text: 'Misc', link: '/zh/Misc/' },
           {
             text: 'Backend',
             items: [
-              { text: 'Java', link: '/backend/java/' },
-              { text: 'NodeJS', link: '/backend/nodejs/index.md' },
+              { text: 'Java', link: '/zh/backend/java/' },
+              { text: 'NodeJS', link: '/zh/backend/nodejs/index.md' },
             ],
           },
         ],
         sidebar: {
-          '/backend/nodejs/': [
+          '/zh/backend/nodejs/': [
             {
               text: 'Backend',
               items: [
-                { text: 'Overview', link: '/backend/index.md' },
-                { text: 'Koa', link: '/backend/koa' },
+                { text: 'Overview', link: '/zh/backend/index.md' },
+                { text: 'Koa', link: '/zh/backend/koa' },
                 {
                   text: 'Node.js',
-                  link: '/backend/nodejs',
+                  link: '/zh/backend/nodejs',
                   items: [
-                    { text: '__dirname', link: '/backend/nodejs/__dirname' },
-                    { text: '__filename', link: '/backend/nodejs/__filename' },
-                    { text: 'modularity', link: '/backend/nodejs/modularity' },
+                    { text: '__dirname', link: '/zh/backend/nodejs/__dirname' },
+                    {
+                      text: '__filename',
+                      link: '/zh/backend/nodejs/__filename',
+                    },
+                    {
+                      text: 'modularity',
+                      link: '/zh/backend/nodejs/modularity',
+                    },
                   ],
                 },
-                { text: 'Express', link: '/backend/express' },
-                { text: 'Sequelize', link: '/backend/sequelize' },
-                { text: 'MongoDB', link: '/backend/MongoDB' },
-                { text: 'Mongoose', link: '/backend/mongoose' },
+                { text: 'Express', link: '/zh/backend/express' },
+                { text: 'Sequelize', link: '/zh/backend/sequelize' },
+                { text: 'MongoDB', link: '/zh/backend/MongoDB' },
+                { text: 'Mongoose', link: '/zh/backend/mongoose' },
               ],
             },
           ],
-          '/backend/java/': [
+          '/zh/backend/java/': [
             {
               text: 'Java',
-              items: [{ text: 'index', link: '/backend/java/index.md' }],
+              items: [{ text: 'index', link: '/zh/backend/java/index.md' }],
             },
             {
               text: 'Java 基础',
               items: [
-                { text: 'index', link: '/backend/java/base/index.md' },
+                { text: 'index', link: '/zh/backend/java/base/index.md' },
                 {
                   text: 'inheritance',
-                  link: '/backend/java/base/inheritance.md',
+                  link: '/zh/backend/java/base/inheritance.md',
                 },
                 {
                   text: 'Ploymorphism',
-                  link: '/backend/java/base/Ploymorphism.md',
+                  link: '/zh/backend/java/base/Ploymorphism.md',
                 },
                 {
                   text: 'interface',
-                  link: '/backend/java/base/interface.md',
+                  link: '/zh/backend/java/base/interface.md',
                 },
                 {
                   text: 'abstractClass',
-                  link: '/backend/java/base/abstractClass.md',
+                  link: '/zh/backend/java/base/abstractClass.md',
                 },
                 {
                   text: 'list',
-                  link: '/backend/java/base/list.md',
+                  link: '/zh/backend/java/base/list.md',
                 },
                 {
                   text: 'set',
-                  link: '/backend/java/base/set.md',
+                  link: '/zh/backend/java/base/set.md',
                 },
               ],
             },
             {
               text: 'Maven',
               items: [
-                { text: 'index', link: '/backend/java/maven/index.md' },
-                { text: 'lifeCycle', link: '/backend/java/maven/lifeCycle.md' },
+                { text: 'index', link: '/zh/backend/java/maven/index.md' },
+                {
+                  text: 'lifeCycle',
+                  link: '/zh/backend/java/maven/lifeCycle.md',
+                },
               ],
             },
             {
               text: 'Unit Test',
               items: [
-                { text: 'index', link: '/backend/java/unitTest/index.md' },
-                { text: 'Junit', link: '/backend/java/unitTest/junit.md' },
+                { text: 'index', link: '/zh/backend/java/unitTest/index.md' },
+                { text: 'Junit', link: '/zh/backend/java/unitTest/junit.md' },
               ],
             },
             {
@@ -140,11 +144,11 @@ export default defineConfig({
               items: [
                 {
                   text: 'three tier',
-                  link: '/backend/java/spring/threeTier.md',
+                  link: '/zh/backend/java/spring/threeTier.md',
                 },
                 {
                   text: 'IoC DI',
-                  link: '/backend/java/spring/IoC_DI.md',
+                  link: '/zh/backend/java/spring/IoC_DI.md',
                 },
               ],
             },
@@ -153,129 +157,129 @@ export default defineConfig({
               items: [
                 {
                   text: 'Filter',
-                  link: '/backend/java/springboot/filter.md',
+                  link: '/zh/backend/java/springboot/filter.md',
                 },
                 {
                   text: 'JWT',
-                  link: '/backend/java/springboot/jwt.md',
+                  link: '/zh/backend/java/springboot/jwt.md',
                 },
                 {
                   text: 'Interceptor',
-                  link: '/backend/java/springboot/interceptor.md',
+                  link: '/zh/backend/java/springboot/interceptor.md',
                 },
                 {
                   text: 'Lombok',
-                  link: '/backend/java/springboot/lombok.md',
+                  link: '/zh/backend/java/springboot/lombok.md',
                 },
                 {
                   text: 'Mybatis',
-                  link: '/backend/java/springboot/mybatis.md',
+                  link: '/zh/backend/java/springboot/mybatis.md',
                 },
                 {
                   text: 'AOP',
-                  link: '/backend/java/springboot/aop.md',
+                  link: '/zh/backend/java/springboot/aop.md',
                 },
               ],
             },
           ],
 
-          '/Engineering/': [
+          '/zh/Engineering/': [
             {
               text: 'Engineering',
               items: [
-                { text: 'Overview', link: '/Engineering/' },
+                { text: 'Overview', link: '/zh/Engineering/' },
                 {
                   text: 'git-cz',
-                  link: '/Engineering/git-cz',
+                  link: '/zh/Engineering/git-cz',
                 },
                 {
                   text: 'Husky',
-                  link: '/Engineering/Husky',
+                  link: '/zh/Engineering/Husky',
                 },
                 {
                   text: 'Webpack',
                   collapsed: true,
                   items: [
-                    { text: 'index', link: '/Engineering/Webpack/index' },
-                    { text: 'notes', link: '/Engineering/Webpack/notes' },
-                    { text: 'loader', link: '/Engineering/Webpack/loader' },
-                    { text: 'plugin', link: '/Engineering/Webpack/plugin' },
+                    { text: 'index', link: '/zh/Engineering/Webpack/index' },
+                    { text: 'notes', link: '/zh/Engineering/Webpack/notes' },
+                    { text: 'loader', link: '/zh/Engineering/Webpack/loader' },
+                    { text: 'plugin', link: '/zh/Engineering/Webpack/plugin' },
                   ],
                 },
                 {
                   text: 'Vite',
-                  link: '/Engineering/vite',
+                  link: '/zh/Engineering/vite',
                 },
                 {
                   text: 'CLI',
-                  link: '/Engineering/scaffold',
+                  link: '/zh/Engineering/scaffold',
                 },
                 {
                   text: 'CSpell',
-                  link: '/Engineering/cspell',
+                  link: '/zh/Engineering/cspell',
                 },
                 {
                   text: 'tsup',
-                  link: '/Engineering/tsup',
+                  link: '/zh/Engineering/tsup',
                 },
                 {
                   text: 'ESlint',
-                  link: '/Engineering/ESlint',
+                  link: '/zh/Engineering/ESlint',
                 },
                 {
                   text: 'Commander',
-                  link: '/Engineering/Commander',
+                  link: '/zh/Engineering/Commander',
                 },
                 {
                   text: 'consola',
-                  link: '/Engineering/consola',
+                  link: '/zh/Engineering/consola',
                 },
                 {
                   text: 'prompts',
-                  link: '/Engineering/prompts',
+                  link: '/zh/Engineering/prompts',
                 },
                 {
                   text: 'Prettier',
-                  link: '/Engineering/Prettier',
+                  link: '/zh/Engineering/Prettier',
                 },
                 {
                   text: 'esbuild',
-                  link: '/Engineering/esbuild',
+                  link: '/zh/Engineering/esbuild',
                 },
                 {
                   text: 'Axios',
-                  link: '/Engineering/Axios',
+                  link: '/zh/Engineering/axios',
                 },
                 {
                   text: 'Rollup',
-                  link: '/Engineering/rollup',
+                  link: '/zh/Engineering/rollup',
                 },
                 {
                   text: 'nrm',
-                  link: '/Engineering/nrm',
+                  link: '/zh/Engineering/nrm',
                 },
               ],
             },
           ],
-          '/Misc/': [
+          '/zh/Misc/': [
             {
               text: 'Tips',
               items: [
                 {
                   text: 'vscode plugin',
-                  link: '/Misc/vscodePlugin',
+                  link: '/zh/Misc/vscodePlugin',
                 },
                 {
                   text: 'performanceOptimization',
-                  link: '/Misc/performanceOptimization',
+                  link: '/zh/Misc/performanceOptimization',
                 },
                 {
                   text: 'Docker',
-                  link: '/Misc/docker',
+                  link: '/zh/Misc/docker',
                 },
                 {
                   text: 'git',
-                  link: '/Misc/git',
+                  link: '/zh/Misc/git',
                 },
               ],
             },
@@ -284,7 +288,7 @@ export default defineConfig({
               items: [
                 {
                   text: 'Getting Started',
-                  link: '/Misc/vitepress-icon',
+                  link: '/zh/Misc/vitepress-icon',
                 },
               ],
             },
@@ -293,42 +297,46 @@ export default defineConfig({
               items: [
                 {
                   text: 'ref reactive',
-                  link: '/Misc/ref-reactive',
+                  link: '/zh/Misc/ref-reactive',
                 },
                 {
                   text: '图片懒加载',
-                  link: '/Misc/lazyImages',
+                  link: '/zh/Misc/lazyImages',
                 },
                 {
                   text: '文件上传',
-                  link: '/Misc/fileUpload',
+                  link: '/zh/Misc/fileUpload',
                 },
                 {
                   text: 'Web API',
-                  link: '/Misc/WebAPI',
+                  link: '/zh/Misc/WebAPI',
                 },
               ],
             },
             {
               text: 'Database',
               items: [
-                { text: 'index', link: '/Misc/database/index.md' },
-                { text: 'DDL', link: '/Misc/database/DDL.md' },
-                { text: 'DataType', link: '/Misc/database/dataType.md' },
+                { text: 'index', link: '/zh/Misc/database/index.md' },
+                { text: 'DDL', link: '/zh/Misc/database/DDL.md' },
+                { text: 'DataType', link: '/zh/Misc/database/dataType.md' },
+                {
+                  text: 'Redis',
+                  link: '/zh/Misc/database/Redis.md',
+                },
               ],
             },
           ],
-          '/vue/nuxt/': [
+          '/zh/vue/nuxt/': [
             {
               text: 'Nuxt',
               items: [
                 {
                   text: '快速开始',
-                  link: '/vue/nuxt/Structure/app/nuxt-start',
+                  link: '/zh/vue/nuxt/Structure/app/nuxt-start',
                 },
                 {
                   text: 'Routing',
-                  link: '/vue/nuxt/Routing',
+                  link: '/zh/vue/nuxt/Routing',
                 },
                 {
                   text: 'Structure',
@@ -340,27 +348,27 @@ export default defineConfig({
                       items: [
                         {
                           text: 'pages',
-                          link: '/vue/nuxt/Structure/app/pages',
+                          link: '/zh/vue/nuxt/Structure/app/pages',
                         },
                         {
                           text: 'layouts',
-                          link: '/vue/nuxt/Structure/app/layout',
+                          link: '/zh/vue/nuxt/Structure/app/layout',
                         },
                         {
                           text: 'components',
-                          link: '/vue/nuxt/Structure/app/components',
+                          link: '/zh/vue/nuxt/Structure/app/components',
                         },
                         {
                           text: 'composables',
-                          link: '/vue/nuxt/Structure/app/composables',
+                          link: '/zh/vue/nuxt/Structure/app/composables',
                         },
                         {
                           text: 'middleware',
-                          link: '/vue/nuxt/Structure/app/middleware',
+                          link: '/zh/vue/nuxt/Structure/app/middleware',
                         },
                         {
                           text: 'plugins',
-                          link: '/vue/nuxt/Structure/app/plugins',
+                          link: '/zh/vue/nuxt/Structure/app/plugins',
                         },
                       ],
                     },
@@ -369,466 +377,472 @@ export default defineConfig({
               ],
             },
           ],
-          '/vue/': [
+          '/zh/vue/': [
             {
               text: 'Vue',
               items: [
-                { text: '生命周期', link: '/vue/lifecycle' },
-                { text: 'Props', link: '/vue/Props' },
-                { text: 'connect', link: '/vue/Components-connect' },
-                { text: 'Key 的作用', link: '/vue/Key' },
-                { text: 'Reflect 与响应式', link: '/vue/Reflect' },
-                { text: 'Query 与 Params', link: '/vue/query_params' },
-                { text: '动态组件', link: '/vue/dynamic-components' },
+                { text: '生命周期', link: '/zh/vue/lifecycle' },
+                { text: 'Props', link: '/zh/vue/Props' },
+                { text: 'connect', link: '/zh/vue/Components-connect' },
+                { text: 'Key 的作用', link: '/zh/vue/Key' },
+                { text: 'Reflect 与响应式', link: '/zh/vue/Reflect' },
+                { text: 'Query 与 Params', link: '/zh/vue/query_params' },
+                { text: '动态组件', link: '/zh/vue/dynamic-components' },
                 {
                   text: '手写Vue',
                   collapsed: true,
                   items: [
                     {
                       text: 'Vue2-jindu',
-                      link: '/vue/handwriting/vue2-jindu',
+                      link: '/zh/vue/handwriting/vue2-jindu',
                     },
                     {
                       text: 'Vue3-jindu',
-                      link: '/vue/handwriting/vue3-jindu',
+                      link: '/zh/vue/handwriting/vue3-jindu',
                     },
                     {
                       text: 'Vue-Router',
-                      link: '/vue/handwriting/vue-router',
+                      link: '/zh/vue/handwriting/vue-router',
                     },
                     {
                       text: 'Promise',
-                      link: '/vue/handwriting/Promise',
+                      link: '/zh/vue/handwriting/Promise',
                     },
                   ],
                 },
                 {
                   text: 'Vue2不监听数组下标原因',
-                  link: '/vue/vue2_ArrayIndex',
+                  link: '/zh/vue/vue2_ArrayIndex',
                 },
                 {
                   text: '修饰符',
-                  link: '/vue/modifier',
+                  link: '/zh/vue/modifier',
                 },
                 {
                   text: 'created 与 mounted 区别',
-                  link: '/vue/created_mounted',
+                  link: '/zh/vue/created_mounted',
                 },
                 {
                   text: 'SSR',
-                  link: '/vue/SSR',
+                  link: '/zh/vue/SSR',
                 },
                 {
                   text: 'computed',
-                  link: '/vue/computed',
+                  link: '/zh/vue/computed',
                 },
                 {
                   text: 'watch',
-                  link: '/vue/watch',
+                  link: '/zh/vue/watch',
                 },
                 {
                   text: 'effect',
-                  link: '/vue/effect',
+                  link: '/zh/vue/effect',
                 },
                 {
                   text: 'h',
-                  link: '/vue/h',
+                  link: '/zh/vue/h',
                 },
                 {
                   text: 'Attribute',
-                  link: '/vue/attribute',
+                  link: '/zh/vue/attribute',
                 },
                 {
                   text: 'virtual list',
-                  link: '/vue/virtualList',
+                  link: '/zh/vue/virtualList',
                 },
                 {
                   text: 'Pinia',
-                  link: '/vue/pinia',
+                  link: '/zh/vue/pinia',
                 },
                 {
                   text: 'vue-router',
-                  link: '/vue/vueRouter',
+                  link: '/zh/vue/vueRouter',
                 },
               ],
             },
           ],
-          '/JavaScript/': [
+          '/zh/JavaScript/': [
             {
               text: 'JavaScript',
               items: [
-                { text: 'index', link: '/JavaScript/index' },
+                { text: 'index', link: '/zh/JavaScript/index' },
                 {
                   text: '数组快速模式与字典模式',
-                  link: '/JavaScript/array-fast-dict-mode',
+                  link: '/zh/JavaScript/array-fast-dict-mode',
                 },
                 {
                   text: '如何判断object为空',
-                  link: '/JavaScript/judge-object',
+                  link: '/zh/JavaScript/judge-object',
                 },
                 {
                   text: 'JSON.stringify',
-                  link: '/JavaScript/JSON.stringify',
+                  link: '/zh/JavaScript/JSON.stringify',
                 },
                 {
                   text: 'TypeConversion',
-                  link: '/JavaScript/TypeConversion',
+                  link: '/zh/JavaScript/TypeConversion',
                 },
                 {
                   text: '数据类型',
-                  link: '/JavaScript/DataTypes',
+                  link: '/zh/JavaScript/DataTypes',
                 },
                 {
                   text: '变量在内存中的堆栈存储',
-                  link: '/JavaScript/stack-heap',
+                  link: '/zh/JavaScript/stack-heap',
                 },
                 {
                   text: 'Determine DataType',
-                  link: '/JavaScript/DetermineDataType',
+                  link: '/zh/JavaScript/DetermineDataType',
                 },
                 {
                   text: 'ES 版本特性 (ES6+)',
-                  link: '/JavaScript/ESVersion',
+                  link: '/zh/JavaScript/ESVersion',
                 },
                 {
                   text: 'let var const',
-                  link: '/JavaScript/let_var_const',
+                  link: '/zh/JavaScript/let_var_const',
                 },
                 {
                   text: '变量提升和TDZ',
-                  link: '/JavaScript/Hoisting_TDZ',
+                  link: '/zh/JavaScript/Hoisting_TDZ',
                 },
                 {
                   text: 'null和undefined的区别',
-                  link: '/JavaScript/nullUndefined',
+                  link: '/zh/JavaScript/nullUndefined',
                 },
                 {
                   text: 'Repaint & Reflow',
-                  link: '/JavaScript/Repaint_Reflow',
+                  link: '/zh/JavaScript/Repaint_Reflow',
                 },
                 {
                   text: '模块系统',
-                  link: '/JavaScript/module_commonJS',
+                  link: '/zh/JavaScript/module_commonJS',
                 },
                 {
                   text: 'EventLoop',
-                  link: '/JavaScript/EventLoop',
+                  link: '/zh/JavaScript/EventLoop',
                 },
                 {
                   text: '冒泡和捕获',
-                  link: '/JavaScript/Bubbling_Capturing',
+                  link: '/zh/JavaScript/Bubbling_Capturing',
                 },
                 {
                   text: 'Event Delegation',
-                  link: '/JavaScript/EventDelegation',
+                  link: '/zh/JavaScript/EventDelegation',
                 },
                 {
                   text: 'ES6 类继承',
-                  link: '/JavaScript/ES6Inherit',
+                  link: '/zh/JavaScript/ES6Inherit',
                 },
                 {
                   text: 'IterableObject',
-                  link: '/JavaScript/IterableObject',
+                  link: '/zh/JavaScript/IterableObject',
                 },
                 {
                   text: 'Promise',
-                  link: '/JavaScript/Promise',
+                  link: '/zh/JavaScript/Promise',
                 },
                 {
                   text: '链式调用',
-                  link: '/JavaScript/ChainedCall',
+                  link: '/zh/JavaScript/ChainedCall',
                 },
                 {
                   text: 'new',
-                  link: '/JavaScript/New',
+                  link: '/zh/JavaScript/New',
                 },
                 {
                   text: 'bind apply call',
-                  link: '/JavaScript/bind_apply_call',
+                  link: '/zh/JavaScript/bind_apply_call',
                 },
                 {
                   text: 'JS监听对象属性的改变',
-                  link: '/JavaScript/defineProperty_Proxy',
+                  link: '/zh/JavaScript/defineProperty_Proxy',
                 },
                 {
                   text: 'Prototype Chain',
-                  link: '/JavaScript/Prototype_Chain',
+                  link: '/zh/JavaScript/Prototype_Chain',
                 },
                 {
                   text: 'this',
-                  link: '/JavaScript/this',
+                  link: '/zh/JavaScript/this',
                 },
                 {
                   text: 'Function',
                   collapsed: true,
                   items: [
-                    { text: 'trim()', link: '/JavaScript/trim' },
-                    { text: 'parseInt()', link: '/JavaScript/parseInt' },
+                    { text: 'trim()', link: '/zh/JavaScript/trim' },
+                    { text: 'parseInt()', link: '/zh/JavaScript/parseInt' },
                   ],
                 },
-                { text: 'Symbol', link: '/JavaScript/Symbol' },
+                { text: 'Symbol', link: '/zh/JavaScript/Symbol' },
                 {
                   text: 'startWith和indexOf的区别',
-                  link: '/JavaScript/startwith_indexof',
+                  link: '/zh/JavaScript/startwith_indexof',
                 },
                 {
                   text: '装箱机制',
-                  link: '/JavaScript/boxing',
+                  link: '/zh/JavaScript/boxing',
                 },
                 {
                   text: '假值和真值',
-                  link: '/JavaScript/falsy_truthy',
+                  link: '/zh/JavaScript/falsy_truthy',
                 },
                 {
                   text: '命名规范',
-                  link: '/JavaScript/NameConvention',
+                  link: '/zh/JavaScript/NameConvention',
                 },
                 {
                   text: 'for',
-                  link: '/JavaScript/for',
+                  link: '/zh/JavaScript/for',
                 },
                 {
                   text: 'Reflect',
-                  link: '/JavaScript/Reflect',
+                  link: '/zh/JavaScript/Reflect',
                 },
                 {
                   text: 'Garbage Collection',
-                  link: '/JavaScript/Garbage_Collection',
+                  link: '/zh/JavaScript/Garbage_Collection',
                 },
                 {
                   text: 'globalThis',
-                  link: '/JavaScript/globalThis',
+                  link: '/zh/JavaScript/globalThis',
                 },
                 {
                   text: 'Copy',
-                  link: '/JavaScript/Copy',
+                  link: '/zh/JavaScript/Copy',
                 },
                 {
                   text: 'WeakMap and WeakSet',
-                  link: '/JavaScript/WeakMap_WeakSet',
+                  link: '/zh/JavaScript/WeakMap_WeakSet',
                 },
                 {
                   text: 'ToPrimitive',
-                  link: '/JavaScript/ToPrimitive',
+                  link: '/zh/JavaScript/ToPrimitive',
                 },
                 {
                   text: 'Array',
-                  items: [{ text: 'Array', link: '/JavaScript/Array' }],
+                  items: [{ text: 'Array', link: '/zh/JavaScript/Array' }],
                 },
                 {
                   text: 'MapAndSet',
-                  link: '/JavaScript/MapAndSet',
+                  link: '/zh/JavaScript/MapAndSet',
                 },
                 {
                   text: 'HOF',
-                  link: '/JavaScript/High-Order',
+                  link: '/zh/JavaScript/High-Order',
                 },
                 {
                   text: 'Throttle',
-                  link: '/JavaScript/Throttle',
+                  link: '/zh/JavaScript/Throttle',
                 },
                 {
                   text: 'Lazy Function',
-                  link: '/JavaScript/Lazy_Function',
+                  link: '/zh/JavaScript/Lazy_Function',
                 },
                 {
                   text: 'Currying',
-                  link: '/JavaScript/Curring',
+                  link: '/zh/JavaScript/Curring',
                 },
                 {
                   text: 'Function Composition',
-                  link: '/JavaScript/Function_Composition',
+                  link: '/zh/JavaScript/Function_Composition',
                 },
                 {
                   text: 'Canvas',
-                  link: '/JavaScript/Canvas',
+                  link: '/zh/JavaScript/Canvas',
                 },
                 {
                   text: 'URL',
-                  link: '/JavaScript/URL',
+                  link: '/zh/JavaScript/URL',
                 },
                 {
                   text: 'Closure',
-                  link: '/JavaScript/Closure',
+                  link: '/zh/JavaScript/Closure',
                 },
                 {
                   text: 'FormData',
-                  link: '/JavaScript/formData',
+                  link: '/zh/JavaScript/formData',
                 },
                 {
                   text: 'JSON.stringify',
-                  link: '/JavaScript/JSON.stringify',
+                  link: '/zh/JavaScript/JSON.stringify',
+                },
+                {
+                  text: 'TypeScript',
+                  link: '/zh/JavaScript/ts',
                 },
               ],
             },
           ],
-          '/': [
+          '/zh/': [
             {
               text: '首页',
-              items: [{ text: 'Start', link: '/Start' }],
+              items: [{ text: 'Start', link: '/zh/Start' }],
             },
           ],
-          '/TypeScript/': [
-            {
-              text: 'TypeScript',
-              items: [
-                { text: 'index', link: '/TypeScript/index' },
-                { text: 'Start', link: '/TypeScript/Start' },
-                {
-                  text: 'tsconfig.json',
-                  link: '/TypeScript/tsconfig',
-                },
-              ],
-            },
-          ],
-          '/DesignPatterns/': [
+          '/zh/DesignPatterns/': [
             {
               text: '设计模式',
               items: [
                 {
                   text: 'index',
-                  link: '/DesignPatterns/index',
+                  link: '/zh/DesignPatterns/index',
                 },
                 {
                   text: 'Singleton Pattern',
-                  link: '/DesignPatterns/Singleton',
+                  link: '/zh/DesignPatterns/Singleton',
                 },
-                { text: 'Factory Pattern', link: '/DesignPatterns/Factory' },
-                { text: 'Pub-Sub Pattern', link: '/DesignPatterns/Pub-Sub' },
-                { text: 'Observer Pattern', link: '/DesignPatterns/Observer' },
-                { text: 'Strategy Pattern', link: '/DesignPatterns/Strategy' },
+                { text: 'Factory Pattern', link: '/zh/DesignPatterns/Factory' },
+                { text: 'Pub-Sub Pattern', link: '/zh/DesignPatterns/Pub-Sub' },
+                {
+                  text: 'Observer Pattern',
+                  link: '/zh/DesignPatterns/Observer',
+                },
+                {
+                  text: 'Strategy Pattern',
+                  link: '/zh/DesignPatterns/Strategy',
+                },
                 {
                   text: 'Decorator Pattern',
-                  link: '/DesignPatterns/Decorator',
+                  link: '/zh/DesignPatterns/Decorator',
                 },
-                { text: 'MVVM', link: '/DesignPatterns/MVVM' },
+                { text: 'MVVM', link: '/zh/DesignPatterns/MVVM' },
               ],
             },
           ],
-          '/network/': [
+          '/zh/network/': [
             {
               text: '计算机网络',
-              items: [{ text: 'SSE', link: '/network/SSE' }],
+              items: [{ text: 'SSE', link: '/zh/network/SSE' }],
             },
           ],
-          '/Security/': [
+          '/zh/Security/': [
             {
               text: 'Web 安全',
-              items: [{ text: 'XSS 跨站脚本攻击', link: '/Security/xss' }],
+              items: [{ text: 'XSS 跨站脚本攻击', link: '/zh/Security/xss' }],
             },
           ],
-          '/react/': [
+          '/zh/react/': [
             {
               text: 'React',
-              items: [{ text: 'index', link: '/react/index' }],
+              items: [{ text: 'index', link: '/zh/react/index' }],
             },
             {
               text: 'CSS',
               items: [
-                { text: 'CSS Module', link: '/react/css/cssModule' },
-                { text: 'Atomic CSS', link: '/react/css/atomic' },
+                { text: 'CSS Module', link: '/zh/react/css/cssModule' },
+                { text: 'Atomic CSS', link: '/zh/react/css/atomic' },
               ],
             },
             {
               text: 'Hook',
               items: [
-                { text: 'index', link: '/react/hooks/index' },
-                { text: 'useState', link: '/react/hooks/useState' },
+                { text: 'index', link: '/zh/react/hooks/index' },
+                { text: 'useState', link: '/zh/react/hooks/useState' },
                 {
                   text: 'useSyncExternalStore',
-                  link: '/react/hooks/useSyncExternalStore',
+                  link: '/zh/react/hooks/useSyncExternalStore',
                 },
                 {
                   text: 'useTransition',
-                  link: '/react/hooks/useTransition',
+                  link: '/zh/react/hooks/useTransition',
                 },
                 {
                   text: 'useDeferredValue',
-                  link: '/react/hooks/useDeferredValue',
+                  link: '/zh/react/hooks/useDeferredValue',
                 },
                 {
                   text: 'useEffect',
-                  link: '/react/hooks/useEffect',
+                  link: '/zh/react/hooks/useEffect',
                 },
                 {
                   text: 'useLayoutEffect',
-                  link: '/react/hooks/useLayoutEffect',
+                  link: '/zh/react/hooks/useLayoutEffect',
                 },
                 {
                   text: 'useRef',
-                  link: '/react/hooks/useRef',
+                  link: '/zh/react/hooks/useRef',
                 },
                 {
                   text: 'useImperativeHandle',
-                  link: '/react/hooks/useImperativeHandle',
+                  link: '/zh/react/hooks/useImperativeHandle',
                 },
                 {
                   text: 'useContext',
-                  link: '/react/hooks/useContext',
+                  link: '/zh/react/hooks/useContext',
                 },
                 {
                   text: 'useMemo',
-                  link: '/react/hooks/useMemo',
+                  link: '/zh/react/hooks/useMemo',
                 },
                 {
                   text: 'useCallback',
-                  link: '/react/hooks/useCallback',
+                  link: '/zh/react/hooks/useCallback',
                 },
                 {
                   text: 'useId',
-                  link: '/react/hooks/useId',
+                  link: '/zh/react/hooks/useId',
                 },
               ],
             },
             {
               text: 'API',
               items: [
-                { text: 'memo', link: '/react/apis/memo' },
-                { text: 'use', link: '/react/apis/use' },
-                { text: 'createPortal', link: '/react/apis/createPortal' },
+                { text: 'memo', link: '/zh/react/apis/memo' },
+                { text: 'use', link: '/zh/react/apis/use' },
+                { text: 'createPortal', link: '/zh/react/apis/createPortal' },
               ],
             },
             {
               text: 'Component',
               items: [
-                { text: 'index', link: '/react/component/index' },
-                { text: 'connect', link: '/react/component/connect' },
-                { text: 'controlled', link: '/react/component/controlled' },
-                { text: '&lt;Suspense&gt;', link: '/react/component/suspense' },
+                { text: 'index', link: '/zh/react/component/index' },
+                { text: 'connect', link: '/zh/react/component/connect' },
+                { text: 'controlled', link: '/zh/react/component/controlled' },
+                {
+                  text: '&lt;Suspense&gt;',
+                  link: '/zh/react/component/suspense',
+                },
               ],
             },
             {
               text: 'Router',
               items: [
-                { text: 'index', link: '/react/router/index' },
-                { text: 'Installation', link: '/react/router/installation' },
-                { text: 'Mode', link: '/react/router/mode' },
-                { text: 'Router', link: '/react/router/router' },
-                { text: 'Transfer', link: '/react/router/transfer' },
-                { text: 'Lazy', link: '/react/router/lazy' },
-                { text: 'Operation', link: '/react/router/operation' },
+                { text: 'index', link: '/zh/react/router/index' },
+                { text: 'Installation', link: '/zh/react/router/installation' },
+                { text: 'Mode', link: '/zh/react/router/mode' },
+                { text: 'Router', link: '/zh/react/router/router' },
+                { text: 'Transfer', link: '/zh/react/router/transfer' },
+                { text: 'Lazy', link: '/zh/react/router/lazy' },
+                { text: 'Operation', link: '/zh/react/router/operation' },
               ],
             },
             {
               text: 'Zustand',
               items: [
-                { text: 'Installation', link: '/react/zustand/installation' },
-                { text: 'handleState', link: '/react/zustand/handleState' },
-                { text: 'overRendering', link: '/react/zustand/overRendering' },
+                {
+                  text: 'Installation',
+                  link: '/zh/react/zustand/installation',
+                },
+                { text: 'handleState', link: '/zh/react/zustand/handleState' },
+                {
+                  text: 'overRendering',
+                  link: '/zh/react/zustand/overRendering',
+                },
                 {
                   text: 'Middlewares',
                   items: [
                     {
                       text: 'persist',
-                      link: '/react/zustand/middlewares/persist',
+                      link: '/zh/react/zustand/middlewares/persist',
                     },
                     {
                       text: 'devtools',
-                      link: '/react/zustand/middlewares/devtools',
+                      link: '/zh/react/zustand/middlewares/devtools',
                     },
                     {
                       text: 'subscribeWithSelector',
-                      link: '/react/zustand/middlewares/subscribeWithSelector',
+                      link: '/zh/react/zustand/middlewares/subscribeWithSelector',
                     },
                   ],
                 },
@@ -837,7 +851,7 @@ export default defineConfig({
             {
               text: 'Immer',
               items: [
-                { text: 'Installation', link: '/react/immer/installation' },
+                { text: 'Installation', link: '/zh/react/immer/installation' },
               ],
             },
           ],
@@ -855,6 +869,40 @@ export default defineConfig({
         darkModeSwitchLabel: '主题',
         lightModeSwitchTitle: '切换到浅色模式',
         darkModeSwitchTitle: '切换到深色模式',
+      },
+    },
+    en: {
+      label: 'English',
+      lang: 'en-US',
+      themeConfig: {
+        nav: [
+          { text: 'Home', link: '/en/' },
+          { text: 'JavaScript', link: '/en/JavaScript/' },
+          { text: 'About', link: '/en/Start' },
+        ],
+        sidebar: {
+          '/en/': [
+            {
+              text: 'Start',
+              items: [{ text: 'About', link: '/en/Start' }],
+            },
+          ],
+          '/en/JavaScript/': [
+            {
+              text: 'JavaScript',
+              items: [{ text: 'Overview', link: '/en/JavaScript/index' }],
+            },
+          ],
+        },
+        socialLinks: [
+          { icon: 'github', link: 'https://github.com/huangshuheng0405/Tools' },
+        ],
+        docFooter: { prev: 'Previous page', next: 'Next page' },
+        returnToTopLabel: 'Back to top',
+        sidebarMenuLabel: 'Menu',
+        darkModeSwitchLabel: 'Theme',
+        lightModeSwitchTitle: 'Switch to light theme',
+        darkModeSwitchTitle: 'Switch to dark theme',
       },
     },
   },
