@@ -196,7 +196,7 @@ const close = () => {
 
 defineExpose({
   open,
-  isVisible
+  isVisible,
 })
 </script>
 
@@ -226,7 +226,7 @@ defineExpose({
 
 ## 6. 全局状态管理 (Pinia)
 
-详情见 [pinia](/vue/pinia/installation)
+详情见 [pinia](/vue/pinia)
 
 ## 7. Mitt (事件总线 EventBus)
 

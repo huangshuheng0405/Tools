@@ -20,7 +20,7 @@ export default defineConfig({
 })
 ```
 
-如果请求是`/api`开头的，就会被代理到http://localhost:8080
+如果请求是`/api`开头的，就会被代理到`http://localhost:8080`
 
 如果后端接口没有`/api`，那么就涉及到`rewrite`
 
