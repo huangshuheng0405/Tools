@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: 'Esther'
-  text: 'font-end'
-  tagline: 'Vue、React、JS、Node.js'
+  text: 'Yushuxing'
+  tagline: ''
   image:
     src: /nodejs-icon.svg
     alt: Logo
@@ -13,13 +13,7 @@ hero:
   actions:
     - theme: brand
       text: 开始学习
-      link: /Start
-    - theme: vue
-      text: Vue
-      link: /vue/lifecycle
-    - theme: react
-      text: React
-      link: /react/index
+      link: /zh/Start
 
 features:
   - icon:

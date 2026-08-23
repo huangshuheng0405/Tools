@@ -3,15 +3,12 @@ layout: home
 
 hero:
   name: Esther
-  text: front-end
-  tagline: Vue · React · JS · Node.js
+  text: Yushuxing
+  tagline:
   actions:
     - theme: brand
       text: Get started
       link: /en/Start
-    - theme: alt
-      text: JavaScript
-      link: /en/JavaScript/
 
 features:
   - icon: ⚙️

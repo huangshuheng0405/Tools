@@ -1,5 +1,7 @@
 # ESlint
 
+<svg width='200px' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 600 600"><path fill="#8080F2" d="m182.7 225.3 113.9-65.7a9 9 0 0 1 9.2 0l113.8 65.7a9 9 0 0 1 4.6 8v131.4a9 9 0 0 1-4.6 8l-113.8 65.7a9 9 0 0 1-9.2 0l-113.9-65.7a9 9 0 0 1-4.6-8V233.3c0-3.3 1.8-6.4 4.6-8"/><path fill="#4B32C3" d="M596.3 288.2 460 51.4c-5-8.6-14-15-24-15H163.9a29 29 0 0 0-24 15L3.9 287.7a28 28 0 0 0 0 28l136 234.9a27 27 0 0 0 24 13h272.4a27 27 0 0 0 24-12.9l136-235.3c5-8.6 5-18.6 0-27.2m-112.8 114a10 10 0 0 1-5 8.4L305 510.6a10 10 0 0 1-9.8 0l-173.6-100a10 10 0 0 1-5.1-8.5V202c0-3.5 2-6.7 5-8.4L295 93.5a10 10 0 0 1 9.8 0l173.6 100c3 1.8 5.1 5 5.1 8.5z"/></svg>
+
 ## 快速开始
 
 ```bash
@@ -29,22 +31,22 @@ export default [
       sourceType: 'module', // 使用 ES Modules
       globals: {
         ...globals.browser, // 注入浏览器全局变量 (window, document)
-        ...globals.node // 注入 Node 全局变量 (process)
-      }
+        ...globals.node, // 注入 Node 全局变量 (process)
+      },
     },
     rules: {
       // 在这里添加你的“家法”
       'no-console': 'warn', // 允许 console，但给出警告
       'no-unused-vars': 'error', // 禁止出现未使用的变量
       'prefer-const': 'error', // 首选 const 声明
-      'vue/multi-word-component-names': 'off' // 关闭 Vue 组件名必须多单词的限制
-    }
+      'vue/multi-word-component-names': 'off', // 关闭 Vue 组件名必须多单词的限制
+    },
   },
 
   // 4. 忽略文件 (类似以前的 .eslintignore)
   {
-    ignores: ['dist/**', 'node_modules/**', 'public/**']
-  }
+    ignores: ['dist/**', 'node_modules/**', 'public/**'],
+  },
 ]
 ```
 
@@ -111,10 +113,10 @@ export default [
       parser: tseslint.parser,
       parserOptions: {
         project: ['./tsconfig.eslint.json', '**/*/tsconfig.json'], // 告诉 eslint 你的 ts 规则在哪
-        tsconfigRootDir: import.meta.dirname // 确保相对路径从项目根目录开始算
-      }
-    }
-  }
+        tsconfigRootDir: import.meta.dirname, // 确保相对路径从项目根目录开始算
+      },
+    },
+  },
 ]
 ```
 
@@ -151,7 +153,7 @@ import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default [
   // ... 其他配置
-  eslintConfigPrettier // 必须放在最后，覆盖前面的规则
+  eslintConfigPrettier, // 必须放在最后，覆盖前面的规则
 ]
 ```
 
