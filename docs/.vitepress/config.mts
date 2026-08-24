@@ -297,6 +297,10 @@ export default defineConfig({
                   text: 'Claude',
                   link: '/zh/Misc/claude',
                 },
+                {
+                  text: 'H5C3',
+                  link: '/zh/Misc/h5c3',
+                },
               ],
             },
             {
