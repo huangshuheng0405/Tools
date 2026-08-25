@@ -54,7 +54,42 @@ server: {
 }
 ```
 
-> 这个代理只在开发环境生效
+> 这个代理只在开发环境生效（`npm run dev`），当你执行`npm run build`时，这些配置不会被包含在最终的静态文件
+
+因此，在生产环境，需要将代理的二任务交给Web服务器来完成
+
+### Nginx
+
+生产环境，需要找到`nginx.conf`，在`server`块中添加一个`location`块来配置反向代理
+
+```nginx [nginx.conf]
+server {
+    listen 80;
+    server_name your-domain.com;
+    root /var/www/your-project/dist; # 指向你打包后的dist目录
+
+    # 托管前端静态文件
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # 反向代理API请求
+    location /api {
+        proxy_pass http://your-backend-server.com; # 你的后端服务器地址
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        # ... 其他proxy_set_header配置
+    }
+}
+```
+
+> 如果你的vite代理配置了`rewrite`，那么在nginx.conf中也需要配置
+
+当`proxy_pass`的地址末尾有`/`时，Nginx会自动将匹配到的路径（例如这里是`/api`），移除（即`/api`）从请求中
+
+配置完成后，运行`nginx -t`检查语法，然后执行`nginx -s reload`，重新加载nginx配置
+
+## alias
 
 ## alias
 
