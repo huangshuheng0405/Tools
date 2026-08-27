@@ -187,6 +187,10 @@ export default defineConfig({
                   text: 'HttpClient',
                   link: '/zh/backend/java/springboot/httpClient.md',
                 },
+                {
+                  text: 'Spring Cache',
+                  link: '/zh/backend/java/springboot/springCache.md',
+                },
               ],
             },
           ],
