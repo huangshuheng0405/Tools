@@ -110,6 +110,10 @@ User selectById(Long id);
 
 对于一些字段可以有，也可以没有，那么SQL就需要动态变化
 
+### `<where>`
+
+`where`标签主要用于动态生成查询语句的`WHERE`子句
+
 ```xml
 <select id="select" resultType="User">
 
@@ -131,7 +135,7 @@ User selectById(Long id);
 </select>
 ```
 
-`<Where>`很重要，比如你直接
+`<where>`很重要，比如你直接
 
 ```xml
 SELECT *
@@ -152,7 +156,35 @@ AND username = '张三'
 
 这是错误的，但是Mybatis会帮你处理`<where>`和多余的`AND`
 
-## `<foreach>`批量查询
+### `<set>`
+
+`set`标签主要用于动态生成更新语句的`SET`子句
+
+当内部有条件成立时，在SQL中插入`SET`关键字
+
+只能去除多余的逗号
+
+```xml
+<update id="updateUser">
+    UPDATE users
+    <set>
+        <if test="username != null and username != ''">
+            username = #{username},
+        </if>
+        <if test="email != null">
+            email = #{email},
+        </if>
+        <if test="age != null">
+            age = #{age}
+        </if>
+    </set>
+    WHERE id = #{id}
+</update>
+```
+
+> 注意：`<set>`内容不能为空，如果所有的内部条件都不满足，那么就不会生成`SET`关键字，会报错（如`UPDATE users  WHERE id = #{id}`）
+
+## `<foreach>`
 
 例如要查询很多个数据
 

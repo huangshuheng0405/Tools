@@ -301,6 +301,14 @@ export default defineConfig({
                   text: 'H5C3',
                   link: '/zh/Misc/h5c3',
                 },
+                {
+                  text: 'wx app',
+                  link: '/zh/Misc/wxapp',
+                },
+                {
+                  text: 'Trae',
+                  link: '/zh/Misc/trae',
+                },
               ],
             },
             {
