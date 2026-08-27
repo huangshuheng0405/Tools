@@ -313,6 +313,10 @@ export default defineConfig({
                   text: 'Trae',
                   link: '/zh/Misc/trae',
                 },
+                {
+                  text: 'nginx',
+                  link: '/zh/Misc/nginx',
+                },
               ],
             },
             {
