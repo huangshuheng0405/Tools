@@ -35,3 +35,24 @@ nginx默认会丢弃带下划线的请求头，如果一定要保留，需要在
 ```
 underscores_in_headers on;
 ```
+
+还有一个要注意的
+
+```
+location /api {
+	proxy_pass http://localhost:8080/
+}
+```
+
+这样写的话会导致`/api`被替换成`/`，导致出现双斜杠，后端路由就匹配不上出现404，记得写成`/api/`
+
+还有一种办法，就是利用重写
+
+```
+location /api {
+    rewrite ^/api(/.*)$ $1 break;
+    proxy_pass http://host.docker.internal:8080;
+}
+
+```
+

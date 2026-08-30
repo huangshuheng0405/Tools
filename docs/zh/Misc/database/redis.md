@@ -24,23 +24,27 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 
 最基础的类型，一个key对应一个value（可以是文本、数字、甚至是图片的二进制数据）
 
-命令
-
 - SET key value：设置key的值
 - GET key：获取key的值
+- MSET KEY VALUE [KEY VALUE...]：批量添加多个String类型的value
+- MGET KEY [KEY ...]：根据多个key获取多个String类型的value
+- INCR KEY：让一个整型的key自增1
+- INCRBYFLOAT：让一个浮点类型的数字自增并指定步长
+- INCRBY KEY number：让一个整形的key增加number
 - DEL key：删除key
 - EXISTS key：判断key是否存在
+- SETNX：添加一个String类型的键值对，如果这个key不存在才执行
+- SETEX：添加一个String类型的键值对，并且指定有效期
 
 ### hash
 
 哈希表，一个key对应多个field-value对，适合存储对象的多个属性，可以单独修改某个字段不影响其他字段
 
-命令
-
 - HSET key field value：设置哈希表字段的值
 - HGET key field：获取哈希表字段的值
 - HDEL key field：删除哈希表字段
 - HGETALL key：返回哈希表中的所有字段值对
+- 
 
 ### list
 
@@ -58,7 +62,7 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 
 ### set
 
-一个无序且元素唯一的字符串集合。支持数学上的交集、并集、差集运算
+一个无序且元素唯一的字符串集合。支持数学上的交集、并集、差集等运算
 
 命令
 
@@ -66,6 +70,7 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 - SREM key value：删除集合中的元素
 - SMEMBERS key：返回集合中的所有元素
 - SCARD key：返回集合中元素的数量
+- HISMEMBER key member：判断一个元素是否存在于set中
 - SINTER key1 key2 ...：返回多个集合的交集
 - SUNION key1 key2 ...：返回多个集合的并集
 - SDIFF key1 key2 ...：返回多个集合的差集
@@ -74,13 +79,16 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 
 一个有序的字符串集合，每个元素都有一个关联的分数。支持按分数排序和范围查询
 
-命令
-
 - ZADD key score member：添加元素到有序集合中
 - ZREM key member：删除有序集合中的元素
-- ZRANGE key start end：返回有序集合中指定范围的元素
+- ZSCORE key member：获取有序集合中指定元素的score值
+- ZRANK key：获取有序集合中指定元素的排名
+- ZCOUNT key min max：统计score值在范围内的元素个数
+- ZRANGE key start end：返回有序集合中指定排名范围的元素
 - ZRANGEBYSCORE key min max：返回有序集合中指定分数范围的元素
 - ZCARD key：返回有序集合中元素的数量
+
+> 所以排名默认是升序，降序则在命令的Z后面添加`REV`即可
 
 ## 通用命令
 
@@ -102,7 +110,7 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 
 #### 配置
 
-```xml [application.yml]
+```yml [application.yml]
 spring:
   data:
     redis:

@@ -60,3 +60,175 @@ public class UserRegisterDTO {
 - 职责：根据前端具体的 UI 需求，定制化展示数据。比如前端需要显示 `年龄`，但数据库存的是 `出生日期`，VO 可以把日期计算成年龄再返回。
 - 特点：面向 UI 展示，可以额外增加前端专属字段（如 `listIndex`, `totalPages`），**不包含任何业务逻辑**。
 
+## 注解
+
+### @RestController
+
+专门用来写REST API接口的Controller，把方法的返回值直接作为HTTP响应数据返回，相当于`@Controller` 加`@ResponseBody`
+
+### @RequestBody
+
+把HTTP请求体（Request Body）中的`JSON`数据，转换成`Java`对象
+
+```java
+@PostMapping
+public void add(@RequestBody DishDTO dishDTO) {
+
+}
+```
+
+### @RequestParam
+
+接受**查询参数**，`/user?id=10`
+
+```java
+@GetMapping("/user")
+public User get(@RequestParam Long id) {
+}
+```
+
+### @PathVariable
+
+接受**路径参数**，`/user/10`
+
+```java
+@GetMapping("/user/{id}")
+public User get(@PathVariable Long id) {
+}
+```
+
+### @Mapper
+
+告诉`MyBatis`，这个接口是Mapper，让`MyBatis`为它创建实现类，并交给Spring使用
+
+在项目里只写了接口没有写实现类
+
+```java
+@Mapper
+public interface UserMapper {
+
+    User getById(Long id);
+
+}
+```
+
+但是在Service的实现类可以直接注入
+
+```
+UserMapper 接口
+      ↓
+MyBatis 扫描到 @Mapper
+      ↓
+创建 Mapper 代理对象
+      ↓
+注册到 Spring 容器
+      ↓
+@Resource / @Autowired
+      ↓
+Service 获取 UserMapper
+```
+
+如果你的Mapper很多，每个接口上都要加上`@Mapper`
+
+在启动类上加上
+
+```java
+@SpringBootApplication
+@MapperScan("com.sky.mapper")
+public class SkyApplication {
+}
+```
+
+`MyBatis`就会扫描`com.sky.mapper`下的所有接口
+
+### @RequestMapping
+
+```java
+@RestController
+@RequestMapping("/admin/user")
+public class UserController {
+}
+```
+
+表示这个Controller下面的接口都以`/admin/user`开头，比如`@GetMapping("/page")`，最终接口长`/admin/user/page`
+
+### @Service
+
+用来标记一个类是“业务层组件”，让Spring自动创建并管理这个类的对象
+
+```java
+@Service
+public class DishServiceImpl implements DishService {
+
+}
+```
+
+Spring启动时发现这个注解，就会把`DishServiceImpl`创建成一个Bean，放进Spring容器，这样在Controller层才能通过`@Autowired`注入
+
+### @Resource
+
+`@Resource`用来让Spring自动把一个对象注入到你的类中
+
+如果不用注解，那就创建一个
+
+```java
+RedisService redisService = new RedisService();
+```
+
+但是不推荐这么干，它应该有Spring负责创建和管理
+
+```java
+启动Spring Boot
+      ↓
+扫描 @Component / @Service / @Repository / @Controller
+      ↓
+创建对象
+      ↓
+放入Spring容器
+```
+
+### @Bean
+
+把一个自己创建的对象交给Spring容器管理
+
+```java
+@Bean
+ ↓
+把对象放进 Spring 容器
+
+@Resource / @Autowired
+ ↓
+从 Spring 容器取对象
+```
+
+为什么需要`@Bean`，比如
+
+```java
+@Configuration
+public class Config {
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+```
+
+是第三方库/框架类，你不能或没必要去他源码上加`@Component`，直接用`@Bean`
+
+### @Controller
+
+主要用于返回页面
+
+```java
+@Controller
+public class UserController {
+
+    @GetMapping("/user")
+    public String user() {
+        return "user";
+    }
+}
+```
+
+这里的`return "user"`，可能表示：`template/user.html`

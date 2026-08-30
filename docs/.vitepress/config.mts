@@ -150,6 +150,10 @@ export default defineConfig({
                   text: 'IoC DI',
                   link: '/zh/backend/java/spring/IoC_DI.md',
                 },
+                {
+                  text: 'Spring Data Redis',
+                  link: '/zh/backend/java/spring/springDataRedis.md',
+                },
               ],
             },
             {
@@ -190,6 +194,10 @@ export default defineConfig({
                 {
                   text: 'Spring Cache',
                   link: '/zh/backend/java/springboot/springCache.md',
+                },
+                {
+                  text: 'HuTool',
+                  link: '/zh/backend/java/springboot/huTool.md',
                 },
               ],
             },
