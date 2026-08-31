@@ -184,6 +184,10 @@ export default defineConfig({
                   link: '/zh/backend/java/springboot/mybatis.md',
                 },
                 {
+                  text: 'Mybatis-Plus',
+                  link: '/zh/backend/java/springboot/mybatisPlus.md',
+                },
+                {
                   text: 'AOP',
                   link: '/zh/backend/java/springboot/aop.md',
                 },
@@ -361,8 +365,7 @@ export default defineConfig({
               text: 'Database',
               items: [
                 { text: 'index', link: '/zh/Misc/database/index.md' },
-                { text: 'DDL', link: '/zh/Misc/database/DDL.md' },
-                { text: 'DataType', link: '/zh/Misc/database/dataType.md' },
+                { text: 'SQL', link: '/zh/Misc/database/sql.md' },
                 {
                   text: 'Redis',
                   link: '/zh/Misc/database/Redis.md',
