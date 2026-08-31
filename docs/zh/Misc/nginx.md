@@ -42,13 +42,22 @@ docker run -d \
 underscores_in_headers on;
 ```
 
-特别留意 proxy_pass 末尾的斜杠 `/`
+还有一个要注意的
 
-```nginx
-location /api/ {
-proxy_pass http://backend:8080/;
+```
+location /api {
+	proxy_pass http://localhost:8080/
 }
 ```
 
-- 末尾有斜杠 `/` ，请求 /api/user 会被转发为 `http://backend:8080/user`（去掉了 /api）。
-- 末尾没有斜杠 `/` ，请求 /api/user/ 会被转发为 `http://backend:8080/api/user/`（保留了 /api）。
+这样写的话会导致`/api`被替换成`/`，导致出现双斜杠，后端路由就匹配不上出现404，记得写成`/api/`
+
+还有一种办法，就是利用重写
+
+```
+location /api {
+    rewrite ^/api(/.*)$ $1 break;
+    proxy_pass http://host.docker.internal:8080;
+}
+
+```
