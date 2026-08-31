@@ -100,16 +100,14 @@ git push origin --delete <branch-name>
 
 ## reset
 
-本地未推送的提交，撤销提交保留修改
+如果只是想撤销最近一次或多次提交，但想保留代码的修改，使用`reset`命令，`--soft`参数表示只删除提交记录，代码保留在工作区
 
 ```bash
 git reset --soft HEAD~1
 ```
 
-如果已经`git push`到远程仓库，不要使用`reset`
+如果不仅想删除提交记录，而且想彻底丢弃这几次的代码修改，使用`--hard`参数，会删除提交记录并删除工作区的修改
 
 ```bash
-git revert HEAD
+git reset --hard HEAD~1
 ```
-
-- 生成一个新的提交，内容正好是撤销最近一次提交的改动

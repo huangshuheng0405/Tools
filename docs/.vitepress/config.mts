@@ -294,7 +294,7 @@ export default defineConfig({
                   link: '/zh/Misc/docker',
                 },
                 {
-                  text: 'git',
+                  text: 'Git',
                   link: '/zh/Misc/git',
                 },
                 {
@@ -314,7 +314,7 @@ export default defineConfig({
                   link: '/zh/Misc/trae',
                 },
                 {
-                  text: 'nginx',
+                  text: 'Nginx',
                   link: '/zh/Misc/nginx',
                 },
               ],
@@ -358,6 +358,10 @@ export default defineConfig({
                 {
                   text: 'Redis',
                   link: '/zh/Misc/database/Redis.md',
+                },
+                {
+                  text: 'MySQL',
+                  link: '/zh/Misc/database/mysql.md',
                 },
               ],
             },
@@ -418,6 +422,7 @@ export default defineConfig({
               text: 'Vue',
               items: [
                 { text: 'index', link: '/zh/vue/index.md' },
+                { text: 'Teleport', link: '/zh/vue/teleport.md' },
                 { text: '生命周期', link: '/zh/vue/lifecycle' },
                 { text: 'Props', link: '/zh/vue/Props' },
                 { text: 'connect', link: '/zh/vue/Components-connect' },
@@ -492,8 +497,12 @@ export default defineConfig({
                   link: '/zh/vue/pinia',
                 },
                 {
-                  text: 'vue-router',
+                  text: 'Vue Router',
                   link: '/zh/vue/vueRouter',
+                },
+                {
+                  text: 'uniapp',
+                  link: '/zh/vue/uniapp',
                 },
               ],
             },

@@ -10,6 +10,15 @@
 docker pull nginx
 ```
 
+创建目录
+
+```
+nginx/
+├── conf/
+│   └── nginx.conf
+└── html/
+```
+
 创建容器，挂载配置文件
 
 ```bash
@@ -21,17 +30,25 @@ docker run -d \
   nginx:latest
 ```
 
-nginx默认会丢弃带下划线的请求头，如果一定要保留，需要在配置文件中添加以下内容
+然后启动容器`docker start nginx`
 
-特别留意 proxy_pass 末尾的斜杠 /
-写法一：proxy_pass http://后端地址/;（末尾带 /）
-→ 请求 /api/user 会被转发为 http://后端地址/user（去掉了 /api）。
+查看容器状态`docker ps -a`
 
-写法二：proxy_pass http://后端地址;（末尾不带 /）
-→ 请求 /api/user 会被转发为 http://后端地址/api/user（保留了 /api）。
+注意
 
-你需要根据你的后端接口是否包含 /api 前缀来决定使用哪种写法。
+> nginx默认会丢弃带下划线的请求头，如果一定要保留，需要在配置文件中添加以下内容
 
 ```
 underscores_in_headers on;
 ```
+
+特别留意 proxy_pass 末尾的斜杠 `/`
+
+```nginx
+location /api/ {
+proxy_pass http://backend:8080/;
+}
+```
+
+- 末尾有斜杠 `/` ，请求 /api/user 会被转发为 `http://backend:8080/user`（去掉了 /api）。
+- 末尾没有斜杠 `/` ，请求 /api/user/ 会被转发为 `http://backend:8080/api/user/`（保留了 /api）。
