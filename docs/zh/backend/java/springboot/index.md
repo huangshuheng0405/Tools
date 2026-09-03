@@ -232,3 +232,11 @@ public class UserController {
 ```
 
 这里的`return "user"`，可能表示：`template/user.html`
+
+### @Configuration
+
+告诉Spring，这个类是配置类，里面的可以定义交给Spring的Bean
+
+### @Component
+
+告诉Spring，把这个类创建成对象，并交给IoC容器管理

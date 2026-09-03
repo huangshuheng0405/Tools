@@ -111,3 +111,9 @@ git reset --soft HEAD~1
 ```bash
 git reset --hard HEAD~1
 ```
+
+## workflow
+
+假如你要开发新功能，通常从`main`分支切出一个新分支，例如`feature`分支，然后在`feature`分支上开发新功能。
+开发完成后，合并`feature`分支到`main`分支。
+最后，删除`feature`分支。
