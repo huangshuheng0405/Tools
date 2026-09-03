@@ -1,5 +1,26 @@
 # IoC DI
 
+## IoC
+
+控制反转（Inversion of Controll），把对象交给Spring创建和管理
+
+```
+             Spring IoC 容器
+                    ↑
+        ┌───────────┴───────────┐
+        │                       │
+   类交给 Spring            对象交给 Spring
+        │                       │
+   @Component                 @Bean
+        │
+   ┌────┼────┬────┬────┐
+   ↓    ↓    ↓    ↓    ↓
+@Service @Controller
+@RestController
+@Repository
+@Configuration
+```
+
 ## DI
 
 依赖注入（Dependence Injection），主要有**构造函数注入**，**Setter方法注入**和**接口注入**三种方式

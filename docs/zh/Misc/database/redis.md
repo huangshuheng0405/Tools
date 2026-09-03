@@ -4,20 +4,6 @@
 
 <img src="/Misc/redis.svg" alt="redis" width="180px">
 
-## with Docker
-
-先拉取镜像
-
-```bash
-docker pull redis
-```
-
-用命令启动
-
-```bash
-docker run -d --name my-redis -p 6379:6379 redis --requirepass mypassword
-```
-
 ## 数据类型
 
 Redis是一个键值对（key-value）数据库，它的value支持多种结构

@@ -14,6 +14,11 @@ Windows，直接下载Docker Desktop即可
 docker --version
 ```
 
+- `docker start container-name`：启动容器
+- `docker run ...` ：创建并启动容器
+- `docker stop container-name`：停止容器
+- `docker ps -a`：显示所有容器的状态
+
 ## Nginx
 
 ```bash
@@ -35,19 +40,15 @@ docker rm my-nginx
 
 ## MySQL
 
-前置知识
+```bash
+docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v mysql_data:/var/lib/mysql mysql:latest
+```
 
--d，后台运行（detach）
+## Redis
 
---name，容器名称，`--name mysql-container`
-
--p，端口映射，`-p 3306:3306`，左边是主机端口，右边是容器端口，外部连接就用`localhost:3306`即可
-
--e，环境变量，`-e MYSQL_ROOT_PASSWORD=123456`，设置MySQL根密码为123456
-
--v，
-
-TODO leaflet 组件
+```bash
+docker run -d --name redis -p 6379:6379 redis --requirepass 123456
+```
 
 ## Dockerfile
 
