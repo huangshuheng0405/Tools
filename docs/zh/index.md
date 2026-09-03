@@ -6,10 +6,10 @@ hero:
   text: 'Yushuxing'
   tagline: ''
   image:
-    src: /nodejs-icon.svg
-    alt: Logo
-    width: 200
-    height: 200
+    # src: /frontend-icon.svg
+    # alt: Logo
+    # width: 200
+    # height: 200
   actions:
     - theme: brand
       text: 开始学习

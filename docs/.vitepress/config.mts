@@ -21,7 +21,7 @@ export default defineConfig({
     ],
   },
   themeConfig: {
-    logo: '/nodejs-icon.svg',
+    // logo: '/frontend-icon.svg',
     outline: {
       level: [2, 3],
     },
@@ -29,7 +29,7 @@ export default defineConfig({
   title: 'front-end',
   description: 'A VitePress Site',
   ignoreDeadLinks: true,
-  head: [['link', { rel: 'icon', href: '/nodejs-icon.svg', sizes: 'any' }]],
+  head: [['link', { rel: 'icon', href: '/frontend-icon.svg', sizes: 'any' }]],
 
   // 多语言配置
   locales: {
@@ -328,6 +328,10 @@ export default defineConfig({
                 {
                   text: 'Nginx',
                   link: '/zh/Misc/nginx',
+                },
+                {
+                  text: 'JMeter',
+                  link: '/zh/Misc/jmeter',
                 },
               ],
             },

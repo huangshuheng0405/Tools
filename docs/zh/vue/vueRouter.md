@@ -298,6 +298,18 @@ const goAbout = () => {
 
 ## History Hash
 
+Vue的打包结果在n'gin'x
+
+```
+/usr/share/nginx/html/
+├── index.html
+├── assets/
+│   ├── index-xxx.js
+│   └── index-xxx.css
+```
+
+
+
 History（createWebHistory）
 
 - URL形如`xxx.com/qulification`，没有`#`
