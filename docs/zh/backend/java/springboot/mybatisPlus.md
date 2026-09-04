@@ -45,6 +45,27 @@ mybatis-plus:
       logic-not-delete-value: 0
 ```
 
+在Spring Boot启动类中添加`@MapperScan`注解，扫描Mapper文件夹
+
+```java
+package org.example._demo;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+@MapperScan("org.example._demo.mapper")
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+> Mapper 接口和 Service 层的具体写法放在文末，见 [Mapper](#mapper)、[Service](#service)
+
 ## 实体类
 
 ```java
@@ -85,37 +106,6 @@ public class User {
 - `AUTO`：数据库自增
 - `ASSIGN_ID`：雪花算法（默认），生成全局唯一 ID
 - `INPUT`：手动赋值
-
-## Mapper
-
-继承 `BaseMapper` 就有了全套 CRUD，不用写任何方法
-
-```java
-@Mapper
-public interface UserMapper extends BaseMapper<User> {
-}
-```
-
-## Service
-
-Service 层是 `BaseMapper` 的封装，提供批量操作和链式查询
-
-```java
-public interface UserService extends IService<User> {
-}
-
-@Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
-}
-```
-
-`IService` 和 `BaseMapper` 的关系
-
-- `insert` → `save`
-- `deleteById` → `removeById`
-- `updateById` → `updateById`
-- `selectById` → `getById`
-- `selectList` → `list`
 
 ## 增删改查
 
@@ -192,6 +182,8 @@ wrapper.like(User::getName, "王")
        .orderByDesc(User::getId);
 List<User> users = userMapper.selectList(wrapper);
 ```
+
+但是经常可能不用全传，
 
 常用方法
 
@@ -282,11 +274,11 @@ mybatis-plus:
 @TableField(fill = FieldFill.INSERT)
 private LocalDateTime createTime;
 
-@TableField(fill = FieldFill.INSERT_UPDATE)
+@TableField(fill = FieldFill.INSERT_UPDATE) // 只在修改时填充
 private LocalDateTime updateTime;
 ```
 
-实现 `MetaObjectHandler`
+还要实现 `MetaObjectHandler`，在`config`目录
 
 ```java
 @Component
@@ -418,3 +410,34 @@ userService.lambdaQuery()
 | `selectPage` | `page` |
 
 日常开发几乎只用 Service 层，`save` / `removeById` / `updateById` / `list(wrapper)` / `page(page, wrapper)` 就能覆盖大部分场景
+
+## Mapper
+
+继承 `BaseMapper` 就有了全套 CRUD，不用写任何方法
+
+```java
+@Mapper
+public interface UserMapper extends BaseMapper<User> {
+}
+```
+
+## Service
+
+Service 层是 `BaseMapper` 的封装，提供批量操作和链式查询
+
+```java
+public interface UserService extends IService<User> {
+}
+
+@Service
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+}
+```
+
+`IService` 和 `BaseMapper` 的关系
+
+- `insert` → `save`
+- `deleteById` → `removeById`
+- `updateById` → `updateById`
+- `selectById` → `getById`
+- `selectList` → `list`

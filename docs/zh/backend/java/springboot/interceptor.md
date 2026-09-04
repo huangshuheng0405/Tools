@@ -1,23 +1,59 @@
 # Interceptor
 
-`HandlerInterceptor`是Spring MVC提供用于拦截HTTP请求的接口，主要包含3个回调方法
+`HandlerInterceptor` 是 Spring MVC 提供用于拦截 HTTP 请求的接口，主要包含 3 个回调方法。
 
-`preHandle(request, response, handler)`
+## 三个回调方法
 
-- 触发时机：请求到达Controller方法之前
+### preHandle
+
+```java
+boolean preHandle(request, response, handler)
+```
+
+- 触发时机：请求到达 Controller 方法之前
 - 返回值：`boolean`
-  - `true`：继续向下执行（交给下一个拦截器或Controller处理）
-  - `false`：中断请求，不再调用Controller（通常用于权限不通过时直接返回响应）
+  - `true`：继续向下执行（交给下一个拦截器或 Controller 处理）
+  - `false`：中断请求，不再调用 Controller（通常用于权限不通过时直接返回响应）
 
-`postHandler(request, response, handler, modelAndView)`
+### postHandle
 
-- 触发时机：Controller方法执行完毕后、视图渲染之前（前后端分离项目中在返回响应数据前）
-- 注意：如果`preHandler`返回`false`或抛出异常，则不会执行
+```java
+void postHandle(request, response, handler, modelAndView)
+```
 
-`afterCompletion(request, response, handler, ex)`
+- 触发时机：Controller 方法执行完毕后、视图渲染之前（前后端分离项目中在返回响应数据前）
+- 注意：如果 `preHandle` 返回 `false` 或抛出异常，则不会执行
+
+### afterCompletion
+
+```java
+void afterCompletion(request, response, handler, ex)
+```
 
 - 触发时机：整个请求处理完成（包括视图渲染或数据响应完毕）之后
-- 主要用途：清理资源、性能监控、清除`ThreadLocal`变量
+- 主要用途：清理资源、性能监控、清除 `ThreadLocal` 变量
+
+## 执行顺序
+
+```
+请求
+ ↓
+preHandle          ← 返回 false 则直接中断
+ ↓ true
+Controller 方法
+ ↓
+postHandle
+ ↓
+视图渲染 / 返回响应
+ ↓
+afterCompletion    ← 无论前面是否异常，最终都会执行
+ ↓
+响应
+```
+
+存在多个拦截器时，`preHandle` 按**注册顺序**执行，而 `postHandle` 和 `afterCompletion` 按**注册的逆序**执行。
+
+## 实现拦截器
 
 ```java
 package com.example.demo.interceptor;
@@ -35,7 +71,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
-    // 目标访问之前运行 返回值 true 运行 false 不运行
+    // 目标方法执行前运行，返回 true 放行，false 拦截
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
@@ -62,10 +98,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         return true;
     }
 }
-
 ```
 
-注册拦截器（`WebMvcConfigurer`）
+## 注册拦截器
+
+实现后还要通过 `WebMvcConfigurer` 注册才会生效
 
 ```java
 package com.example.demo.config;
@@ -88,17 +125,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/**") // 拦截路径
+                .addPathPatterns("/**")        // 拦截路径
                 .excludePathPatterns("/login"); // 排除路径
     }
 }
-
 ```
 
-## 场景
+## 应用场景
 
-1. 身份认证与鉴权（Token校验）
-2. 日志记录（记录请求IP、请求URL、执行耗时等）
-3. 接口限流/防刷（结合Redis检验访问频次）
-4. 上下文信息绑定（解析Token后将用户信息存入`ThreadLocal`，并在`afterCompetion`中计时`remoove()`）
-
+1. 身份认证与鉴权（Token 校验）
+2. 日志记录（记录请求 IP、请求 URL、执行耗时等）
+3. 接口限流 / 防刷（结合 Redis 检验访问频次）
+4. 上下文信息绑定（解析 Token 后将用户信息存入 `ThreadLocal`，并在 `afterCompletion` 中调用 `remove()` 清理）
