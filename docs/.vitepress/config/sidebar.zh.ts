@@ -30,119 +30,70 @@ export default {
   '/zh/backend/java/': [
     {
       text: 'Java',
-      items: [{ text: 'index', link: '/zh/backend/java/index.md' }],
+      items: [{ text: '总览', link: '/zh/backend/java/index.md' }],
     },
     {
-      text: 'Java 基础',
+      text: '面向对象',
+      link: '/zh/backend/java/oop/index.md',
       items: [
-        { text: 'index', link: '/zh/backend/java/base/index.md' },
-        {
-          text: 'inheritance',
-          link: '/zh/backend/java/base/inheritance.md',
-        },
-        {
-          text: 'Ploymorphism',
-          link: '/zh/backend/java/base/Ploymorphism.md',
-        },
-        {
-          text: 'interface',
-          link: '/zh/backend/java/base/interface.md',
-        },
-        {
-          text: 'abstractClass',
-          link: '/zh/backend/java/base/abstractClass.md',
-        },
-        {
-          text: 'list',
-          link: '/zh/backend/java/base/list.md',
-        },
-        {
-          text: 'set',
-          link: '/zh/backend/java/base/set.md',
-        },
+        { text: '继承', link: '/zh/backend/java/oop/inheritance.md' },
+        { text: '多态', link: '/zh/backend/java/oop/Polymorphism.md' },
+        { text: '接口', link: '/zh/backend/java/oop/interface.md' },
+        { text: '抽象类', link: '/zh/backend/java/oop/abstractClass.md' },
+      ],
+    },
+    {
+      text: '集合框架',
+      link: '/zh/backend/java/collection/index.md',
+      items: [
+        { text: 'List', link: '/zh/backend/java/collection/list.md' },
+        { text: 'Set', link: '/zh/backend/java/collection/set.md' },
       ],
     },
     {
       text: 'Maven',
+      link: '/zh/backend/java/maven/index.md',
       items: [
-        { text: 'index', link: '/zh/backend/java/maven/index.md' },
-        {
-          text: 'lifeCycle',
-          link: '/zh/backend/java/maven/lifeCycle.md',
-        },
+        { text: '安装', link: '/zh/backend/java/maven/install.md' },
+        { text: '生命周期', link: '/zh/backend/java/maven/lifeCycle.md' },
       ],
     },
     {
-      text: 'Unit Test',
+      text: '单元测试',
+      link: '/zh/backend/java/unitTest/index.md',
       items: [
-        { text: 'index', link: '/zh/backend/java/unitTest/index.md' },
-        { text: 'Junit', link: '/zh/backend/java/unitTest/junit.md' },
+        { text: 'JUnit', link: '/zh/backend/java/unitTest/junit.md' },
+      ],
+    },
+    {
+      text: 'Java 工具库',
+      link: '/zh/backend/java/tool/index.md',
+      items: [
+        { text: 'HttpClient', link: '/zh/backend/java/tool/httpClient.md' },
+        { text: 'Hutool', link: '/zh/backend/java/tool/huTool.md' },
+        { text: 'Lombok', link: '/zh/backend/java/tool/lombok.md' },
       ],
     },
     {
       text: 'Spring',
+      link: '/zh/backend/java/spring/index.md',
       items: [
-        {
-          text: 'IoC DI',
-          link: '/zh/backend/java/spring/IoC_DI.md',
-        },
-        {
-          text: 'Spring Data Redis',
-          link: '/zh/backend/java/spring/springDataRedis.md',
-        },
+        { text: 'IoC DI', link: '/zh/backend/java/spring/IoC_DI.md' },
+        { text: 'AOP', link: '/zh/backend/java/spring/aop.md' },
+        { text: 'Spring Cache', link: '/zh/backend/java/spring/springCache.md' },
+        { text: 'Spring Data Redis', link: '/zh/backend/java/spring/springDataRedis.md' },
       ],
     },
     {
       text: 'Spring Boot',
+      link: '/zh/backend/java/springboot/index.md',
       items: [
-        {
-          text: 'index',
-          link: '/zh/backend/java/springboot/index.md',
-        },
-        {
-          text: 'Configuration',
-          link: '/zh/backend/java/springboot/configuration.md',
-        },
-        {
-          text: 'Filter',
-          link: '/zh/backend/java/springboot/filter.md',
-        },
-        {
-          text: 'JWT',
-          link: '/zh/backend/java/springboot/jwt.md',
-        },
-        {
-          text: 'Interceptor',
-          link: '/zh/backend/java/springboot/interceptor.md',
-        },
-        {
-          text: 'Lombok',
-          link: '/zh/backend/java/springboot/lombok.md',
-        },
-        {
-          text: 'Mybatis',
-          link: '/zh/backend/java/springboot/mybatis.md',
-        },
-        {
-          text: 'Mybatis-Plus',
-          link: '/zh/backend/java/springboot/mybatisPlus.md',
-        },
-        {
-          text: 'AOP',
-          link: '/zh/backend/java/springboot/aop.md',
-        },
-        {
-          text: 'HttpClient',
-          link: '/zh/backend/java/springboot/httpClient.md',
-        },
-        {
-          text: 'Spring Cache',
-          link: '/zh/backend/java/springboot/springCache.md',
-        },
-        {
-          text: 'HuTool',
-          link: '/zh/backend/java/springboot/huTool.md',
-        },
+        { text: 'Configuration', link: '/zh/backend/java/springboot/configuration.md' },
+        { text: 'Filter', link: '/zh/backend/java/springboot/filter.md' },
+        { text: 'Interceptor', link: '/zh/backend/java/springboot/interceptor.md' },
+        { text: 'JWT', link: '/zh/backend/java/springboot/jwt.md' },
+        { text: 'MyBatis', link: '/zh/backend/java/springboot/mybatis.md' },
+        { text: 'MyBatis-Plus', link: '/zh/backend/java/springboot/mybatisPlus.md' },
       ],
     },
   ],

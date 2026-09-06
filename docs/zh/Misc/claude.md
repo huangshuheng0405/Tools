@@ -1,7 +1,5 @@
 # Claude
 
-<img width='200px' src="/public/claude-icon.svg" alt="Claude" />
-
 ## Skills
 
 ### Superpowers

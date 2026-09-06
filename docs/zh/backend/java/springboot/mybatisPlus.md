@@ -299,6 +299,10 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 
 ## 乐观锁
 
+适合**读多写少**的场景，先正常读，不着急加锁，真正修改时再检查有没有冲突
+
+##### **具体实现：**
+
 实体字段加 `@Version`，配合 `OptimisticLockerInnerInterceptor` 插件
 
 ```java
@@ -309,7 +313,23 @@ private Integer version;
 配置插件
 
 ```java
-interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+@Configuration
+@MapperScan("com.example.mapper")
+public class MybatisPlusConfig {
+
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+
+        // 乐观锁插件
+        interceptor.addInnerInterceptor(
+                new OptimisticLockerInnerInterceptor()
+        );
+
+        return interceptor;
+    }
+}
 ```
 
 更新时自动带上版本条件

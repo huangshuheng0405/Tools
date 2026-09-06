@@ -1,4 +1,4 @@
-# 工程化 (Engineering)
+# Engineer
 
 这里记录关于前端工程化的笔记，包括构建工具、代码规范、自动化测试、持续集成等内容。
 
@@ -40,7 +40,7 @@ console.log(a)
 
 ```js [banner.js]
 module.exports = {
-  name: 'banner'
+  name: 'banner',
 }
 ```
 
@@ -66,18 +66,18 @@ module.exports = [
     input: 'src/index.ts',
     output: {
       file: 'dist/index.js',
-      format: 'esm'
+      format: 'esm',
     },
-    plugins: [importCss(), typescript()]
+    plugins: [importCss(), typescript()],
   },
   {
     plugins: [importCss(), typescript()],
     input: 'src/index.ts',
     output: {
       file: 'cjs/index.cjs',
-      format: 'cjs'
-    }
-  }
+      format: 'cjs',
+    },
+  },
 ]
 ```
 

@@ -7,12 +7,15 @@ import DefaultTheme from 'vitepress/theme'
 import 'virtual:group-icons.css'
 // @ts-ignore
 import './style.css'
+import HomeLanding from './components/HomeLanding.vue'
 
 export default {
   extends: DefaultTheme,
   Layout: () => {
     return h(DefaultTheme.Layout, null, {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
+      // 自定义中文首页（接管 hero 之下的整块区域）
+      'home-hero-after': () => h(HomeLanding),
     })
   },
   enhanceApp({ app, router, siteData }) {

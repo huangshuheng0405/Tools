@@ -51,7 +51,6 @@ export default defineConfig({
           },
           { text: 'React', link: '/zh/react/index' },
           { text: 'Engineering', link: '/zh/Engineering/' },
-          { text: 'Misc', link: '/zh/Misc/' },
           {
             text: 'Backend',
             items: [
@@ -59,7 +58,9 @@ export default defineConfig({
               { text: 'NodeJS', link: '/zh/backend/nodejs/index.md' },
             ],
           },
+          { text: 'Misc', link: '/zh/Misc/' },
         ],
+        // 侧边栏配置
         sidebar: zhSidebar,
         socialLinks: [
           { icon: 'github', link: 'https://github.com/huangshuheng0405/Tools' },

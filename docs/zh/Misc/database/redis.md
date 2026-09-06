@@ -12,39 +12,39 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 
 最基础的类型，一个key对应一个value（可以是文本、数字、甚至是图片的二进制数据）
 
-- SET key value：设置key的值
+- `SET key value`：设置key的值
 
-- GET key：获取key的值
+- `GET key`：获取key的值
 
-- MSET KEY VALUE \[KEY VALUE...]：批量添加多个String类型的value
+- `MSET KEY VALUE \[KEY VALUE...]`：批量添加多个String类型的value
 
-- MGET KEY \[KEY ...]：根据多个key获取多个String类型的value
+- `MGET KEY \[KEY ...]`：根据多个key获取多个String类型的value
 
-- INCR KEY：让一个整型的key自增1
+- `INCR KEY`：让一个整型的key自增1
 
-- INCRBYFLOAT：让一个浮点类型的数字自增并指定步长
+- `INCRBYFLOAT`：让一个浮点类型的数字自增并指定步长
 
-- INCRBY KEY number：让一个整形的key增加number
+- `INCRBY KEY number`：让一个整形的key增加number
 
-- DEL key：删除key
+- `DEL key`：删除key
 
-- EXISTS key：判断key是否存在
+- `EXISTS key`：判断key是否存在
 
-- SETNX：添加一个String类型的键值对，如果这个key不存在才执行
+- `SETNX`：添加一个String类型的键值对，如果这个key不存在才执行
 
-- SETEX：添加一个String类型的键值对，并且指定有效期
+- `SETEX`：添加一个String类型的键值对，并且指定有效期
 
 ### hash
 
 哈希表，一个key对应多个field-value对，适合存储对象的多个属性，可以单独修改某个字段不影响其他字段
 
-- HSET key field value：设置哈希表字段的值
+- `HSET key field value`：设置哈希表字段的值
 
-- HGET key field：获取哈希表字段的值
+- `HGET key field`：获取哈希表字段的值
 
-- HDEL key field：删除哈希表字段
+- `HDEL key field`：删除哈希表字段
 
-- HGETALL key：返回哈希表中的所有字段值对
+- `HGETALL key`：返回哈希表中的所有字段值对
 
 - <br />
 
@@ -54,19 +54,19 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 
 命令
 
-- LPUSH key value：头插元素到列表中
+- `LPUSH key value`：头插元素到列表中
 
-- RPUSH key value：尾插元素到列表中
+- `RPUSH key value`：尾插元素到列表中
 
-- LPOP key：弹出列表头元素并返回
+- `LPOP key`：弹出列表头元素并返回
 
-- RPOP key：弹出列表尾元素并返回
+- `RPOP key`：弹出列表尾元素并返回
 
-- LANGE key start end：返回列表中指定范围的元素
+- `LRANGE key start end`：返回列表中指定范围的元素
 
-- LREM key count value：删除列表中指定值的元素
+- `LREM key count value`：删除列表中指定值的元素
 
-- LSET key index value：设置列表中指定索引的元素
+- `LSET key index value`：设置列表中指定索引的元素
 
 ### set
 
@@ -74,51 +74,51 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 
 命令
 
-- SADD key value：添加元素到集合中
+- `SADD key value`：添加元素到集合中
 
-- SREM key value：删除集合中的元素
+- `SREM key value`：删除集合中的元素
 
-- SMEMBERS key：返回集合中的所有元素
+- `SMEMBERS key`：返回集合中的所有元素
 
-- SCARD key：返回集合中元素的数量
+- `SCARD key`：返回集合中元素的数量
 
-- HISMEMBER key member：判断一个元素是否存在于set中
+- `SISMEMBER key member`：判断一个元素是否存在于set中
 
-- SINTER key1 key2 ...：返回多个集合的交集
+- `SINTER key1 key2 ...`：返回多个集合的交集
 
-- SUNION key1 key2 ...：返回多个集合的并集
+- `SUNION key1 key2 ...`：返回多个集合的并集
 
-- SDIFF key1 key2 ...：返回多个集合的差集
+- `SDIFF key1 key2 ...`：返回多个集合的差集
 
 ### sorted set
 
 一个有序的字符串集合，每个元素都有一个关联的分数。支持按分数排序和范围查询
 
-- ZADD key score member：添加元素到有序集合中
+- `ZADD key score member`：添加元素到有序集合中
 
-- ZREM key member：删除有序集合中的元素
+- `ZREM key member`：删除有序集合中的元素
 
-- ZSCORE key member：获取有序集合中指定元素的score值
+- `ZSCORE key member`：获取有序集合中指定元素的score值
 
-- ZRANK key：获取有序集合中指定元素的排名
+- `ZRANK key member`：获取有序集合中指定元素的排名
 
-- ZCOUNT key min max：统计score值在范围内的元素个数
+- `ZCOUNT key min max`：统计score值在范围内的元素个数
 
-- ZRANGE key start end：返回有序集合中指定排名范围的元素
+- `ZRANGE key start end`：返回有序集合中指定排名范围的元素
 
-- ZRANGEBYSCORE key min max：返回有序集合中指定分数范围的元素
+- `ZRANGEBYSCORE key min max`：返回有序集合中指定分数范围的元素
 
-- ZCARD key：返回有序集合中元素的数量
+- `ZCARD key`：返回有序集合中元素的数量
 
 > 所以排名默认是升序，降序则在命令的Z后面添加`REV`即可
 
 ## 通用命令
 
-- DEL key：删除key
+- `DEL key`：删除key
 
-- EXISTS key：判断key是否存在
+- `EXISTS key`：判断key是否存在
 
-- TYPE key：返回key的类型
+- `TYPE key`：返回key的类型
 
 - <br />
 
@@ -366,12 +366,115 @@ redisTemplate.opsForValue().set("key:" + i, value, baseTime + randomTime, TimeUn
 
 > **总结对比**：
 
-| 问题   | 场景                    | 解决方案                  |
-| ---- | --------------------- | --------------------- |
-| 缓存穿透 | 查询缓存和数据库都不存在的数据       | 缓存空值 / 布隆过滤器 / 参数校验   |
-| 缓存击穿 | 热点 key 过期瞬间的高并发       | 互斥锁 / 逻辑过期            |
+| 问题     | 场景                           | 解决方案                             |
+| -------- | ------------------------------ | ------------------------------------ |
+| 缓存穿透 | 查询缓存和数据库都不存在的数据 | 缓存空值 / 布隆过滤器 / 参数校验     |
+| 缓存击穿 | 热点 key 过期瞬间的高并发      | 互斥锁 / 逻辑过期                    |
 | 缓存雪崩 | 大量 key 同时过期或 Redis 宕机 | 过期时间加随机值 / 多级缓存 / 高可用 |
 
 ## In Spring Boot
 
 在 Spring Boot 项目中的使用方式，请参考 [Spring Data Redis](./../../backend/java/spring/springDataRedis.md)
+
+## 分布式锁
+
+### 背景
+
+假设两个线程同时给同一个商品下单
+
+```
+线程A：查询库存 → 库存还有1 → 扣库存
+线程B：查询库存 → 库存还有1 → 扣库存
+```
+
+结果可能两个都成功了，库存就出问题了
+
+在单机Java程序里，可以用`synchorized`、`ReentrantLock`，但是服务部署了多台服务器，就锁不住了
+
+```
+                Nginx
+                  │
+          ┌───────┴───────┐
+          ↓               ↓
+      服务器A            服务器B
+      Java程序            Java程序
+          │               │
+      synchronized     synchronized
+```
+
+A和B时两个JVM，锁只能锁住当前JVM内的线程
+
+这时候，必须靠一个**大家都能访问到的第三方**来协调，比如Redis、Zookeeper、etcd或数据库
+
+### 定义
+
+多个进程、多台服务器上的代码再访问同一个共享资源时，同一时间只允许一个持有者操作 ，其他进程只能等待或者失败
+
+**单机**里用`synchronized`、`mutex`、`ReentrantLock`就能保证互斥，因为它们靠同一台机器上的共享内存工作。但是再分布式系统里，同一套服务器通常会部署多个实例：
+
+- 定时任务被多个实例同时触发，造成重复执行
+- 多个实例同时处理同一个订单、扣同一笔库存
+- 多实例同时写同一份共享数据，产生覆盖或重复
+
+#### 典型特征
+
+一个好的分布式锁一般满足：
+
+- **互斥性**：任意时刻最多一个持有者
+- **可容错**：持有者崩溃后，锁能自动释放，不会锁死
+- **可续期/防误删**：业务时间超过锁超时时间时，要么自动续期，要么判断锁是不是自己的
+- **高性能、高可用**：获取和释放要快，协调服务本身不能成为单点
+
+### Redis
+
+假设两个服务器同时抢锁：
+
+```
+服务器A → SET lock:order:1001 owner-A NX
+服务器B → SET lock:order:1001 owner-B NX
+```
+
+Redis是单线程执行命令，并且`SET NX`是原子操作，只能有一个成功
+
+代码大致如下：
+
+```java
+String lockKey = "lock:order:" + orderId;
+String value = UUID.randomUUID().toString();
+
+Boolean success = stringRedisTemplate.opsForValue()
+        .setIfAbsent(lockKey, value, 30, TimeUnit.SECONDS);
+
+if (Boolean.TRUE.equals(success)) {
+    try {
+        // 执行业务
+        createOrder();
+    } finally {
+        // 释放锁
+        stringRedisTemplate.delete(lockKey);
+    }
+}
+```
+
+一定要设置**过期时间**，如果服务器A拿到了锁，突然宕机了，那么别的服务器拿不到这个锁，就永远处理不了这个订单了
+
+#### 不能直接删除锁
+
+假设服务器A获得了锁，但是由于执行业务太久了，导致锁过期了，这时候服务器B获得了锁，这时候服务器A刚好又执行完业务，准备删除锁，但是这时候删除的是服务器B的锁，所以需要在删除锁的时候加个判断
+
+#### 判断+删除必须是原子的
+
+假设
+
+```
+线程A：GET → 发现是自己的
+             ↓
+        【突然暂停】
+             ↓
+锁过期
+             ↓
+线程B：获得锁
+             ↓
+线程A：DELETE
+```
+

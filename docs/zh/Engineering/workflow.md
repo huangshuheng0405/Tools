@@ -1,18 +1,18 @@
-# Git 提交工作流
+# Git
 
 > 把 `husky` + `lint-staged` + `eslint` + `prettier` + `commitlint` + `git-cz` 串起来，
 > 让每次 `git commit` 自动完成：**格式化 → 代码检查 → 提交信息校验**。
 
 ## 各工具职责
 
-| 工具 | 职责 | 触发时机 |
-| --- | --- | --- |
-| [husky](./Husky.md) | Git 钩子管理器，在 `commit` 等事件前后自动执行脚本 | 安装时激活 |
-| [lint-staged](./Husky.md#lint-staged) | 只对**暂存区**的文件执行命令，避免全量检查 | `pre-commit` 内 |
-| [eslint](./ESlint.md) | 代码质量检查 + 自动修复 | `pre-commit` 内 |
-| [prettier](./Prettier.md) | 代码格式化 | `pre-commit` 内 |
-| [commitlint](./git-cz.md#搭配commitlint) | 校验提交信息是否符合规范 | `commit-msg` |
-| [git-cz](./git-cz.md) | 交互式生成规范的提交信息 | 手动运行 `npm run commit` |
+| 工具                                     | 职责                                               | 触发时机                  |
+| ---------------------------------------- | -------------------------------------------------- | ------------------------- |
+| [husky](./Husky.md)                      | Git 钩子管理器，在 `commit` 等事件前后自动执行脚本 | 安装时激活                |
+| [lint-staged](./Husky.md#lint-staged)    | 只对**暂存区**的文件执行命令，避免全量检查         | `pre-commit` 内           |
+| [eslint](./ESlint.md)                    | 代码质量检查 + 自动修复                            | `pre-commit` 内           |
+| [prettier](./Prettier.md)                | 代码格式化                                         | `pre-commit` 内           |
+| [commitlint](./git-cz.md#搭配commitlint) | 校验提交信息是否符合规范                           | `commit-msg`              |
+| [git-cz](./git-cz.md)                    | 交互式生成规范的提交信息                           | 手动运行 `npm run commit` |
 
 ## 整体流程
 
@@ -97,10 +97,7 @@ npx lint-staged
 ```json [package.json]
 {
   "lint-staged": {
-    "*.{js,ts,jsx,tsx,vue}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
+    "*.{js,ts,jsx,tsx,vue}": ["eslint --fix", "prettier --write"]
   }
 }
 ```
