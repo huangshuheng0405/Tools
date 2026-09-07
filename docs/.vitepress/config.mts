@@ -11,9 +11,9 @@ import enSidebar from './config/sidebar.en'
 export default defineConfig({
   markdown: {
     math: true,
-    config(md) {
-      md.use(groupIconMdPlugin).use(mathjax)
-    },
+    // config(md) {
+    //   md.use(groupIconMdPlugin)
+    // },
   },
   vite: {
     plugins: [

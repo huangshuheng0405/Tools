@@ -107,50 +107,91 @@ public class User {
 - `ASSIGN_ID`：雪花算法（默认），生成全局唯一 ID
 - `INPUT`：手动赋值
 
-## 增删改查
+## 用法
+
+Mapper继承`BaseMapper<User>`后就有整套单表的CRUD，Service层继承`IService<User>`可以拿到另一套封装方法
 
 ```java
-@RestController
-@RequestMapping("/users")
-@RequiredArgsConstructor
-public class UserController {
-
-    private final UserService userService;
-
-    /** 增 */
-    @PostMapping
-    public User create(@RequestBody User user) {
-        userService.save(user);
-        return user;                  // id 已回填
-    }
-
-    /** 删 */
-    @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable Long id) {
-        return userService.removeById(id);
-    }
-
-    /** 改：只更新非 null 字段 */
-    @PutMapping("/{id}")
-    public boolean update(@PathVariable Long id, @RequestBody User user) {
-        user.setId(id);
-        return userService.updateById(user);
-    }
-
-    /** 查：按 id */
-    @GetMapping("/{id}")
-    public User getById(@PathVariable Long id) {
-        return userService.getById(id);
-    }
-
-    /** 查：条件列表 */
-    @GetMapping
-    public List<User> list(@RequestParam(required = false) String name) {
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(StringUtils.hasText(name), User::getName, name);
-        return userService.list(wrapper);
-    }
+// mapper层
+public interface UserMapper extends BaseMapper<User> {
 }
+// service层
+public interface UserService extends IService<User> {
+}
+// impl层
+@Service
+public class UserServiceImpl extends ServiceImpl<UserMapper, User>
+        implements UserService {
+}
+```
+
+Mapper方法返回受影响行数`int`：
+
+```java
+// C
+User user = new User();
+user.setName("张三");
+int rows = userMapper.insert(user);
+
+// R
+User u1 = userMapper.selectById(1L);
+List<User> all = userMapper.selectList(null);
+
+// U
+user.setId(1L);
+user.setName("李四");
+userMapper.updateById(user);
+
+// D
+userMapper.deleteById(1L);
+userMapper.deleteBatchIds(Arrays.asList(1L, 2L, 3L));
+```
+
+Service方法统一返回`boolean`或集合，命名更容易和`Mapper`区分：
+
+```java
+// C
+userService.save(user);
+
+// R
+User u = userService.getById(1L);
+List<User> list = userService.list();
+
+// U
+userService.updateById(user);
+
+// D
+userService.removeById(1L);
+userService.removeByIds(Arrays.asList(1L, 2L));
+```
+
+### Wrapper条件写法
+
+复杂查询和更新推荐用Lambda写法，编译器能检验字段名：
+
+```java
+// 条件查询
+LambdaQueryWrapper<User> qw = Wrappers.<User>lambdaQuery()
+        .like(User::getName, "张")
+        .ge(User::getAge, 18)
+        .orderByDesc(User::getId);
+
+List<User> users = userMapper.selectList(qw);
+User one = userMapper.selectOne(qw);
+
+// 按条件更新：实体存新值，wrapper 存 where
+User update = new User();
+update.setName("王五");
+userMapper.update(update,
+        Wrappers.<User>lambdaUpdate().eq(User::getId, 1L));
+
+// 直接 set 字段并带条件
+userService.update(Wrappers.<User>lambdaUpdate()
+        .set(User::getEmail, "new@example.com")
+        .eq(User::getId, 1L));
+
+// 条件删除
+userService.remove(Wrappers.<User>lambdaQuery().lt(User::getAge, 18));
 ```
 
 ### 批量操作
@@ -163,7 +204,7 @@ userService.removeByIds(idList);        // 批量删除
 
 ### updateById 注意点
 
-`updateById` 只更新**非 null** 字段，如果想把字段清空（设为 null），需要用 `UpdateWrapper`
+`updateById` 只更新**非 null** 字段，如果想把字段清空（设为 null），需要用wrapper的`set`
 
 ```java
 UpdateWrapper<User> wrapper = new UpdateWrapper<>();
@@ -173,17 +214,79 @@ userService.update(null, wrapper);
 
 ## 条件构造器
 
-比 XML 动态 SQL 好用，推荐用 `LambdaQueryWrapper`（方法引用，避免字段名写错）
+Wrapper家族
 
-```java
-LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-wrapper.like(User::getName, "王")
-       .gt(User::getAge, 18)
-       .orderByDesc(User::getId);
-List<User> users = userMapper.selectList(wrapper);
+从类型上分，核心是`abstractWrapper`，它提供了绝大多数条件方法；下面派生两类：
+
+```
+Wrapper
+└─ AbstractWrapper
+   ├─ QueryWrapper             // 查询条件 + select 字段
+   ├─ UpdateWrapper            // 更新条件 + set 字段
+   ├─ LambdaQueryWrapper       // QueryWrapper 的 Lambda 版本
+   └─ LambdaUpdateWrapper      // UpdateWrapper 的 Lambda 版本
 ```
 
-但是经常可能不用全传，
+区别只有一个核心点：`QueryWrapper`里写的**是数据库字段字符串**，容易写错且不支持编译器检查；`LambdaQueryWrapper`用`user::getName`这类方法引用，字段名改动时代码会直接报错，日常开发推荐后者
+
+```java
+List<User> users = userService.list(
+    Wrappers.<User>lambdaQuery()
+        .eq(User::getStatus, 1)                    // status = 1
+        .ne(User::getDeleted, 1)                   // deleted <> 1
+        .gt(User::getAge, 18)                      // age > 18
+        .ge(User::getScore, 60)                    // score >= 60
+        .between(User::getCreateTime, start, end)  // BETWEEN ... AND ...
+        .like(User::getName, "张")                  // name LIKE '%张%'
+        .likeRight(User::getPhone, "138")          // phone LIKE '138%'
+        .in(User::getRoleId, Arrays.asList(1L, 2L))// role_id IN (...)
+        .isNotNull(User::getEmail)                 // email IS NOT NULL
+        .orderByDesc(User::getCreateTime)          // ORDER BY create_time DESC
+);
+```
+
+##### 动态参数处理
+
+最常见的一个实用点是：条件方法第一个参数可以传`boolean`，为`false`时该条件不生效
+
+```java
+List<User> users = userService.list(
+    Wrappers.<User>lambdaQuery()
+        .like(StringUtils.hasText(name), User::getName, name)
+        .eq(status != null, User::getStatus, status)
+        .between(ageMin != null && ageMax != null,
+                 User::getAge, ageMin, ageMax)
+        .orderByDesc(User::getCreateTime)
+);
+```
+
+##### 更新
+
+LambdaUpdateWrapper既能放`where`，也能放`set`
+
+```java
+boolean updated = userService.update(
+    Wrappers.<User>lambdaUpdate()
+        .set(User::getStatus, 0)
+        .set(User::getUpdateTime, LocalDateTime.now())
+        .eq(User::getId, 100L)
+);
+
+// 需要 SQL 运算时用 setSql，例如浏览量自增
+userService.update(
+    Wrappers.<User>lambdaUpdate()
+        .setSql("view_count = view_count + 1")
+        .eq(User::getId, 100L)
+);
+```
+
+##### 删除
+
+```java
+boolean removed = userService.remove(
+    Wrappers.<User>lambdaQuery().lt(User::getAge, 18)
+);
+```
 
 常用方法
 

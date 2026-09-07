@@ -76,7 +76,66 @@ const requestInterceptorId = api.interceptors.request.use((config) => {
 api.interceptors.request.eject(requestInterceptorId)
 ```
 
-### 响应拦截：统一取 data
+### 响应拦截器
+
+```js
+axios.interceptors.response.use(
+  response => {
+    // 成功
+  },
+  error => {
+    // 失败
+  }
+)
+```
+
+进入`error`最常见的3种情况：
+
+1. 状态码不是2xx
+2. 网络请求根本没成功，后端没启动、网络断开、请求超时
+3. `validateStatus`改变了判断规则
+
+axios默认是
+
+```js·
+status <= 200 && status < 300
+```
+
+进入`error`
+
+但是可以自己修改
+
+```js
+axios.get('/user', {
+    validateStatus: status => status < 500
+})
+```
+
+另外在`error`的时候
+
+```js
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    console.log(error)
+      return Promise.reject(error)
+  }
+)
+```
+
+把错误往下继续传，否则在应用的地方就不会被`catch`捕获
+
+```js
+axios.get('/user')
+  .then(res => {
+    console.log('then')
+  })
+  .catch(err => {
+    console.log('catch')
+  })
+```
+
+这里就会进入`then`，而不是进入`catch`
 
 ```ts
 api.interceptors.response.use((response) => response.data)

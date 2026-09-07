@@ -53,8 +53,13 @@
 }
 
 @keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* Hero tagline styling */
@@ -67,7 +72,9 @@
 
 /* Feature cards hover effect */
 .VPFeature {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
   border-radius: 12px;
   border: 1px solid var(--vp-c-bg-soft);
 }
@@ -126,7 +133,9 @@
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #fff;
   box-shadow: 0 6px 18px rgba(255, 143, 199, 0.4);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease,
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
     transform 0.2s ease;
 }
 
