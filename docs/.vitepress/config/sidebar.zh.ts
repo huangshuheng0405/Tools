@@ -61,9 +61,7 @@ export default {
     {
       text: '单元测试',
       link: '/zh/backend/java/unitTest/index.md',
-      items: [
-        { text: 'JUnit', link: '/zh/backend/java/unitTest/junit.md' },
-      ],
+      items: [{ text: 'JUnit', link: '/zh/backend/java/unitTest/junit.md' }],
     },
     {
       text: 'Java 工具库',
@@ -80,20 +78,35 @@ export default {
       items: [
         { text: 'IoC DI', link: '/zh/backend/java/spring/IoC_DI.md' },
         { text: 'AOP', link: '/zh/backend/java/spring/aop.md' },
-        { text: 'Spring Cache', link: '/zh/backend/java/spring/springCache.md' },
-        { text: 'Spring Data Redis', link: '/zh/backend/java/spring/springDataRedis.md' },
+        {
+          text: 'Spring Cache',
+          link: '/zh/backend/java/spring/springCache.md',
+        },
+        {
+          text: 'Spring Data Redis',
+          link: '/zh/backend/java/spring/springDataRedis.md',
+        },
       ],
     },
     {
       text: 'Spring Boot',
       link: '/zh/backend/java/springboot/index.md',
       items: [
-        { text: 'Configuration', link: '/zh/backend/java/springboot/configuration.md' },
+        {
+          text: 'Configuration',
+          link: '/zh/backend/java/springboot/configuration.md',
+        },
         { text: 'Filter', link: '/zh/backend/java/springboot/filter.md' },
-        { text: 'Interceptor', link: '/zh/backend/java/springboot/interceptor.md' },
+        {
+          text: 'Interceptor',
+          link: '/zh/backend/java/springboot/interceptor.md',
+        },
         { text: 'JWT', link: '/zh/backend/java/springboot/jwt.md' },
         { text: 'MyBatis', link: '/zh/backend/java/springboot/mybatis.md' },
-        { text: 'MyBatis-Plus', link: '/zh/backend/java/springboot/mybatisPlus.md' },
+        {
+          text: 'MyBatis-Plus',
+          link: '/zh/backend/java/springboot/mybatisPlus.md',
+        },
       ],
     },
   ],
@@ -224,6 +237,10 @@ export default {
           text: 'JMeter',
           link: '/zh/Misc/jmeter',
         },
+        {
+          text: 'pdfjs',
+          link: '/zh/Misc/pdfjs',
+        },
       ],
     },
     {
@@ -264,6 +281,10 @@ export default {
         {
           text: 'Redis',
           link: '/zh/Misc/database/redis.md',
+        },
+        {
+          text: 'Redisson',
+          link: '/zh/Misc/database/redisson.md',
         },
         {
           text: 'MySQL',
@@ -802,9 +823,7 @@ export default {
     },
     {
       text: 'Immer',
-      items: [
-        { text: 'Installation', link: '/zh/react/immer/installation' },
-      ],
+      items: [{ text: 'Installation', link: '/zh/react/immer/installation' }],
     },
   ],
 }

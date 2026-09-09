@@ -425,7 +425,7 @@ A和B时两个JVM，锁只能锁住当前JVM内的线程
 - **可续期/防误删**：业务时间超过锁超时时间时，要么自动续期，要么判断锁是不是自己的
 - **高性能、高可用**：获取和释放要快，协调服务本身不能成为单点
 
-### Redis
+### 实现
 
 假设两个服务器同时抢锁：
 
@@ -462,19 +462,24 @@ if (Boolean.TRUE.equals(success)) {
 
 假设服务器A获得了锁，但是由于执行业务太久了，导致锁过期了，这时候服务器B获得了锁，这时候服务器A刚好又执行完业务，准备删除锁，但是这时候删除的是服务器B的锁，所以需要在删除锁的时候加个判断
 
-#### 判断+删除必须是原子的
+### Lua
 
-假设
+Lua脚本可以把`GET`和判断和`DEL`放进一个Lua脚本，保证原子性
 
+```lua
+if redis.call('GET', KEYS[1]) == ARGV[1] then
+    return redis.call('DEL', KEYS[1])
+end
+return 0
 ```
-线程A：GET → 发现是自己的
-             ↓
-        【突然暂停】
-             ↓
-锁过期
-             ↓
-线程B：获得锁
-             ↓
-线程A：DELETE
+
+`Java`调用
+
+```java
+redisTemplate.execute(
+    script,
+    Collections.singletonList("lock:order:1001"),
+    "owner-A"
+);
 ```
 
