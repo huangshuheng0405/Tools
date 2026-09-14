@@ -238,6 +238,10 @@ export default {
           text: 'JMeter',
           link: '/zh/Misc/jmeter',
         },
+        {
+          text: 'pdfjs',
+          link: '/zh/Misc/pdfjs',
+        },
       ],
     },
     {
@@ -278,6 +282,10 @@ export default {
         {
           text: 'Redis',
           link: '/zh/Misc/database/redis.md',
+        },
+        {
+          text: 'Redisson',
+          link: '/zh/Misc/database/redisson.md',
         },
         {
           text: 'MySQL',
