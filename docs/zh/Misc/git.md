@@ -100,16 +100,123 @@ git push origin --delete <branch-name>
 
 ## reset
 
-如果只是想撤销最近一次或多次提交，但想保留代码的修改，使用`reset`命令，`--soft`参数表示只删除提交记录，代码保留在工作区
+让当前分支的HEAD、暂存区、工作区，回退到某个历史提交的状态
+
+```
+工作区
+   ↓ git add
+暂存区
+   ↓ git commit
+本地仓库
+```
+
+### --soft
 
 ```bash
 git reset --soft HEAD~1
 ```
 
-如果不仅想删除提交记录，而且想彻底丢弃这几次的代码修改，使用`--hard`参数，会删除提交记录并删除工作区的修改
+撤销最近一次commit，但是**代码保留，而且放在暂存区**
+
+也就是你可以直接重新`commit`
+
+### --mixed
+
+默认行为
+
+```bash
+git reset HEAD~1
+
+git reset --mixed HEAD~1
+```
+
+撤销`commit`，同时取消`git add`，但**代码本身保留**
+
+### --hard
+
+最危险
 
 ```bash
 git reset --hard HEAD~1
+```
+
+`commit`回退，暂存区回退，工作区代码也直接回退
+
+### HEAD~1
+
+```bash
+git reset --soft HEAD~1
+```
+
+`HEAD`表示当前所在提交，`HEAD~3`表示上上上个提交。
+
+```
+A ← B ← C ← D
+            ↑
+           HEAD
+```
+
+相当于直接回退到`A`提交的状态
+
+也可以直接指定commit
+
+```bash
+git log --oneline
+```
+
+查看hash值后，直接指定commit
+
+## revert
+
+新增一个提交，把某次提交的修改抵消掉
+
+如果已经上传上去后，别的人已经基于这个提交做了修改，直接把提交干掉，会产生很多麻烦
+
+### git revert HEAD
+
+撤销最新的一次提交
+
+```
+C：
+修改了 a.java
+增加了 b.java
+删除了 c.java
+```
+
+那么`revert C`会尝试
+
+```
+恢复 a.java
+删除 b.java
+恢复 c.java
+```
+
+这个和`HEAD~1`不一样
+
+```
+HEAD     = C
+HEAD~1   = B
+HEAD~2   = A
+```
+
+### 选择
+
+```
+                 我要撤销修改
+                       │
+              ┌────────┴────────┐
+              │                 │
+        还没有 push          已经 push
+              │                 │
+        reset 很方便       公共分支？
+              │                 │
+              │          ┌──────┴──────┐
+              │          │             │
+              │         是             否
+              │          │             │
+              │        revert       看情况
+              │
+          reset
 ```
 
 ## workflow
@@ -117,3 +224,27 @@ git reset --hard HEAD~1
 假如你要开发新功能，通常从`main`分支切出一个新分支，例如`feature`分支，然后在`feature`分支上开发新功能。
 开发完成后，合并`feature`分支到`main`分支。
 最后，删除`feature`分支。
+
+## commit template
+
+`commit`规范模板
+
+```
+<emoji> <type>(<scope>): <description>
+```
+
+`scope` 表示影响的范围，例如`user`、`order`等。
+
+| Emoji | type       | 用途      | 示例                          |
+| ----- | ---------- | --------- | ----------------------------- |
+| ✨    | `feat`     | 新功能    | `✨ feat: 新增购物车功能`     |
+| 🐛    | `fix`      | 修 Bug    | `🐛 fix: 修复订单提交失败`    |
+| 📝    | `docs`     | 文档      | `📝 docs: 更新 README`        |
+| ♻️    | `refactor` | 重构      | `♻️ refactor: 重构用户服务`   |
+| 🎨    | `style`    | 样式/UI   | `🎨 style: 优化登录页面样式`  |
+| ⚡    | `perf`     | 性能优化  | `⚡ perf: 优化商品查询性能`   |
+| ✅    | `test`     | 测试      | `✅ test: 添加用户登录测试`   |
+| 🔧    | `chore`    | 杂项/配置 | `🔧 chore: 修改 Vite 配置`    |
+| 📦    | `build`    | 构建/依赖 | `📦 build: 更新依赖版本`      |
+| 👷    | `ci`       | CI/CD     | `👷 ci: 添加 GitHub Actions`  |
+| ⏪    | `revert`   | 回滚      | `⏪ revert: 回滚用户模块修改` |
