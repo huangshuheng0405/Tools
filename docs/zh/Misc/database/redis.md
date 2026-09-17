@@ -112,15 +112,108 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 
 > 所以排名默认是升序，降序则在命令的Z后面添加`REV`即可
 
+### stream
+
+Redis 5.0 新增的类型，是一个**持久化、只能追加的消息日志**，可以把它理解成一个消息队列。每条消息有唯一的 ID（格式为`时间戳-序号`，如`1526919030474-55`），写入后不可修改
+
+特点
+
+- **可回溯**：消息持久化保存，可以从任意位置重新读取
+- **多消费者**：同一条消息可以被多个消费者组分别读取（区别于 list 的“取走就没了”）
+- **阻塞读**：没有新消息时可以阻塞等待，而不是空轮询
+- **消费者组 + ACK**：支持`XACK`确认，未确认的消息可以通过`XPENDING`找回并重新投递
+
+命令
+
+- `XADD key * field value ...`：添加一条消息，`*`表示由 Redis 自动生成 ID，也可以写成`XADD key 1-1 field value`手动指定 ID
+
+- `XLEN key`：返回 Stream 中的消息数量
+
+- `XRANGE key start end [COUNT count]`：按 ID 范围读取消息，`-`表示最小 ID，`+`表示最大 ID
+
+- `XREVRANGE key end start`：倒序读取消息
+
+- `XDEL key id ...`：删除指定 ID 的消息
+
+- `XTRIM key MAXLEN count`：裁剪 Stream，只保留最新的若干条消息（也可以在写入时裁剪：`XADD key MAXLEN ~ 1000 * field value`）
+
+- `XREAD [COUNT count] [BLOCK ms] STREAMS key ... id`：从指定 ID 之后读取消息，`BLOCK 0`表示永久阻塞直到有新消息，`$`表示只读取最新消息
+
+- `XGROUP CREATE key group id [MKSTREAM]`：创建消费者组，`MKSTREAM`表示 Stream 不存在时自动创建；ID 为`$`表示从最新消息开始消费，`0`表示从头开始
+
+- `XREADGROUP GROUP group consumer [COUNT count] [BLOCK ms] STREAMS key ... id`：以消费者组成员的身份读取消息，`>`表示读取从未投递给该组的新消息
+
+- `XACK key group id ...`：确认消息已处理完成
+
+- `XPENDING key group`：查看已投递但还没确认的消息（PEL，Pending Entries List）
+
+- `XCLAIM key group consumer min-idle-time id ...`：把闲置超过指定时间的消息转交给其他消费者处理
+
+- `XAUTOCLAIM key group consumer min-idle-time start`：`XCLAIM`的自动版，一次扫描并认领多条闲置消息
+
+- `XINFO STREAM key`：查看 Stream 的详细信息
+
+- `XINFO GROUPS key`：查看所有消费者组的信息
+
+> 与 list 做消息队列的区别：list 用`LPUSH`+`BRPOP`只能做到“一条消息一个消费者”，弹出后就没了；Stream 支持消费者组和 ACK 确认，同一条消息可以分发给多个组，消费失败还能重新投递
+
 ## 通用命令
 
-- `DEL key`：删除key
+对所有数据类型都适用的命令，主要分为键操作、过期时间和数据库/统计三类
 
-- `EXISTS key`：判断key是否存在
+### 键操作
 
-- `TYPE key`：返回key的类型
+- `DEL key \[key ...]`：删除key，返回实际删除的数量
 
-- <br />
+- `UNLINK key \[key ...]`：异步删除，只把key从键空间摘除，内存回收交给后台线程。删除大key时用它，避免阻塞主线程
+
+- `EXISTS key \[key ...]`：判断key是否存在，返回存在的数量（可以一次传多个key）
+
+- `TYPE key`：返回key的类型（`string`/`hash`/`list`/`set`/`zset`/`stream`），key不存在时返回`none`
+
+- `KEYS pattern`：按模式匹配查找key，如`KEYS user:*`。**生产环境禁用**，它是全量扫描，key多的时候会阻塞Redis
+
+- `SCAN cursor \[MATCH pattern] \[COUNT count]`：渐进式遍历，每次返回一小批key和一个新的cursor，cursor为`0`表示遍历结束，是`KEYS`的生产替代方案
+
+- `RENAME key newkey`：重命名key
+
+- `RANDOMKEY`：随机返回一个key
+
+- `COPY source destination \[DB destination-db]`：复制key到目标key（或目标库）
+
+### 过期时间
+
+- `EXPIRE key seconds`：给key设置过期时间（秒）
+
+- `PEXPIRE key milliseconds`：毫秒级设置过期时间
+
+- `EXPIREAT key timestamp`：指定到期的时间戳（秒），`PEXPIREAT`为毫秒版
+
+- `TTL key`：返回剩余存活时间（秒）。`-1`表示没设置过期时间，`-2`表示key不存在
+
+- `PTTL key`：毫秒版`TTL`
+
+- `PERSIST key`：移除过期时间，让key永久有效
+
+> 用`SET`覆盖value时，过期时间会被一起清掉；而`INCR`、`LPUSH`、`HSET`这类只修改value的命令不会清除过期时间（Redis 2.6+）
+
+### 数据库与统计
+
+- `SELECT index`：切换数据库，默认有0~15共16个库（集群模式下不可用）
+
+- `DBSIZE`：返回当前库的key数量，O(1)，不会遍历所有key
+
+- `FLUSHDB \[ASYNC]`：清空当前库
+
+- `FLUSHALL \[ASYNC]`：清空所有库
+
+- `INFO \[section]`：查看服务运行信息（内存、连接数、命中率等）
+
+- `OBJECT ENCODING key`：查看key底层的编码（如`int`、`ziplist`、`hashtable`、`intset`），排查内存占用时很有用
+
+- `HELP command`：查看命令的帮助和用法
+
+> 加`ASYNC`可以让`DEL`/`FLUSHDB`/`FLUSHALL`在后台线程完成内存回收。`FLUSHALL`、`KEYS *`这类命令不要在生产环境随手执行
 
 ## 缓存三大问题
 
@@ -481,5 +574,73 @@ redisTemplate.execute(
     Collections.singletonList("lock:order:1001"),
     "owner-A"
 );
+```
+
+### 可重入锁
+
+同一个线程已经拿到锁后，可以再次拿到这把锁，而不会死锁
+
+#### 场景
+
+```java
+public void methodA() {
+    lock.lock();
+
+    methodB();
+
+    lock.unlock();
+}
+
+public void methodB() {
+    lock.lock();
+
+    // 做事情
+
+    lock.unlock();
+}
+```
+
+如果A和B用的是同一把锁，**不可重入**
+
+```
+线程 A：我想拿锁
+        ↓
+发现锁已经被线程 A 自己占着
+        ↓
+等待……
+        ↓
+但是锁必须等 methodA() 执行完才释放
+        ↓
+methodA() 又在等 methodB()
+        ↓
+💀 死锁
+```
+
+可重入的话
+
+```
+线程 A
+ ↓
+第一次 lock()
+ ↓
+锁持有次数 = 1
+ ↓
+methodB()
+ ↓
+第二次 lock()
+ ↓
+发现：还是我自己
+ ↓
+锁持有次数 = 2
+ ↓
+执行
+ ↓
+unlock()
+ ↓
+锁持有次数 = 1
+ ↓
+unlock()
+ ↓
+锁真正释放
 ```
 

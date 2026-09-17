@@ -1,18 +1,18 @@
 # Redisson
 
-Redisson 是一个基于 Netty 的 Java Redis 客户端。它不只是把 Redis 命令翻译成 Java 方法，还把 Redis 封装成了 Java 里的分布式对象和分布式服务。
+[Redisson](https://redisson.org/) 是一个基于 Netty 的 Java Redis 客户端。它不只是把 Redis 命令翻译成 Java 方法，还把 Redis 封装成了 Java 里的分布式对象和分布式服务。
 
-| Java 概念 | Redisson API | Redis 底层 |
-| --- | --- | --- |
-| 分布式锁 | `RLock` | Lua + Hash |
-| Map | `RMap` / `RMapCache` | Hash |
-| List | `RList` | List |
-| Set | `RSet` | Set |
-| 有序集合 | `RSortedSet` | ZSet |
-| 原子计数 | `RAtomicLong` | String |
-| 限流器 | `RRateLimiter` | ZSet |
-| 布隆过滤器 | `RBloomFilter` | Bit 数组 |
-| 发布订阅 | `RTopic` | Pub/Sub |
+| Java 概念  | Redisson API         | Redis 底层 |
+| ---------- | -------------------- | ---------- |
+| 分布式锁   | `RLock`              | Lua + Hash |
+| Map        | `RMap` / `RMapCache` | Hash       |
+| List       | `RList`              | List       |
+| Set        | `RSet`               | Set        |
+| 有序集合   | `RSortedSet`         | ZSet       |
+| 原子计数   | `RAtomicLong`        | String     |
+| 限流器     | `RRateLimiter`       | ZSet       |
+| 布隆过滤器 | `RBloomFilter`       | Bit 数组   |
+| 发布订阅   | `RTopic`             | Pub/Sub    |
 
 > 只是给普通方法加缓存时，Spring Data Redis + Spring Cache 已经够用；需要跨进程互斥、限流、延迟队列这类能力时，才需要 Redisson。
 
@@ -22,13 +22,13 @@ Redisson 是一个基于 Netty 的 Java Redis 客户端。它不只是把 Redis 
 
 这种方式能用，但很多细节要自己维护：
 
-| 要处理的问题 | 手写 Redis | Redisson |
-| --- | --- | --- |
-| 加锁要原子 | `SET key value NX EX` | `lock()` / `tryLock()` |
-| 防止删别人的锁 | 自己写 Lua | `unlock()` 内部已经处理 |
-| 持有者宕机 | 自己设过期时间 | 默认有过期时间 + 看门狗续期 |
-| 其他线程等待 | 自己写 `while + sleep` | 内部通过 Pub/Sub 通知 |
-| 同一个线程重复加锁 | 自己维护计数 | 默认可重入 |
+| 要处理的问题       | 手写 Redis             | Redisson                    |
+| ------------------ | ---------------------- | --------------------------- |
+| 加锁要原子         | `SET key value NX EX`  | `lock()` / `tryLock()`      |
+| 防止删别人的锁     | 自己写 Lua             | `unlock()` 内部已经处理     |
+| 持有者宕机         | 自己设过期时间         | 默认有过期时间 + 看门狗续期 |
+| 其他线程等待       | 自己写 `while + sleep` | 内部通过 Pub/Sub 通知       |
+| 同一个线程重复加锁 | 自己维护计数           | 默认可重入                  |
 | 业务时间超过锁时间 | 只能自己续期或加长超时 | 不传 `leaseTime` 时自动续期 |
 
 Redisson 底层也是靠 Redis 的原子命令 + Lua 实现的，只是把这些细节封装好了。
@@ -105,14 +105,14 @@ RLock lock = redissonClient.getLock("lock:order:" + orderId);
 
 ### 常用方法
 
-| 方法 | 行为 |
-| --- | --- |
-| `lock()` | 一直阻塞等待，直到拿到锁；开启看门狗 |
-| `lock(10, TimeUnit.SECONDS)` | 一直等待；拿到后 10 秒自动释放，不开启看门狗 |
-| `tryLock()` | 只尝试一次，立刻返回 `true / false`；开启看门狗 |
-| `tryLock(3, TimeUnit.SECONDS)` | 最多等 3 秒，拿不到返回 `false`；开启看门狗 |
+| 方法                               | 行为                                            |
+| ---------------------------------- | ----------------------------------------------- |
+| `lock()`                           | 一直阻塞等待，直到拿到锁；开启看门狗            |
+| `lock(10, TimeUnit.SECONDS)`       | 一直等待；拿到后 10 秒自动释放，不开启看门狗    |
+| `tryLock()`                        | 只尝试一次，立刻返回 `true / false`；开启看门狗 |
+| `tryLock(3, TimeUnit.SECONDS)`     | 最多等 3 秒，拿不到返回 `false`；开启看门狗     |
 | `tryLock(3, 10, TimeUnit.SECONDS)` | 最多等 3 秒；拿到后 10 秒自动释放，不开启看门狗 |
-| `unlock()` | 释放锁，必须由持锁线程调用 |
+| `unlock()`                         | 释放锁，必须由持锁线程调用                      |
 
 ### 阻塞式写法
 
@@ -154,7 +154,23 @@ try {
 
 必须把 `unlock()` 放在 `finally` 里，否则业务抛异常后锁可能不会释放。
 
-## 看门狗
+## 看门狗（Watchdog）
+
+> 锁快过期了，Redission自动续期，防止业务没执行玩，锁提前失效
+
+### 背景
+
+假如你使用分布式锁，锁30s后自动过期
+
+```bash
+SET lock:order:1001 owner-abc NX PX 30000
+```
+
+但是你的业务执行了40s，这时候另一个线程可能拿到这把锁，两个线程可能**执行本来互斥**的业务
+
+所以引入看门狗
+
+### 用法
 
 Redisson 的默认看门狗时间是 30 秒，底层仍然是“给锁设置一个过期时间”。
 
@@ -179,6 +195,8 @@ lock.lock(10, TimeUnit.SECONDS);
 ```
 
 > 看门狗只是续期，不是绝对安全。如果线程长时间 GC 暂停或网络分区超过 30 秒，锁仍可能被其他实例抢到。保护外部系统写入时，需要能校验令牌（fencing token）的方案。
+
+如果直接设置一个很长的过期时间，一旦服务奔溃，就会导致死锁/长时间锁死
 
 ## 可重入
 
@@ -215,13 +233,13 @@ boolean maybeExists = bloom.contains("1001");
 
 锁之外的常见选择：
 
-| 需求 | API |
-| --- | --- |
-| 读多写少 | `getReadWriteLock()` |
-| 控制并发数量 | `getSemaphore()` |
-| 抢购、限流 | `getRateLimiter()` |
-| 先来先服务 | `getFairLock()` |
-| 发布订阅 | `getTopic()` |
+| 需求         | API                  |
+| ------------ | -------------------- |
+| 读多写少     | `getReadWriteLock()` |
+| 控制并发数量 | `getSemaphore()`     |
+| 抢购、限流   | `getRateLimiter()`   |
+| 先来先服务   | `getFairLock()`      |
+| 发布订阅     | `getTopic()`         |
 
 ## 注意事项
 

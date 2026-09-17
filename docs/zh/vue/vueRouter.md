@@ -298,7 +298,7 @@ const goAbout = () => {
 
 ## History Hash
 
-Vue的打包结果在n'gin'x
+Vue的打包结果在nginx
 
 ```
 /usr/share/nginx/html/
@@ -308,8 +308,6 @@ Vue的打包结果在n'gin'x
 │   └── index-xxx.css
 ```
 
-
-
 History（createWebHistory）
 
 - URL形如`xxx.com/qulification`，没有`#`
@@ -317,10 +315,18 @@ History（createWebHistory）
 - 服务器时静态托管的（nginx/OSS/CDN）,目录下只有`index.html`，其他文件都不存在，会返回404错误
 - 解决办法：服务端配置fallback，把所有位置路径重定向到`index.html`（nginx用`try_files`，OSS控制台开 [默认首页+404都指向index.html`]）
 
+配置如下
+
+```
+location / {
+    try_files $uri $uri/ /index.html;
+}
+```
+
 Hash（createWebHashHistory）
 
 - URL形如`xxx.com/#/qulification`，`#`后面叫hash片段
-- 按HTTP规范，hash不会发送到服务器，服务器只收到`GET /`
+- 按HTTP规范，hash片段不会发送到服务器，服务器只收到`GET /`
 - 服务器根目录本来就有`index.html`，正常返回
 - 浏览器拿到`index.html`，Vue Router 读取`location.hash`在客户端切到`/qulification`路由，然后正常显示
 - 不需要服务端配合

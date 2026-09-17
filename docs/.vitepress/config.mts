@@ -25,7 +25,7 @@ export default defineConfig({
   themeConfig: {
     // logo: '/frontend-icon.svg',
     outline: {
-      level: [2, 3],
+      level: [1, 5],
     },
   },
   title: 'front-end',

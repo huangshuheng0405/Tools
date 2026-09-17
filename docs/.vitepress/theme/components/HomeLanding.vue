@@ -1,110 +1,117 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { useData } from 'vitepress'
-import CommitGraph from './CommitGraph.vue'
+import { data as pageUrls } from '../notes.data'
 
 const { page } = useData()
 
 // 只接管中文首页，英文首页保持默认 layout
 const show = computed(() => (page.value.relativePath || '').startsWith('zh/'))
 
-interface Tag {
+interface NoteLink {
   text: string
   link: string
-  size: 'xl' | 'lg' | 'md' | 'sm'
 }
 
-// 所有链接对应仓库里真实存在的笔记页（与侧边栏一致）
-const TAGS: Tag[] = [
-  { text: 'JavaScript', link: '/zh/JavaScript/', size: 'xl' },
-  { text: 'Vue', link: '/zh/vue/lifecycle', size: 'xl' },
-  { text: 'React', link: '/zh/react/index', size: 'xl' },
+interface Category {
+  title: string
+  desc: string
+  // 用于统计篇数的 URL 前缀，同时也是这张卡片的归类范围
+  prefix: string
+  notes: NoteLink[]
+}
 
-  { text: 'TypeScript', link: '/zh/JavaScript/ts', size: 'lg' },
-  { text: 'Spring Boot', link: '/zh/backend/java/springboot/', size: 'lg' },
-  { text: 'Node.js', link: '/zh/backend/nodejs/', size: 'lg' },
-  { text: 'Docker', link: '/zh/Misc/docker', size: 'lg' },
-  { text: 'Git', link: '/zh/Misc/git', size: 'lg' },
-  { text: 'Webpack', link: '/zh/Engineering/Webpack/index', size: 'lg' },
-
-  { text: 'Vite', link: '/zh/Engineering/vite', size: 'md' },
-  { text: 'Express', link: '/zh/backend/express', size: 'md' },
-  { text: 'Koa', link: '/zh/backend/koa', size: 'md' },
-  { text: 'MongoDB', link: '/zh/backend/MongoDB', size: 'md' },
-  { text: 'Mongoose', link: '/zh/backend/mongoose', size: 'md' },
-  { text: 'MySQL', link: '/zh/Misc/database/mysql', size: 'md' },
-  { text: 'Redis', link: '/zh/Misc/database/redis', size: 'md' },
-  { text: 'MyBatis-Plus', link: '/zh/backend/java/springboot/mybatisPlus', size: 'md' },
-  { text: 'JWT', link: '/zh/backend/java/springboot/jwt', size: 'md' },
-  { text: 'Pinia', link: '/zh/vue/pinia', size: 'md' },
-  { text: 'Nuxt', link: '/zh/vue/nuxt/Structure/app/pages', size: 'md' },
-  { text: 'React Hooks', link: '/zh/react/hooks/index', size: 'md' },
-  { text: 'XSS', link: '/zh/Security/xss', size: 'md' },
-  { text: 'Event Loop', link: '/zh/JavaScript/EventLoop', size: 'md' },
-  { text: 'Promise', link: '/zh/JavaScript/Promise', size: 'md' },
-  { text: '闭包', link: '/zh/JavaScript/Closure', size: 'md' },
-  { text: '原型链', link: '/zh/JavaScript/Prototype_Chain', size: 'md' },
-
-  { text: 'ESLint', link: '/zh/Engineering/ESlint', size: 'sm' },
-  { text: 'Prettier', link: '/zh/Engineering/Prettier', size: 'sm' },
-  { text: 'Husky', link: '/zh/Engineering/Husky', size: 'sm' },
-  { text: 'Rollup', link: '/zh/Engineering/rollup', size: 'sm' },
-  { text: 'esbuild', link: '/zh/Engineering/esbuild', size: 'sm' },
-  { text: 'Nginx', link: '/zh/Misc/nginx', size: 'sm' },
-  { text: 'JMeter', link: '/zh/Misc/jmeter', size: 'sm' },
-  { text: 'AOP', link: '/zh/backend/java/springboot/aop', size: 'sm' },
-  { text: 'IoC / DI', link: '/zh/backend/java/spring/IoC_DI', size: 'sm' },
-  { text: 'Maven', link: '/zh/backend/java/maven/', size: 'sm' },
-  { text: '设计模式', link: '/zh/DesignPatterns/index', size: 'sm' },
-  { text: 'SSE', link: '/zh/network/SSE', size: 'sm' },
-  { text: '虚拟列表', link: '/zh/vue/virtualList', size: 'sm' },
-  { text: 'CSS Modules', link: '/zh/react/css/cssModule', size: 'sm' },
-  { text: '柯里化', link: '/zh/JavaScript/Curring', size: 'sm' },
+// 六张主卡片。链接都指向真实存在的笔记页，
+// 而不是分类的 index.md —— 那些页面目前只有一张 logo，点进去是空的。
+const CATEGORIES: Category[] = [
+  {
+    title: 'JavaScript',
+    desc: '语言核心、异步与手写题',
+    prefix: '/zh/JavaScript/',
+    notes: [
+      { text: '闭包', link: '/zh/JavaScript/Closure' },
+      { text: '原型链', link: '/zh/JavaScript/Prototype_Chain' },
+      { text: '事件循环', link: '/zh/JavaScript/EventLoop' },
+      { text: 'Promise', link: '/zh/JavaScript/Promise' },
+    ],
+  },
+  {
+    title: 'Vue',
+    desc: '响应式、组件与生态',
+    prefix: '/zh/vue/',
+    notes: [
+      { text: '生命周期', link: '/zh/vue/lifecycle' },
+      { text: '响应式原理', link: '/zh/vue/reponsive' },
+      { text: 'Pinia', link: '/zh/vue/pinia' },
+      { text: 'Vue Router', link: '/zh/vue/vueRouter' },
+    ],
+  },
+  {
+    title: 'React',
+    desc: 'Hooks、状态管理与路由',
+    prefix: '/zh/react/',
+    notes: [
+      { text: 'Hooks', link: '/zh/react/hooks/index' },
+      { text: 'Zustand', link: '/zh/react/zustand/installation' },
+      { text: 'React Router', link: '/zh/react/router/index' },
+      { text: 'CSS Modules', link: '/zh/react/css/cssModule' },
+    ],
+  },
+  {
+    title: 'Java & Spring',
+    desc: 'IoC、AOP 与 Spring Boot',
+    prefix: '/zh/backend/java/',
+    notes: [
+      { text: 'IoC / DI', link: '/zh/backend/java/spring/IoC_DI' },
+      { text: 'AOP', link: '/zh/backend/java/spring/aop' },
+      { text: 'Spring Boot', link: '/zh/backend/java/springboot/' },
+      { text: 'MyBatis-Plus', link: '/zh/backend/java/springboot/mybatisPlus' },
+    ],
+  },
+  {
+    title: '工程化',
+    desc: '构建、规范与 CI',
+    prefix: '/zh/Engineering/',
+    notes: [
+      { text: 'Webpack', link: '/zh/Engineering/webpack' },
+      { text: 'Vite', link: '/zh/Engineering/vite' },
+      { text: 'ESLint', link: '/zh/Engineering/ESlint' },
+      { text: 'Husky', link: '/zh/Engineering/Husky' },
+    ],
+  },
+  {
+    title: '数据库与运维',
+    desc: 'MySQL、Redis 与部署',
+    prefix: '/zh/Misc/',
+    notes: [
+      { text: 'MySQL', link: '/zh/Misc/database/mysql' },
+      { text: 'Redis', link: '/zh/Misc/database/redis' },
+      { text: 'Docker', link: '/zh/Misc/docker' },
+      { text: 'Nginx', link: '/zh/Misc/nginx' },
+    ],
+  },
 ]
 
-// 字号档位（像素区间，min → max）：档与档之间留出明显级差，
-// 核心知识(JS/Vue/React)超大，逐档锐减到迷你小项；档内再叠稳定哈希轻微浮动。
-const SZ_RANGE: Record<Tag['size'], [number, number]> = {
-  xl: [26, 30],
-  lg: [18, 21],
-  md: [14, 16],
-  sm: [11, 12],
+// 卡片装不下的零散主题，收成一行小链接，避免它们从首页消失
+const MORE: NoteLink[] = [
+  { text: 'Node.js 服务端', link: '/zh/backend/' },
+  { text: 'MongoDB', link: '/zh/backend/MongoDB' },
+  { text: 'Sequelize', link: '/zh/backend/sequelize' },
+  { text: '设计模式', link: '/zh/DesignPatterns/' },
+  { text: '小程序', link: '/zh/Misc/wxapp' },
+  { text: '网络', link: '/zh/network/SSE' },
+  { text: '安全', link: '/zh/Security/xss' },
+  { text: '面试', link: '/zh/Interview/Session_Cookie' },
+]
+
+// 分类 index 页的 url 带尾斜杠，普通页面不带，两种形态都兜住
+function countOf(prefix: string) {
+  const bare = prefix.replace(/\/$/, '')
+  return pageUrls.filter((u) => u.startsWith(prefix) || u === bare).length
 }
 
-// FNV-1a 风格哈希 → [0,1)，同一标签每次渲染结果一致
-function hash01(name: string) {
-  let h = 2166136261
-  for (const ch of name) {
-    h = Math.imul(h ^ (ch.codePointAt(0) ?? 0), 16777619) >>> 0
-  }
-  return h / 4294967296
-}
-
-function tagFontSize(t: Tag) {
-  const [lo, hi] = SZ_RANGE[t.size]
-  return Math.round((lo + hash01(t.text) * (hi - lo)) * 2) / 2
-}
-
-// mulberry32 伪随机，固定种子 → 打乱结果稳定，服务端/客户端渲染一致
-function mulberry32(seed: number) {
-  return () => {
-    seed |= 0
-    seed = (seed + 0x6d2b79f5) | 0
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
-
-// 打乱展示顺序：让大小不一的标签交错出现，而不是按档位一排排排列
-const shuffledTags = [...TAGS]
-{
-  const rnd = mulberry32(20240905)
-  for (let i = shuffledTags.length - 1; i > 0; i--) {
-    const j = Math.floor(rnd() * (i + 1))
-    ;[shuffledTags[i], shuffledTags[j]] = [shuffledTags[j], shuffledTags[i]]
-  }
-}
+// 首页自己不算“笔记”
+const total = pageUrls.filter((u) => u !== '/zh/').length
 
 let ctx: any = null
 
@@ -119,30 +126,16 @@ onMounted(async () => {
   const mod = await import('gsap')
   const gsap = mod.gsap ?? (mod as any).default
 
+  // 只给卡片做入场：Hero 含 h1（LCP 元素），从透明淡入会推迟首屏渲染，
+  // 「每屏最多动画 1-2 个关键元素」也要求收敛动效范围
   ctx = gsap.context(() => {
-    gsap.from('.hl-rv', {
+    gsap.from('.hl-cat', {
       opacity: 0,
-      y: 20,
-      duration: 0.9,
-      stagger: 0.12,
+      y: 16,
+      duration: 0.4,
       ease: 'power2.out',
-      delay: 0.05,
-    })
-    gsap.from('.fs-tag', {
-      opacity: 0,
-      y: 12,
-      scale: 0.92,
-      duration: 0.45,
-      ease: 'back.out(1.8)',
-      stagger: { each: 0.012, from: 'random' },
-      delay: 0.3,
-    })
-    gsap.from('.commitgraph', {
-      opacity: 0,
-      y: 18,
-      duration: 0.7,
-      ease: 'power2.out',
-      delay: 0.55,
+      stagger: { each: 0.04 },
+      delay: 0.1,
     })
   })
 })
@@ -154,12 +147,19 @@ onBeforeUnmount(() => ctx?.revert())
   <div v-if="show" class="home-landing">
     <div class="hl-inner">
       <header class="hl-hero">
-        <p class="hl-eyebrow hl-rv">ESTHER YUSHUXING · 全栈笔记</p>
-        <h1 class="hl-title hl-rv">全栈学习笔记</h1>
-        <p class="hl-tagline hl-rv">
+        <p class="hl-eyebrow">ESTHER YUSHUXING</p>
+        <h1 class="hl-title">全栈学习笔记</h1>
+        <p class="hl-tagline">
           从 JavaScript、Vue / React，到 Node.js、Java 与数据库，把学过的、踩过的坑，沉淀成能反复查阅的笔记。
         </p>
-        <div class="hl-actions hl-rv">
+        <p class="hl-meta">
+          <span>{{ total }} 篇</span>
+          <span class="hl-dot" aria-hidden="true"></span>
+          <span>{{ CATEGORIES.length }} 个分类</span>
+          <span class="hl-dot" aria-hidden="true"></span>
+          <span>持续更新</span>
+        </p>
+        <div class="hl-actions">
           <a class="hl-btn primary" href="/zh/Start">开始学习</a>
           <a
             class="hl-btn ghost"
@@ -171,81 +171,102 @@ onBeforeUnmount(() => ctx?.revert())
         </div>
       </header>
 
-      <section class="fs" aria-label="知识点导航">
-        <p class="fs-cap">
-          <span class="fs-prompt">$</span> 点击标签，直达对应笔记
-        </p>
-        <div class="fs-cloud">
-          <a
-            v-for="t in shuffledTags"
-            :key="t.text"
-            class="fs-tag"
-            :class="`sz-${t.size}`"
-            :style="{ fontSize: tagFontSize(t) + 'px' }"
-            :href="t.link"
-            >{{ t.text }}</a
-          >
-        </div>
+      <section class="hl-cats" aria-label="分类导航">
+        <article v-for="(c, i) in CATEGORIES" :key="c.title" class="hl-cat">
+          <header class="hl-cat-meta">
+            <span class="hl-cat-idx">{{ String(i + 1).padStart(2, '0') }}</span>
+            <span class="hl-cat-rule" aria-hidden="true"></span>
+            <span class="hl-cat-count">{{ countOf(c.prefix) }} 篇</span>
+          </header>
+          <h2 class="hl-cat-title">{{ c.title }}</h2>
+          <p class="hl-cat-desc">{{ c.desc }}</p>
+          <ul class="hl-cat-links">
+            <li v-for="n in c.notes" :key="n.link">
+              <a :href="n.link">{{ n.text }}</a>
+            </li>
+          </ul>
+        </article>
       </section>
 
-      <CommitGraph />
+      <nav class="hl-more" aria-label="其他主题">
+        <span class="hl-more-label">更多</span>
+        <a v-for="m in MORE" :key="m.link" :href="m.link">{{ m.text }}</a>
+      </nav>
     </div>
   </div>
 </template>
 
 <style scoped>
+/*
+ * 视觉方向：Swiss Modernism 2.0（documentation 场景）
+ * 三条硬约束：单一强调色（--vp-c-brand-1，只用在可交互处）、不用渐变/阴影、
+ * 间距与字号走固定刻度。颜色全部取自站点 token，浅色/深色自动一致。
+ *
+ * 刻度：间距 8 的倍数 · 字号 12/14/16/18 · 圆角 6（小）/ 10（中）
+ */
 .home-landing {
-  /* 首页着陆区局部品牌色覆盖为翡翠绿（不影响全站） */
-  --vp-c-brand-1: #10b981;
-  position: relative;
-  overflow: hidden;
   width: 100%;
-  padding: clamp(64px, 12vh, 140px) 24px 72px;
+  padding: 96px 24px;
 }
 
 .hl-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 900px;
+  max-width: 1152px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+}
+
+.hl-hero {
+  max-width: 720px;
+  margin: 0 auto;
   text-align: center;
 }
 
 .hl-eyebrow {
-  margin: 0 0 22px;
+  margin: 0 0 16px;
   font-family: var(--vp-font-family-mono);
-  font-size: 12.5px;
-  letter-spacing: 0.2em;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.18em;
   color: var(--vp-c-text-3);
 }
 
 .hl-title {
   margin: 0;
-  font-size: clamp(42px, 8vw, 76px);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  background: linear-gradient(
-    92deg,
-    var(--vp-c-brand-1),
-    #2dd4bf 55%,
-    #0d9488
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 180% 180%;
+  /* 中文不加负字距：CJK 字形本身已经紧凑，再压会挤在一起 */
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: var(--vp-c-text-1);
 }
 
 .hl-tagline {
-  margin: 22px auto 0;
+  margin: 24px auto 0;
   max-width: 560px;
-  font-size: clamp(15px, 2vw, 17px);
-  line-height: 1.85;
+  font-size: 16px;
+  line-height: 1.75;
   color: var(--vp-c-text-2);
+}
+
+.hl-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 24px 0 0;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  line-height: 1;
+  color: var(--vp-c-text-3);
+  /* 数字等宽，避免篇数变化时整行宽度跳动 */
+  font-variant-numeric: tabular-nums;
+}
+
+.hl-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
 }
 
 .hl-actions {
@@ -253,36 +274,34 @@ onBeforeUnmount(() => ctx?.revert())
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .hl-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  padding: 11px 26px;
+  min-height: 44px;
+  padding: 0 24px;
+  border-radius: 10px;
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
     background-color 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .hl-btn.primary {
-  color: #fff;
-  background: linear-gradient(90deg, #10b981, #059669);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 22px rgba(16, 185, 129, 0.35);
+  color: var(--vp-c-white);
+  background: var(--vp-c-brand-1);
+  border: 1px solid var(--vp-c-brand-1);
 }
 
 .hl-btn.primary:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(90deg, #059669, #047857);
-  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.5);
+  background: var(--vp-c-brand-2);
+  border-color: var(--vp-c-brand-2);
 }
 
 .hl-btn.ghost {
@@ -296,94 +315,194 @@ onBeforeUnmount(() => ctx?.revert())
   color: var(--vp-c-brand-1);
 }
 
-/* ---------------- 知识点标签云 ---------------- */
-
-.fs {
-  margin-top: clamp(48px, 7vh, 84px);
-  width: 100%;
-  text-align: center;
-}
-
-.fs-cap {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 22px;
-  font-family: var(--vp-font-family-mono);
-  font-size: 13px;
-  letter-spacing: 0.03em;
-  color: var(--vp-c-text-3);
-}
-
-.fs-prompt {
-  color: #3fb950;
-  user-select: none;
-}
-
-.fs-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 10px 12px;
-  max-width: 780px;
-  margin: 0 auto;
-}
-
-.fs-tag {
-  display: inline-flex;
-  align-items: center;
-  line-height: 1;
-  border-radius: 999px;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-border);
-  color: var(--vp-c-text-1);
-  text-decoration: none;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  /* 内边距用 em：高度与宽度都随内联字号等比缩放 */
-  padding: 0.5em 1em;
-  transition:
-    transform 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.fs-tag:hover {
-  transform: translateY(-2px);
-  background: var(--vp-c-bg);
-  border-color: var(--vp-c-brand-1);
-  color: var(--vp-c-brand-1);
-  box-shadow: 0 10px 22px -14px var(--vp-c-brand-1);
-}
-
-.fs-tag:focus-visible {
+.hl-btn:focus-visible {
   outline: 2px solid var(--vp-c-brand-1);
   outline-offset: 2px;
 }
 
-.sz-xl {
-  font-weight: 800;
+/* ---------------- 分类卡片 ---------------- */
+
+.hl-cats {
+  margin-top: 64px;
+  display: grid;
+  /* 固定列数而不是 auto-fill：列宽与断点都可预期，符合栅格化排版 */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
-.sz-lg {
-  font-weight: 700;
+.hl-cat {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 10px;
+  background: var(--vp-c-bg);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
 
-.sz-md {
+/* 悬停只改描边与底色，不做位移和投影 —— 避免布局抖动 */
+.hl-cat:hover {
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-bg-soft);
+}
+
+.hl-cat-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hl-cat-idx {
+  color: var(--vp-c-brand-1);
   font-weight: 600;
 }
 
-.sz-sm {
-  font-weight: 500;
+/* 拉一条细线撑满剩余空间，把编号和篇数分列两端 */
+.hl-cat-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--vp-c-border);
+}
+
+.hl-cat-count {
+  color: var(--vp-c-text-3);
+}
+
+.hl-cat-title {
+  margin: 20px 0 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--vp-c-text-1);
+}
+
+.hl-cat-desc {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
   color: var(--vp-c-text-2);
 }
 
-@media (max-width: 640px) {
-  .fs-cloud {
-    gap: 8px 10px;
+.hl-cat-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--vp-c-border);
+  list-style: none;
+}
+
+.hl-cat-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-bg);
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.hl-cat-links a:hover {
+  color: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+}
+
+/* 键盘焦点环：卡片里的链接默认没有任何焦点样式 */
+.hl-cat-links a:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+/* 触摸设备上把窄链接撑到 44px，鼠标端保持紧凑 */
+@media (pointer: coarse) {
+  .hl-cat-links a {
+    min-height: 44px;
+  }
+}
+
+/* ---------------- “更多”小链接 ---------------- */
+
+.hl-more {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 20px;
+  font-size: 14px;
+}
+
+.hl-more-label {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--vp-c-text-3);
+}
+
+.hl-more a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.hl-more a:hover {
+  color: var(--vp-c-brand-1);
+  border-bottom-color: var(--vp-c-brand-1);
+}
+
+.hl-more a:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+  .hl-more a {
+    min-height: 44px;
+  }
+}
+
+/* ---------------- 断点：768 / 1024 ---------------- */
+
+@media (max-width: 1023px) {
+  .hl-cats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .home-landing {
+    padding: 64px 20px;
+  }
+
+  .hl-cats {
+    grid-template-columns: 1fr;
+    margin-top: 48px;
+  }
+
+  .hl-cat {
+    padding: 20px;
   }
 }
 </style>

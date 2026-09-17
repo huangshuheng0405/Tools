@@ -203,7 +203,7 @@ http {                                    # 所有 HTTP 相关配置都在这里
 
 配置多了可以用 `include` 拆分，官方镜像的默认配置就有 `include /etc/nginx/conf.d/*.conf;`，即把每个站点单独写成一个 conf 文件放进 `conf.d` 目录
 
-### location 匹配优先级
+### location
 
 匹配顺序有优先级，从高到低：
 

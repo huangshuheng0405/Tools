@@ -179,6 +179,14 @@ export default {
           link: '/zh/Engineering/axios',
         },
         {
+          text: 'Day.js',
+          link: '/zh/Engineering/dayjs',
+        },
+        {
+          text: 'Volta',
+          link: '/zh/Engineering/volta',
+        },
+        {
           text: 'Rollup',
           link: '/zh/Engineering/rollup',
         },
