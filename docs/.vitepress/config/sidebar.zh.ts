@@ -48,6 +48,7 @@ export default {
       items: [
         { text: 'List', link: '/zh/backend/java/collection/list.md' },
         { text: 'Set', link: '/zh/backend/java/collection/set.md' },
+        { text: 'Map', link: '/zh/backend/java/collection/map.md' },
       ],
     },
     {
