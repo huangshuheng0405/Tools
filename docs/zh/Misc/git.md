@@ -26,6 +26,45 @@
 当本地修改与远程代码修改了同一文件的相同位置时，会触发冲突。
 用户需要手动解决冲突，寻找 <<<<<<<、======= 和 >>>>>>> 标记，手动删改代码并保存
 
+## git push -u
+
+`-u`是`--set-upstream`的简写，推送的同时，把本地分支和远程分支**关联起来**
+
+```bash
+git push -u origin <branch-name>
+```
+
+第一次推送一个新分支时要带上`-u`，它做了两件事：
+
+1. 把本地分支推送到远程的`origin/<branch-name>`
+2. 记录这个本地分支的**上游分支**（upstream），也就是告诉git「以后这个本地分支对应哪个远程分支」
+
+关联好之后，后续在这个分支上直接
+
+```bash
+git push
+
+git pull
+```
+
+就行，不用再写`origin <branch-name>`，git会自动找到上游分支
+
+查看本地分支和上游分支的对应关系
+
+```bash
+git branch -vv
+```
+
+输出里带`[origin/main]`的，就是已经关联过上游的分支
+
+如果推送时看到
+
+```plaintext
+fatal: The current branch xxx has no upstream branch.
+```
+
+说明当前分支还没设置上游，加上`-u`重新推一次即可
+
 ## git merge git rebase
 
 git merge
@@ -97,6 +136,37 @@ git branch -d <branch-name>
 ```bash
 git push origin --delete <branch-name>
 ```
+
+## git switch
+
+Git 2.23 引入的命令，专门用来切换分支，把原本`git checkout`里「切换分支」的职责单独拆出来，语义更清晰
+
+切换分支
+
+```bash
+git switch <branch-name>
+```
+
+创建新分支并切换到该分支（相当于`git checkout -b`）
+
+```bash
+git switch -c <branch-name>
+```
+
+切回上一个分支
+
+```bash
+git switch -
+```
+
+### 和 checkout 的区别
+
+| 命令           | 用途                             |
+| -------------- | -------------------------------- |
+| `git switch`   | 只用于切换分支                   |
+| `git checkout` | 既能切换分支，也能恢复工作区文件 |
+
+`git checkout <branch>`和`git checkout <file>`写法完全一样，容易误操作，所以官方把它拆成了`git switch`（切分支）和`git restore`（恢复文件）
 
 ## reset
 
@@ -224,6 +294,96 @@ HEAD~2   = A
 假如你要开发新功能，通常从`main`分支切出一个新分支，例如`feature`分支，然后在`feature`分支上开发新功能。
 开发完成后，合并`feature`分支到`main`分支。
 最后，删除`feature`分支。
+
+这样做的好处是：`main`始终保持可用，功能没开发完也不会影响别人，出问题直接删掉分支就行
+
+### 1. 切出功能分支
+
+先让`main`保持在最新状态，再从它切出分支
+
+```bash
+git switch main
+
+git pull
+
+git switch -c feature
+```
+
+一定要先`pull`，如果基于过期的代码开发，合并时冲突会多很多
+
+### 2. 开发并提交
+
+```bash
+git add .
+
+git commit -m "✨ feat: 新增xxx功能"
+```
+
+提交粒度尽量小，一个提交只做一件事，这样出问题时用`revert`单独撤销某一个提交就行
+
+### 3. 推送并关联上游
+
+第一次推送要带`-u`
+
+```bash
+git push -u origin feature
+```
+
+### 4. 合并回 main
+
+功能开发完、自测通过后，切回`main`合并
+
+```bash
+git switch main
+
+git pull
+
+git merge feature
+```
+
+如果在团队里协作，这一步通常是提一个 **PR / Merge Request**，由别人 review 后在平台上点合并，而不是自己本地`merge`完直接`push`
+
+如果`main`上别人也改到了同一个文件的同一位置，这里就会冲突，解决方式见前面的`git pull`
+
+不想要合并提交、希望历史是一条直线的话，可以改用`git rebase`
+
+### 5. 推送 main
+
+```bash
+git push
+```
+
+### 6. 删除功能分支
+
+合并完成后，`feature`的提交已经进到`main`里了，这个分支就没用了
+
+删除本地分支
+
+```bash
+git branch -d feature
+```
+
+删除远程分支
+
+```bash
+git push origin --delete feature
+```
+
+`-d`是安全删除，如果分支还没合并会报错提醒你；确认真的不要了，可以用`-D`强制删除
+
+### 整体流程
+
+```plaintext
+git switch main && git pull
+git switch -c feature
+        ↓ 开发、commit
+git push -u origin feature
+        ↓ 提 PR / code review
+git switch main && git pull
+git merge feature
+git push
+git branch -d feature
+```
 
 ## commit template
 
