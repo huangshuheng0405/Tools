@@ -1,6 +1,7 @@
 // https://vitepress.dev/guide/custom-theme
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
+import Layout from './Layout.vue'
 // 忽略对虚拟模块的类型检查
 // @ts-ignore
 import 'virtual:group-icons.css'
@@ -9,6 +10,7 @@ import './style.css'
 
 export default {
   extends: DefaultTheme,
+  Layout,
   enhanceApp({ app, router, siteData }) {
     // 未配置 root locale，访问首页时重定向到默认语言 zh
     if (typeof window !== 'undefined' && window.location.pathname === '/') {

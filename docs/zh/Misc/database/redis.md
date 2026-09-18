@@ -112,6 +112,94 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 
 > 所以排名默认是升序，降序则在命令的Z后面添加`REV`即可
 
+#### 滚动分页
+
+把`score`当作**游标**来翻页，而不是用排名偏移量。典型场景是朋友圈/Feed流：score存发布时间戳，按时间倒序往下拉。
+
+**为什么不用偏移量分页**
+
+`ZRANGE key start end`是按排名取元素的，翻页期间只要有人发了新动态，排名就会整体后移：
+
+```
+第一页拿到：[A, B, C]
+期间有人发了新动态D，D插到了最前面
+第二页 start=3：拿到的是C、D...，C被重复读取了
+```
+
+**滚动分页的做法**
+
+每次用上一页最后一条的`score`作为下一页的查询边界。这里的坑是**score会重复**（同一毫秒发布的多条动态分数相同），所以除了`minTime`还要带一个`offset`，用来跳过上一页里分数等于`minTime`的那几条
+
+```
+第一页：ZREVRANGEBYSCORE feed:1 +inf 0 WITHSCORES LIMIT 0 3
+        返回 score：1000、999、999
+        最后一条 score = 999，其中等于 999 的有 2 条 → minTime=999，offset=2
+
+第二页：ZREVRANGEBYSCORE feed:1 999 0 WITHSCORES LIMIT 2 3
+        offset=2 跳过已经拿过的那两条 999
+```
+
+`max`是闭区间（包含等于`minTime`的元素），所以必须靠`offset`去重；只有当score确定不会重复时，才能改用开区间`(999`并配合`offset=0`
+
+**对应到 Spring Data Redis 的 API**
+
+`ZSetOperations`里的方法签名：
+
+```java
+Set<ZSetOperations.TypedTuple<String>> reverseRangeByScoreWithScores(
+        K key, double min, double max, long offset, long count)
+```
+
+它包装的就是`ZREVRANGEBYSCORE key max min WITHSCORES LIMIT offset count`，五个参数一一对应：`min`/`max`是score的上下界（闭区间），`offset`跳过匹配到的前几条，`count`是页大小。所以`reverseRangeByScoreWithScores(key, 0, max, offset, 2)`就是“score在0~max之间、按score倒序、跳过前offset条、最多取2条，并且带上score”
+
+- `min`写`0`是因为score是时间戳，远大于0，相当于不设下界
+- `max`就是游标`minTime`，首次请求传当前时间戳
+- `offset`就是上一页算出来的`os`，首次传`0`
+
+返回的`Set<TypedTuple<String>>`里每个元素是一个成员：`getValue()`拿member（blogId），`getScore()`拿分数（`Double`）。方法名里的`WithScores`就是把score一起返回，没有它就拿不到下一页的游标（只返回member的`reverseRangeByScore`做不了滚动分页）
+
+> 注意**参数顺序是反的**：原生命令先写`max`再写`min`（因为是倒序），Spring的方法签名是`min`在前、`max`在后。传反了结果直接为空
+
+> 返回类型名义上是`Set`，但Spring内部用的是`LinkedHashSet`保序，遍历顺序就是score从高到低。下面的循环依赖这个顺序，别把结果收集进`HashSet`
+
+Java里算出下一页游标的逻辑：
+
+```java
+public ScrollResult scroll(Long max, Integer offset) {
+    String key = "feed:" + userId;
+    // 按 score 倒序取，max 为上一页最后一条的 score（首次请求传当前时间戳），offset 首次传 0
+    Set<ZSetOperations.TypedTuple<String>> tuples = stringRedisTemplate.opsForZSet()
+            .reverseRangeByScoreWithScores(key, 0, max, offset, 3);
+
+    if (tuples == null || tuples.isEmpty()) {
+        return new ScrollResult();   // 没有更多数据，说明到底了
+    }
+
+    List<Long> ids = new ArrayList<>(tuples.size());
+    long minTime = 0;
+    int os = 1;   // 下一页要跳过的数量
+
+    for (ZSetOperations.TypedTuple<String> tuple : tuples) {
+        ids.add(Long.valueOf(tuple.getValue()));
+        long time = tuple.getScore().longValue();
+        if (time == minTime) {
+            os++;              // 和上一条分数相同，跳过量 +1
+        } else {
+            minTime = time;    // 分数变了，从这一条重新计数
+            os = 1;
+        }
+    }
+    // 把 minTime 和 os 返回给前端，作为下一页的 max 和 offset
+    return new ScrollResult(ids, minTime, os);
+}
+```
+
+前端拿到`minTime`和`offset`后原样回传，就能一直往下滚
+
+> 对比：`ZRANGE key start end`是偏移量分页，数据一变动就错位；滚动分页用score定位，只要没有比`minTime`更新的数据插入，翻页就稳定。代价是**不支持跳页**，只能“下一页/滚动加载”
+
+> Redis 6.2+ 也可以用统一命令写：`ZRANGE key max min BYSCORE REV WITHSCORES LIMIT offset count`，等价于`ZREVRANGEBYSCORE`
+
 ### stream
 
 Redis 5.0 新增的类型，是一个**持久化、只能追加的消息日志**，可以把它理解成一个消息队列。每条消息有唯一的 ID（格式为`时间戳-序号`，如`1526919030474-55`），写入后不可修改
