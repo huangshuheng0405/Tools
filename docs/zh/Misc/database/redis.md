@@ -245,6 +245,30 @@ Redis 5.0 新增的类型，是一个**持久化、只能追加的消息日志**
 
 > 与 list 做消息队列的区别：list 用`LPUSH`+`BRPOP`只能做到“一条消息一个消费者”，弹出后就没了；Stream 支持消费者组和 ACK 确认，同一条消息可以分发给多个组，消费失败还能重新投递
 
+### geo
+
+Redis 3.2 新增，用来存经纬度并做「附近的人」「附近的店」这类范围查询。它**没有自己的底层结构**——member 是地点名或用户 ID，score 是经纬度经 geohash 编码后的 52 位整数，所以本质就是一个 sorted set，`ZREM`、`ZCARD`、`ZRANGE` 都能直接作用在 geo key 上
+
+- `GEOADD key longitude latitude member [longitude latitude member ...]`：添加一个或多个坐标点。**经度在前、纬度在后**，写反了纬度多半会超出 85.05 而报错，凑巧两个值都在合法范围内则会静默存错——这类 bug 只有等查询结果不对才会发现
+
+- `GEOPOS key member [member ...]`：返回成员的经纬度
+
+- `GEODIST key member1 member2 [M|KM|FT|MI]`：计算两个成员之间的距离，不指定单位默认是米
+
+- `GEOHASH key member [member ...]`：返回标准的 11 位 geohash 字符串，可以拿去和其他 geohash 工具对接
+
+- `GEOSEARCH key <FROMMEMBER member | FROMLONLAT longitude latitude> <BYRADIUS radius unit | BYBOX width height unit> [ASC|DESC] [COUNT count [ANY]] [WITHCOORD] [WITHDIST] [WITHHASH]`：范围查询。`FROM*` 指定中心点（按成员或按坐标），`BY*` 指定是圆形还是矩形范围，后面三个 `WITH*` 决定要不要把坐标、距离、geohash 一并返回
+
+- `GEOSEARCHSTORE destination source <...>`：参数和`GEOSEARCH`一样，但把结果写进另一个 key；加`STOREDIST`可以把距离当作 score 存下来，方便后续再排序
+
+- `ZREM key member`：删除一个点（没有专门的`GEODEL`命令）
+
+> Redis 6.2 之前用的是`GEORADIUS key longitude latitude radius unit`和`GEORADIUSBYMEMBER key member radius unit`，这俩把「按坐标」和「按成员」拆成了两个命令，6.2 起已废弃，新代码直接用`GEOSEARCH`
+
+> 三个容易踩的点：**纬度范围是`-85.05112878 ~ 85.05112878`**（Web 墨卡托的边界），不是`-90 ~ 90`，超出会报错；**`GEODIST`返回的是字符串**，要参与数值计算得先转 double；距离按**球面（Haversine）**算，地球被当成正球体，长距离下和真实值有零点几个百分点的偏差
+
+> `GEOSEARCH`的`COUNT`只表示「取最近的 n 个」，**没有 offset 参数**，所以做不到跳页；要翻页只能把`COUNT`放大再自己裁，或者用`GEOSEARCHSTORE`把结果落到另一个 key 里再查
+
 ## 通用命令
 
 对所有数据类型都适用的命令，主要分为键操作、过期时间和数据库/统计三类
