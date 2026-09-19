@@ -14,8 +14,7 @@ const groups: { title: string; icons: string[] }[] = [
       'html.svg',
       'css.svg',
       'css-3.svg',
-      'sass.svg',
-      'less.svg',
+
       'markdown.svg',
       'c-plusplus.svg',
       'dart.svg',
@@ -38,6 +37,7 @@ const groups: { title: string; icons: string[] }[] = [
       'lodash.svg',
       'promises.svg',
       'd3.svg',
+      'socket-io.svg',
     ],
   },
   {
@@ -49,6 +49,7 @@ const groups: { title: string; icons: string[] }[] = [
       'nutui.png',
       'echarts.svg',
       'threejs.svg',
+      'gsap.svg',
     ],
   },
   {
@@ -66,6 +67,8 @@ const groups: { title: string; icons: string[] }[] = [
       'tailwind.svg',
       'unocss.svg',
       'eslint.svg',
+      'sass.svg',
+      'less.svg',
       'prettier.svg',
       'stylelint.svg',
       'vitest.svg',
@@ -99,6 +102,7 @@ const groups: { title: string; icons: string[] }[] = [
   {
     title: '运维部署与工具',
     icons: [
+      'linux.svg',
       'docker.svg',
       'kubernetes.svg',
       'nginx.svg',
@@ -115,6 +119,7 @@ const groups: { title: string; icons: string[] }[] = [
       'mdn.svg',
       'claude.svg',
       'flutter.svg',
+      'chatgpt.svg',
     ],
   },
   {
@@ -126,7 +131,12 @@ const groups: { title: string; icons: string[] }[] = [
       'trae.svg',
       'clion.svg',
       'webstorm.svg',
+      'chrome.svg',
     ],
+  },
+  {
+    title: '其他',
+    icons: ['luogu.svg', 'atcoder.svg'],
   },
 ]
 
