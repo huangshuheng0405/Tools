@@ -77,6 +77,7 @@ const groups: { title: string; icons: string[] }[] = [
       'yarn.svg',
       'bun.svg',
       'nvm.svg',
+      'leaflet.svg',
     ],
   },
   {
@@ -126,14 +127,17 @@ const groups: { title: string; icons: string[] }[] = [
     ],
   },
   {
-    title: '编辑器',
+    title: 'Tools',
     icons: [
       'visual-studio-code.svg',
-      'intellij-idea.svg',
       'sublimetext.svg',
       'trae.svg',
+      'jetbrains-icon.svg',
+      'intellij-idea.svg',
       'clion.svg',
+      'datagrip.svg',
       'webstorm.svg',
+      'pycharm.svg',
       'chrome.svg',
     ],
   },

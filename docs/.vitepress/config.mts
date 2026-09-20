@@ -42,20 +42,17 @@ export default defineConfig({
         nav: [
           { text: 'Home', link: '/zh/' },
           {
-            text: '前端',
+            text: 'front',
             items: [
               { text: 'JavaScript', link: '/zh/JavaScript/' },
               { text: 'Vue', link: '/zh/vue/lifecycle' },
               { text: 'React', link: '/zh/react/index' },
-              { text: '工程化', link: '/zh/Engineering/' },
-              { text: '设计模式', link: '/zh/DesignPatterns/index' },
+              { text: 'Engineering', link: '/zh/Engineering/' },
               { text: 'HTML/CSS', link: '/zh/frontend/h5c3' },
-              { text: '性能优化', link: '/zh/frontend/performanceOptimization' },
-              { text: '小程序', link: '/zh/frontend/wxapp' },
             ],
           },
           {
-            text: '后端',
+            text: 'end',
             items: [
               { text: 'Java', link: '/zh/backend/java/' },
               { text: 'NodeJS', link: '/zh/backend/nodejs/index.md' },
@@ -67,16 +64,15 @@ export default defineConfig({
             ],
           },
           {
-            text: '数据库',
+            text: 'database',
             items: [
               { text: 'SQL', link: '/zh/database/sql' },
               { text: 'MySQL', link: '/zh/database/mysql' },
               { text: 'Redis', link: '/zh/database/redis' },
-              { text: 'Redisson', link: '/zh/database/redisson' },
             ],
           },
           {
-            text: '运维',
+            text: 'devops',
             items: [
               { text: 'Docker', link: '/zh/devops/docker' },
               { text: 'Nginx', link: '/zh/devops/nginx' },
@@ -85,23 +81,12 @@ export default defineConfig({
             ],
           },
           {
-            text: '基础',
-            items: [
-              { text: 'HTTP', link: '/zh/network/HTTP' },
-              { text: 'SSE', link: '/zh/network/SSE' },
-              { text: 'XSS 跨站脚本攻击', link: '/zh/Security/xss' },
-            ],
+            text: 'network',
+            link: '/zh/network/',
           },
           {
-            text: '其他',
-            items: [
-              { text: '面试题', link: '/zh/Interview/Session_Cookie' },
-              { text: 'VSCode 插件', link: '/zh/tools/vscodePlugin' },
-              { text: 'Trae', link: '/zh/tools/trae' },
-              { text: 'Claude', link: '/zh/tools/claude' },
-              { text: 'VitePress 分组图标', link: '/zh/tools/vitepress-icon' },
-              { text: 'IDE 配置', link: '/zh/tools/Tutorial' },
-            ],
+            text: 'misc',
+            link: '/zh/misc/',
           },
         ],
         // 侧边栏配置
@@ -160,10 +145,8 @@ export default defineConfig({
             ],
           },
           {
-            text: 'Tools',
-            items: [
-              { text: 'VSCode Plugin', link: '/en/tools/vscodePlugin' },
-            ],
+            text: 'Network',
+            items: [{ text: 'VSCode Plugin', link: '/en/tools/vscodePlugin' }],
           },
         ],
         sidebar: enSidebar,

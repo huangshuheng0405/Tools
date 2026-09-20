@@ -52,6 +52,6 @@ features:
   - icon: 🎨
     title: 设计模式 & 更多
     details: 单例、工厂、发布订阅、观察者等常用设计模式，以及虚拟列表、性能优化、面试题等实用内容
-    link: /zh/DesignPatterns/index
+    link: /zh/misc/DesignPatterns/index
     linkText: 开始学习
 ---

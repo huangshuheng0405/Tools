@@ -204,21 +204,13 @@ export default {
   ],
   '/zh/frontend/': [
     {
-      text: '前端实践',
-      items: [
-        { text: 'HTML/CSS', link: '/zh/frontend/h5c3' },
-        { text: '小程序', link: '/zh/frontend/wxapp' },
-        { text: '性能优化', link: '/zh/frontend/performanceOptimization' },
-        { text: '图片懒加载', link: '/zh/frontend/lazyImages' },
-        { text: '文件上传', link: '/zh/frontend/fileUpload' },
-        { text: 'Web API', link: '/zh/frontend/WebAPI' },
-        { text: 'PDF 预览', link: '/zh/frontend/pdfjs' },
-      ],
+      text: 'frontend',
+      items: [{ text: 'HTML/CSS', link: '/zh/frontend/h5c3' }],
     },
   ],
   '/zh/devops/': [
     {
-      text: '运维 / DevOps',
+      text: 'devOps',
       items: [
         { text: 'Docker', link: '/zh/devops/docker' },
         { text: 'Nginx', link: '/zh/devops/nginx' },
@@ -229,7 +221,7 @@ export default {
   ],
   '/zh/database/': [
     {
-      text: '数据库',
+      text: 'database',
       items: [
         { text: 'index', link: '/zh/database/index' },
         { text: 'SQL', link: '/zh/database/sql' },
@@ -239,15 +231,53 @@ export default {
       ],
     },
   ],
-  '/zh/tools/': [
+  '/zh/misc/': [
     {
-      text: '工具',
+      text: 'misc',
       items: [
-        { text: 'VSCode 插件', link: '/zh/tools/vscodePlugin' },
-        { text: 'Trae', link: '/zh/tools/trae' },
-        { text: 'Claude', link: '/zh/tools/claude' },
-        { text: 'IDE 配置', link: '/zh/tools/Tutorial' },
-        { text: 'VitePress 分组图标', link: '/zh/tools/vitepress-icon' },
+        { text: 'VSCode plugin', link: '/zh/misc/vscodePlugin' },
+        { text: 'Trae', link: '/zh/misc/trae' },
+        { text: 'Claude', link: '/zh/misc/claude' },
+        { text: 'IDE 配置', link: '/zh/misc/Tutorial' },
+        { text: 'VitePress icon', link: '/zh/misc/vitepress-icon' },
+        {
+          text: 'Design Patterns',
+          collapsed: true,
+          items: [
+            { text: 'index', link: '/zh/misc/DesignPatterns/index' },
+            {
+              text: 'Singleton Pattern',
+              link: '/zh/misc/DesignPatterns/Singleton',
+            },
+            {
+              text: 'Factory Pattern',
+              link: '/zh/misc/DesignPatterns/Factory',
+            },
+            {
+              text: 'Pub-Sub Pattern',
+              link: '/zh/misc/DesignPatterns/Pub-Sub',
+            },
+            {
+              text: 'Observer Pattern',
+              link: '/zh/misc/DesignPatterns/Observer',
+            },
+            {
+              text: 'Strategy Pattern',
+              link: '/zh/misc/DesignPatterns/Strategy',
+            },
+            {
+              text: 'Decorator Pattern',
+              link: '/zh/misc/DesignPatterns/Decorator',
+            },
+            { text: 'MVVM', link: '/zh/misc/DesignPatterns/MVVM' },
+          ],
+        },
+        { text: '小程序', link: '/zh/misc/wxapp' },
+        { text: 'perf', link: '/zh/misc/performanceOptimization' },
+        { text: 'lazy images', link: '/zh/misc/lazyImages' },
+        { text: 'file upload', link: '/zh/misc/fileUpload' },
+        { text: 'Web API', link: '/zh/misc/WebAPI' },
+        { text: 'PDF', link: '/zh/misc/pdfjs' },
       ],
     },
   ],
@@ -612,48 +642,18 @@ export default {
       items: [{ text: 'Start', link: '/zh/Start' }],
     },
   ],
-  '/zh/DesignPatterns/': [
-    {
-      text: '设计模式',
-      items: [
-        {
-          text: 'index',
-          link: '/zh/DesignPatterns/index',
-        },
-        {
-          text: 'Singleton Pattern',
-          link: '/zh/DesignPatterns/Singleton',
-        },
-        { text: 'Factory Pattern', link: '/zh/DesignPatterns/Factory' },
-        { text: 'Pub-Sub Pattern', link: '/zh/DesignPatterns/Pub-Sub' },
-        {
-          text: 'Observer Pattern',
-          link: '/zh/DesignPatterns/Observer',
-        },
-        {
-          text: 'Strategy Pattern',
-          link: '/zh/DesignPatterns/Strategy',
-        },
-        {
-          text: 'Decorator Pattern',
-          link: '/zh/DesignPatterns/Decorator',
-        },
-        { text: 'MVVM', link: '/zh/DesignPatterns/MVVM' },
-      ],
-    },
-  ],
   '/zh/network/': [
     {
-      text: '计算机网络',
+      text: 'network',
       items: [
-        { text: 'HTTP', link: '/zh/network/HTTP' },
+        { text: 'http', link: '/zh/network/http' },
         { text: 'SSE', link: '/zh/network/SSE' },
       ],
     },
   ],
   '/zh/Security/': [
     {
-      text: 'Web 安全',
+      text: 'security',
       items: [{ text: 'XSS 跨站脚本攻击', link: '/zh/Security/xss' }],
     },
   ],

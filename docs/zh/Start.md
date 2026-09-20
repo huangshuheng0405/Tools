@@ -44,7 +44,7 @@ Node.js 基础模块、Express / Koa 框架、MongoDB / Mongoose / Sequelize 数
 
 单例、工厂、发布订阅、观察者、策略、装饰器、MVVM 等常用设计模式及其在前端的应用场景。
 
-👉 [开始学习](/zh/DesignPatterns/index)
+👉 [开始学习](/zh/misc/DesignPatterns/index)
 
 ### 前端实践 & 面试题
 
@@ -85,7 +85,7 @@ docs/zh/
 │   ├── vue-router/   #   路由
 │   └── nuxt/         #   Nuxt 框架
 ├── Engineering/      # 工程化实践
-├── DesignPatterns/   # 设计模式
+├── misc/             # 杂项（设计模式 / IDE 配置 / VitePress）
 ├── backend/          # 后端技术（Java / Node.js）
 ├── database/         # 数据库（SQL / MySQL / Redis）
 ├── devops/           # 运维（Docker / Nginx / Git / JMeter）
