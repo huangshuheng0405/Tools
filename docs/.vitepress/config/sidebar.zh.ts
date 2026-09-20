@@ -202,103 +202,52 @@ export default {
       ],
     },
   ],
-  '/zh/Misc/': [
+  '/zh/frontend/': [
     {
-      text: 'Tips',
+      text: '前端实践',
       items: [
-        {
-          text: 'vscode plugin',
-          link: '/zh/Misc/vscodePlugin',
-        },
-        {
-          text: 'performanceOptimization',
-          link: '/zh/Misc/performanceOptimization',
-        },
-        {
-          text: 'Docker',
-          link: '/zh/Misc/docker',
-        },
-        {
-          text: 'Git',
-          link: '/zh/Misc/git',
-        },
-        {
-          text: 'Claude',
-          link: '/zh/Misc/claude',
-        },
-        {
-          text: 'H5C3',
-          link: '/zh/Misc/h5c3',
-        },
-        {
-          text: 'wx app',
-          link: '/zh/Misc/wxapp',
-        },
-        {
-          text: 'Trae',
-          link: '/zh/Misc/trae',
-        },
-        {
-          text: 'Nginx',
-          link: '/zh/Misc/nginx',
-        },
-        {
-          text: 'JMeter',
-          link: '/zh/Misc/jmeter',
-        },
-        {
-          text: 'pdfjs',
-          link: '/zh/Misc/pdfjs',
-        },
+        { text: 'HTML/CSS', link: '/zh/frontend/h5c3' },
+        { text: '小程序', link: '/zh/frontend/wxapp' },
+        { text: '性能优化', link: '/zh/frontend/performanceOptimization' },
+        { text: '图片懒加载', link: '/zh/frontend/lazyImages' },
+        { text: '文件上传', link: '/zh/frontend/fileUpload' },
+        { text: 'Web API', link: '/zh/frontend/WebAPI' },
+        { text: 'PDF 预览', link: '/zh/frontend/pdfjs' },
       ],
     },
+  ],
+  '/zh/devops/': [
     {
-      text: 'Vitepress Plugin Froup Icons',
+      text: '运维 / DevOps',
       items: [
-        {
-          text: 'Getting Started',
-          link: '/zh/Misc/vitepress-icon',
-        },
+        { text: 'Docker', link: '/zh/devops/docker' },
+        { text: 'Nginx', link: '/zh/devops/nginx' },
+        { text: 'Git', link: '/zh/devops/git' },
+        { text: 'JMeter', link: '/zh/devops/jmeter' },
       ],
     },
+  ],
+  '/zh/database/': [
     {
-      text: '面试题',
+      text: '数据库',
       items: [
-        {
-          text: 'ref reactive',
-          link: '/zh/Misc/ref-reactive',
-        },
-        {
-          text: '图片懒加载',
-          link: '/zh/Misc/lazyImages',
-        },
-        {
-          text: '文件上传',
-          link: '/zh/Misc/fileUpload',
-        },
-        {
-          text: 'Web API',
-          link: '/zh/Misc/WebAPI',
-        },
+        { text: 'index', link: '/zh/database/index' },
+        { text: 'SQL', link: '/zh/database/sql' },
+        { text: 'MySQL', link: '/zh/database/mysql' },
+        { text: 'Redis', link: '/zh/database/redis' },
+        { text: 'Redisson', link: '/zh/database/redisson' },
       ],
     },
+  ],
+  '/zh/tools/': [
     {
-      text: 'Database',
+      text: '工具',
       items: [
-        { text: 'index', link: '/zh/Misc/database/index.md' },
-        { text: 'SQL', link: '/zh/Misc/database/sql.md' },
-        {
-          text: 'Redis',
-          link: '/zh/Misc/database/redis.md',
-        },
-        {
-          text: 'Redisson',
-          link: '/zh/Misc/database/redisson.md',
-        },
-        {
-          text: 'MySQL',
-          link: '/zh/Misc/database/mysql.md',
-        },
+        { text: 'VSCode 插件', link: '/zh/tools/vscodePlugin' },
+        { text: 'Trae', link: '/zh/tools/trae' },
+        { text: 'Claude', link: '/zh/tools/claude' },
+        { text: 'IDE 配置', link: '/zh/tools/Tutorial' },
+        { text: 'VitePress 分组图标', link: '/zh/tools/vitepress-icon' },
       ],
     },
   ],
@@ -364,6 +313,7 @@ export default {
         { text: 'connect', link: '/zh/vue/Components-connect' },
         { text: 'Key 的作用', link: '/zh/vue/Key' },
         { text: 'Reflect 与响应式', link: '/zh/vue/Reflect' },
+        { text: 'ref 与 reactive', link: '/zh/vue/ref-reactive' },
         { text: 'Query 与 Params', link: '/zh/vue/query_params' },
         { text: '动态组件', link: '/zh/vue/dynamic-components' },
         {
@@ -695,7 +645,10 @@ export default {
   '/zh/network/': [
     {
       text: '计算机网络',
-      items: [{ text: 'SSE', link: '/zh/network/SSE' }],
+      items: [
+        { text: 'HTTP', link: '/zh/network/HTTP' },
+        { text: 'SSE', link: '/zh/network/SSE' },
+      ],
     },
   ],
   '/zh/Security/': [

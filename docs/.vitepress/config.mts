@@ -41,24 +41,68 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'Home', link: '/zh/' },
-          { text: 'JavaScript', link: '/zh/JavaScript/' },
           {
-            text: 'Vue',
+            text: '前端',
             items: [
+              { text: 'JavaScript', link: '/zh/JavaScript/' },
               { text: 'Vue', link: '/zh/vue/lifecycle' },
-              { text: 'Nuxt', link: '/zh/vue/nuxt/Structure/app/nuxt' },
+              { text: 'React', link: '/zh/react/index' },
+              { text: '工程化', link: '/zh/Engineering/' },
+              { text: '设计模式', link: '/zh/DesignPatterns/index' },
+              { text: 'HTML/CSS', link: '/zh/frontend/h5c3' },
+              { text: '性能优化', link: '/zh/frontend/performanceOptimization' },
+              { text: '小程序', link: '/zh/frontend/wxapp' },
             ],
           },
-          { text: 'React', link: '/zh/react/index' },
-          { text: 'Engineering', link: '/zh/Engineering/' },
           {
-            text: 'Backend',
+            text: '后端',
             items: [
               { text: 'Java', link: '/zh/backend/java/' },
               { text: 'NodeJS', link: '/zh/backend/nodejs/index.md' },
+              { text: 'Express', link: '/zh/backend/express' },
+              { text: 'Koa', link: '/zh/backend/koa' },
+              { text: 'MongoDB', link: '/zh/backend/MongoDB' },
+              { text: 'Mongoose', link: '/zh/backend/mongoose' },
+              { text: 'Sequelize', link: '/zh/backend/sequelize' },
             ],
           },
-          { text: 'Misc', link: '/zh/Misc/' },
+          {
+            text: '数据库',
+            items: [
+              { text: 'SQL', link: '/zh/database/sql' },
+              { text: 'MySQL', link: '/zh/database/mysql' },
+              { text: 'Redis', link: '/zh/database/redis' },
+              { text: 'Redisson', link: '/zh/database/redisson' },
+            ],
+          },
+          {
+            text: '运维',
+            items: [
+              { text: 'Docker', link: '/zh/devops/docker' },
+              { text: 'Nginx', link: '/zh/devops/nginx' },
+              { text: 'Git', link: '/zh/devops/git' },
+              { text: 'JMeter', link: '/zh/devops/jmeter' },
+            ],
+          },
+          {
+            text: '基础',
+            items: [
+              { text: 'HTTP', link: '/zh/network/HTTP' },
+              { text: 'SSE', link: '/zh/network/SSE' },
+              { text: 'XSS 跨站脚本攻击', link: '/zh/Security/xss' },
+            ],
+          },
+          {
+            text: '其他',
+            items: [
+              { text: '面试题', link: '/zh/Interview/Session_Cookie' },
+              { text: 'VSCode 插件', link: '/zh/tools/vscodePlugin' },
+              { text: 'Trae', link: '/zh/tools/trae' },
+              { text: 'Claude', link: '/zh/tools/claude' },
+              { text: 'VitePress 分组图标', link: '/zh/tools/vitepress-icon' },
+              { text: 'IDE 配置', link: '/zh/tools/Tutorial' },
+            ],
+          },
         ],
         // 侧边栏配置
         sidebar: zhSidebar,
@@ -83,22 +127,42 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'Home', link: '/en/' },
-          { text: 'JavaScript', link: '/en/JavaScript/' },
           {
-            text: 'Vue',
+            text: 'Frontend',
             items: [
+              { text: 'JavaScript', link: '/en/JavaScript/' },
               { text: 'Vue', link: '/en/vue/lifecycle' },
               { text: 'Nuxt', link: '/en/vue/nuxt/Structure/app/nuxt' },
+              { text: 'React', link: '/en/react/index' },
+              { text: 'Engineering', link: '/en/Engineering/' },
+              { text: 'Web API', link: '/en/frontend/WebAPI' },
             ],
           },
-          { text: 'React', link: '/en/react/index' },
-          { text: 'Engineering', link: '/en/Engineering/' },
-          { text: 'Misc', link: '/en/Misc/' },
           {
             text: 'Backend',
             items: [
               { text: 'Java', link: '/en/backend/java/' },
               { text: 'NodeJS', link: '/en/backend/nodejs/index.md' },
+            ],
+          },
+          {
+            text: 'Database',
+            items: [
+              { text: 'SQL', link: '/en/database/index.md' },
+              { text: 'Redis', link: '/en/database/Redis.md' },
+            ],
+          },
+          {
+            text: 'DevOps',
+            items: [
+              { text: 'Docker', link: '/en/devops/docker' },
+              { text: 'Git', link: '/en/devops/git' },
+            ],
+          },
+          {
+            text: 'Tools',
+            items: [
+              { text: 'VSCode Plugin', link: '/en/tools/vscodePlugin' },
             ],
           },
         ],

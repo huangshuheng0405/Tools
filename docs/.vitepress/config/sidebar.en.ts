@@ -205,67 +205,45 @@ export default {
       ],
     },
   ],
-  '/en/Misc/': [
+  '/en/frontend/': [
     {
-      text: 'Tips',
+      text: 'Frontend Practices',
       items: [
-        {
-          text: 'vscode plugin',
-          link: '/en/Misc/vscodePlugin',
-        },
-        {
-          text: 'performanceOptimization',
-          link: '/en/Misc/performanceOptimization',
-        },
-        {
-          text: 'Docker',
-          link: '/en/Misc/docker',
-        },
-        {
-          text: 'git',
-          link: '/en/Misc/git',
-        },
+        { text: 'performanceOptimization', link: '/en/frontend/performanceOptimization' },
+        { text: '图片懒加载', link: '/en/frontend/lazyImages' },
+        { text: '文件上传', link: '/en/frontend/fileUpload' },
+        { text: 'Web API', link: '/en/frontend/WebAPI' },
       ],
     },
+  ],
+  '/en/devops/': [
     {
-      text: 'Vitepress Plugin Froup Icons',
+      text: 'DevOps',
       items: [
-        {
-          text: 'Getting Started',
-          link: '/en/Misc/vitepress-icon',
-        },
+        { text: 'Docker', link: '/en/devops/docker' },
+        { text: 'git', link: '/en/devops/git' },
       ],
     },
-    {
-      text: '面试题',
-      items: [
-        {
-          text: 'ref reactive',
-          link: '/en/Misc/ref-reactive',
-        },
-        {
-          text: '图片懒加载',
-          link: '/en/Misc/lazyImages',
-        },
-        {
-          text: '文件上传',
-          link: '/en/Misc/fileUpload',
-        },
-        {
-          text: 'Web API',
-          link: '/en/Misc/WebAPI',
-        },
-      ],
-    },
+  ],
+  '/en/database/': [
     {
       text: 'Database',
       items: [
-        { text: 'index', link: '/en/Misc/database/index.md' },
-        { text: 'DDL', link: '/en/Misc/database/DDL.md' },
-        { text: 'DataType', link: '/en/Misc/database/dataType.md' },
+        { text: 'index', link: '/en/database/index.md' },
+        { text: 'DDL', link: '/en/database/DDL.md' },
+        { text: 'DataType', link: '/en/database/dataType.md' },
+        { text: 'Redis', link: '/en/database/Redis.md' },
+      ],
+    },
+  ],
+  '/en/tools/': [
+    {
+      text: 'Tools',
+      items: [
+        { text: 'vscode plugin', link: '/en/tools/vscodePlugin' },
         {
-          text: 'Redis',
-          link: '/en/Misc/database/Redis.md',
+          text: 'Vitepress Plugin Froup Icons',
+          link: '/en/tools/vitepress-icon',
         },
       ],
     },

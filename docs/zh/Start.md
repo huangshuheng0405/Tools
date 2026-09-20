@@ -46,17 +46,17 @@ Node.js 基础模块、Express / Koa 框架、MongoDB / Mongoose / Sequelize 数
 
 👉 [开始学习](/zh/DesignPatterns/index)
 
-### 实用技巧 & 面试题
+### 前端实践 & 面试题
 
-虚拟列表、事件委托、图片懒加载、文件上传、性能优化等常见前端场景解决方案，以及高频面试题整理。
+虚拟列表、图片懒加载、文件上传、性能优化等常见前端场景解决方案，以及高频面试题整理。
 
-👉 [开始学习](/zh/Misc/)
+👉 [开始学习](/zh/frontend/)
 
-### Git
+### 运维 / DevOps
 
-Git 常用操作与进阶技巧：reset vs revert、merge vs rebase 等。
+Docker、Nginx、Git 常用操作与进阶技巧，以及 JMeter 压测。
 
-👉 [开始学习](/zh/Git/reset_revert)
+👉 [开始学习](/zh/devops/docker)
 
 ### 计算机网络
 
@@ -64,12 +64,17 @@ Git 常用操作与进阶技巧：reset vs revert、merge vs rebase 等。
 
 👉 [开始学习](/zh/network/SSE)
 
+### 数据库
+
+SQL、MySQL、Redis、Redisson。
+
+👉 [开始学习](/zh/database/index)
+
 ## 项目结构
 
 ```
-docs/
+docs/zh/
 ├── JavaScript/       # JavaScript 核心知识
-├── TypeScript/       # TypeScript 进阶
 ├── react/            # React 生态
 │   ├── hooks/        #   Hooks 详解
 │   ├── apis/         #   API 用法
@@ -80,11 +85,15 @@ docs/
 │   ├── vue-router/   #   路由
 │   └── nuxt/         #   Nuxt 框架
 ├── Engineering/      # 工程化实践
-├── backend/          # 后端技术
 ├── DesignPatterns/   # 设计模式
-├── Misc/             # 实用技巧 & 面试题
-├── Git/              # Git 操作
-└── network/          # 计算机网络
+├── backend/          # 后端技术（Java / Node.js）
+├── database/         # 数据库（SQL / MySQL / Redis）
+├── devops/           # 运维（Docker / Nginx / Git / JMeter）
+├── frontend/         # 前端实践（性能优化 / 懒加载 / 文件上传）
+├── network/          # 计算机网络（HTTP / SSE）
+├── Security/         # Web 安全
+├── Interview/        # 面试题
+└── tools/            # 工具配置
 ```
 
 ## 开始阅读
@@ -94,7 +103,7 @@ docs/
 - 想夯实基础 → [JavaScript 核心](/zh/JavaScript/)
 - 想学框架 → [React 生态](/zh/react/index) 或 [Vue 生态](/zh/vue/lifecycle)
 - 想提升工程能力 → [工程化实践](/zh/Engineering/)
-- 想准备面试 → [实用技巧 & 面试题](/zh/Misc/)
+- 想准备面试 → [前端实践 & 面试题](/zh/frontend/) 或 [面试题](/zh/Interview/Session_Cookie)
 
 ## ACM
 
