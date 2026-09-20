@@ -85,6 +85,7 @@ const groups: { title: string; icons: string[] }[] = [
       'node.svg',
       'express.svg',
       'koa.svg',
+      'sequelize.svg',
       'java.svg',
       'spring.svg',
       'springboot.svg',
@@ -120,6 +121,8 @@ const groups: { title: string; icons: string[] }[] = [
       'claude.svg',
       'flutter.svg',
       'chatgpt.svg',
+      'pm2.svg',
+      'supabase.svg',
     ],
   },
   {
