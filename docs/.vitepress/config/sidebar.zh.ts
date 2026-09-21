@@ -278,6 +278,7 @@ export default {
         { text: 'file upload', link: '/zh/misc/fileUpload' },
         { text: 'Web API', link: '/zh/misc/WebAPI' },
         { text: 'PDF', link: '/zh/misc/pdfjs' },
+        { text: 'rich text', link: '/zh/misc/richtext' },
       ],
     },
   ],
