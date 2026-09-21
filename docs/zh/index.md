@@ -6,7 +6,7 @@ hero:
   text: 'Yushuxing'
   tagline: ''
   image:
-    # src: /frontend-icon.svg
+    src: /ds.jpg
     # alt: Logo
     # width: 200
     # height: 200
