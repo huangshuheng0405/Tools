@@ -291,6 +291,15 @@ HEAD~2   = A
 
 ## workflow
 
+| 分支        | 寿命 | 从哪拉  | 合并回       | 何时用                                       |
+| ----------- | ---- | ------- | ------------ | -------------------------------------------- |
+| main/master | 长期 | 初始    | -            | 生成环境代码                                 |
+| develop     | 长期 | main    | main         | 开发集成分支，feature完成后合入此            |
+| feat/*      | 临时 | develop | develop      | 开发新功能，一个功能一个分支，完成就合并删除 |
+| release/*   | 临时 | develop | main+develop | 准备发布，冻结功能只改bug、写文档、版本号    |
+| hotfix/*    | 临时 | main    | main+deve    | 生产线上紧急bug修复，需立即上线              |
+| bugfix/*    | 临时 | develop | develop      | 开发阶段非紧急bug修复，不影响发版节奏        |
+
 假如你要开发新功能，通常从`main`分支切出一个新分支，例如`feature`分支，然后在`feature`分支上开发新功能。
 开发完成后，合并`feature`分支到`main`分支。
 最后，删除`feature`分支。

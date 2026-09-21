@@ -205,7 +205,13 @@ export default {
   '/zh/frontend/': [
     {
       text: 'frontend',
-      items: [{ text: 'HTML/CSS', link: '/zh/frontend/h5c3' }],
+      items: [
+        { text: 'HTML/CSS', link: '/zh/frontend/h5c3' },
+        {
+          text: 'GSAP',
+          link: '/zh/frontend/gsap',
+        },
+      ],
     },
   ],
   '/zh/devops/': [
