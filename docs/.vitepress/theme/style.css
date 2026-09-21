@@ -2,15 +2,28 @@
   --vp-font-family-mono:
     Consolas, 'Fira Code', 'JetBrains Mono', 'SFMono-Regular', Menlo, Monaco,
     'Liberation Mono', 'Courier New', monospace;
+
+  /* 主题色：麦当劳黄（对应 logo #fc0） */
+  --vp-c-brand-1: #d99e00;
+  --vp-c-brand-2: #f2b705;
+  --vp-c-brand-3: #ffcc00;
+  --vp-c-brand-soft: rgba(255, 204, 0, 0.14);
 }
 
-/* Hero image background glow（青绿光晕） */
+.dark {
+  --vp-c-brand-1: #ffcc00;
+  --vp-c-brand-2: #ffd84d;
+  --vp-c-brand-3: #ffcc00;
+  --vp-c-brand-soft: rgba(255, 204, 0, 0.16);
+}
+
+/* Hero image background glow（黄色光晕） */
 :root {
   --vp-home-hero-image-background-image: radial-gradient(
     circle at center,
-    rgba(45, 212, 191, 0.42) 0%,
-    rgba(20, 184, 166, 0.28) 28%,
-    rgba(13, 148, 136, 0.14) 55%,
+    rgba(255, 204, 0, 0.4) 0%,
+    rgba(255, 179, 0, 0.28) 28%,
+    rgba(230, 153, 0, 0.16) 55%,
     transparent 80%
   );
   --vp-home-hero-image-filter: blur(56px);
@@ -20,22 +33,22 @@
 .dark {
   --vp-home-hero-image-background-image: radial-gradient(
     circle at center,
-    rgba(94, 234, 212, 0.48) 0%,
-    rgba(45, 212, 191, 0.32) 28%,
-    rgba(20, 184, 166, 0.18) 55%,
+    rgba(255, 214, 64, 0.48) 0%,
+    rgba(255, 199, 0, 0.32) 28%,
+    rgba(230, 175, 0, 0.2) 55%,
     transparent 82%
   );
 }
 
-/* Hero name/text gradient text（青绿，从左往右渐变） */
+/* Hero name/text gradient text（黄色，从左往右渐变） */
 .VPHomeHero .name,
 .VPHomeHero .text {
   background: linear-gradient(
     90deg,
-    #2dd4bf 0%,
-    #14b8a6 30%,
-    #0d9488 62%,
-    #0f766e 100%
+    #ffd64d 0%,
+    #ffc400 30%,
+    #e6a800 62%,
+    #cc8f00 100%
   );
   background-size: 250% 250%;
   -webkit-background-clip: text;
@@ -44,15 +57,15 @@
   animation: gradient-shift 7s ease-in-out infinite;
 }
 
-/* 深色模式下整体提亮一档，避免深青端沉进背景 */
+/* 深色模式下整体提亮一档，避免深黄端沉进背景 */
 .dark .VPHomeHero .name,
 .dark .VPHomeHero .text {
   background-image: linear-gradient(
     90deg,
-    #99f6e4 0%,
-    #5eead4 30%,
-    #2dd4bf 62%,
-    #14b8a6 100%
+    #ffe58a 0%,
+    #ffd64d 30%,
+    #ffc400 62%,
+    #e6a800 100%
   );
 }
 
@@ -139,32 +152,63 @@
   border-color: #42c8ee;
 }
 
-/* Hero 行动按钮（青绿，配合整体青绿主题） */
+/* Hero 行动按钮（黄色，配合整体麦当当黄主题） */
 .VPHomeHero .actions .VPButton.brand {
-  background: linear-gradient(90deg, #0d9488 0%, #0f766e 100%);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #e6a800 0%, #cc8f00 100%);
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #fff;
-  box-shadow: 0 6px 18px rgba(13, 148, 136, 0.4);
+  box-shadow: 0 6px 18px rgba(230, 168, 0, 0.4);
   transition:
-    background-color 0.2s ease,
     box-shadow 0.2s ease,
     transform 0.2s ease;
 }
 
+/* shimmer 扫光层 */
+.VPHomeHero .actions .VPButton.brand::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+/* 悬停不再加深颜色，改为扫光 */
 .VPHomeHero .actions .VPButton.brand:hover {
-  background: linear-gradient(90deg, #0f766e 0%, #115e59 100%);
-  box-shadow: 0 8px 24px rgba(13, 148, 136, 0.55);
+  box-shadow: 0 8px 24px rgba(230, 168, 0, 0.55);
   transform: translateY(-1px);
 }
 
+.VPHomeHero .actions .VPButton.brand:hover::after {
+  animation: brand-shimmer 0.9s ease forwards;
+}
+
 .VPHomeHero .actions .VPButton.brand:active {
-  background: linear-gradient(90deg, #115e59 0%, #134e4a 100%);
   transform: translateY(0);
+}
+
+@keyframes brand-shimmer {
+  to {
+    left: 125%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .VPHomeHero .actions .VPButton.brand {
     transition: none;
     transform: none;
+  }
+  .VPHomeHero .actions .VPButton.brand:hover::after {
+    animation: none;
   }
 }

@@ -46,7 +46,25 @@ Redis是一个键值对（key-value）数据库，它的value支持多种结构
 
 - `HGETALL key`：返回哈希表中的所有字段值对
 
-- <br />
+- `HMSET key field value \[field value ...]`：批量设置多个字段（Redis 4.0 起`HSET`本身就支持一次传多组 field-value，`HMSET`已废弃）
+
+- `HMGET key field \[field ...]`：批量获取多个字段的值
+
+- `HKEYS key`：返回所有字段名
+
+- `HVALS key`：返回所有字段值
+
+- `HLEN key`：返回字段数量
+
+- `HEXISTS key field`：判断字段是否存在
+
+- `HINCRBY key field increment`：让整型字段自增指定步长
+
+- `HSETNX key field value`：字段不存在时才设置
+
+> 为什么用 hash 存对象：把整个对象序列化成 JSON 塞进一个 string，改其中一个字段也得整体读出来再整体写回去；用 hash 可以`HSET`改单个字段，也可以单独`HGET`某个字段。代价是不能嵌套——字段值只能是字符串，对象里带数组或子对象时还得自己再序列化一层
+
+> 字段少、值小时，Redis 用紧凑编码（`listpack`）存，内存比真正的哈希表小很多；超过`hash-max-listpack-entries`（默认 128）或`hash-max-listpack-value`（默认 64 字节）就转成`hashtable`，**转过去之后不会再转回来**。Redis 7.0 之前这两个配置叫`hash-max-ziplist-entries`/`hash-max-ziplist-value`。用`OBJECT ENCODING key`能看到当前编码
 
 ### list
 
@@ -268,6 +286,77 @@ Redis 3.2 新增，用来存经纬度并做「附近的人」「附近的店」�
 > 三个容易踩的点：**纬度范围是`-85.05112878 ~ 85.05112878`**（Web 墨卡托的边界），不是`-90 ~ 90`，超出会报错；**`GEODIST`返回的是字符串**，要参与数值计算得先转 double；距离按**球面（Haversine）**算，地球被当成正球体，长距离下和真实值有零点几个百分点的偏差
 
 > `GEOSEARCH`的`COUNT`只表示「取最近的 n 个」，**没有 offset 参数**，所以做不到跳页；要翻页只能把`COUNT`放大再自己裁，或者用`GEOSEARCHSTORE`把结果落到另一个 key 里再查
+
+### bitmap
+
+位图，本质还是 string，只是把 value 当成一个 bit 数组来看：每个 bit 只有 0 和 1，用偏移量（offset）当下标。「某个用户今天有没有签到」这种布尔值只占 1 bit，比存一个`"1"`省 8 倍以上
+
+- `SETBIT key offset value`：把第 offset 位设为 0 或 1。key 不存在会新建，offset 超出当前长度会自动补 0
+
+- `GETBIT key offset`：取第 offset 位，越界或 key 不存在都返回 0
+
+- `BITCOUNT key \[start end \[BYTE | BIT]]`：统计值为 1 的位数，不传范围就是整个 key，`BYTE`/`BIT`决定 start/end 是按字节还是按位
+
+- `BITPOS key bit \[start \[end \[BYTE | BIT]]]`：找第一个等于 bit（0 或 1）的位，返回它的下标
+
+- `BITOP AND|OR|XOR|NOT destkey key \[key ...]`：对多个 bitmap 做位运算，结果写进 destkey（`NOT`只接一个 key）
+
+- `BITFIELD key \[GET encoding offset] \[SET encoding offset value] \[INCRBY encoding offset increment] \[OVERFLOW WRAP|SAT|FAIL]`：把字符串当成一组定长整数来读写，一条命令可以带多个操作
+
+记录某个用户这个月的签到：
+
+```
+SETBIT sign:1001:202609 20 1     # 20 号签到（下标从 0 开始）
+SETBIT sign:1001:202609 21 1
+BITCOUNT sign:1001:202609        # 返回 2，本月签到 2 天
+```
+
+> 最大 offset 是`2^32 - 1`（约 42.9 亿），因为 Redis 的 value 上限是 512MB，512MB × 8 正好是 2^32 位
+
+> offset 是**按最大偏移量分配内存**的：只写`SETBIT key 10000000 1`，Redis 也立刻分配 10000000 ÷ 8 ≈ 1.25MB。所以稀疏场景（1 万个用户里只有 3 个签到）用 bitmap 反而不省内存，这种情况用 set 或者 HyperLogLog 更合适
+
+> `BITCOUNT`的 start/end 默认按**字节**索引，想按位必须显式加`BIT`；而`BITFIELD`的 offset 默认就按**位**算，想按整个字段跳（第 n 个字段而不是第 n 位）要加`#`前缀，如`BITFIELD key GET u8 #0`
+
+> `BITFIELD`的`OVERFLOW`决定越界行为：`WRAP`回绕（默认）、`SAT`饱和到最大/最小值、`FAIL`直接返回 nil。它只影响后面的`SET`和`INCRBY`，对`GET`无效
+
+> 因为底层就是 string，`TYPE`返回的类型是`string`而不是`bitmap`，`GET`出来的也是二进制字符串
+
+常见场景：签到打卡、日活/月活统计、用户布尔标签（性别、是否会员）、布隆过滤器的底层存储
+
+### HyperLogLog
+
+用来做**基数统计**（一个集合里有多少个不重复元素）的概率型结构。它不保存元素本身，只维护内部寄存器，所以结果是**估算值**，标准误差 0.81%
+
+- `PFADD key \[element ...]`：添加一个或多个元素，返回 1 表示基数估算值变了，返回 0 表示没变
+
+- `PFCOUNT key \[key ...]`：返回估算出的基数；传多个 key 时返回它们的**并集**基数
+
+- `PFMERGE destkey \[sourcekey ...]`：把多个 HyperLogLog 合并进 destkey
+
+```
+PFADD uv:2026-09-20 user:1 user:2 user:3
+PFADD uv:2026-09-21 user:2 user:3 user:4
+PFCOUNT uv:2026-09-20                     # ≈3
+PFMERGE uv:total uv:2026-09-20 uv:2026-09-21
+PFCOUNT uv:total                          # ≈4，两天去重后的 UV
+```
+
+> 内存是固定的：最坏情况 12KB（16384 个 6-bit 桶），跟元素数量无关。起步用**稀疏编码**（sparse）省内存，超过`hll-sparse-max-bytes`（默认 3000 字节）才转成**稠密编码**（dense），此时固定占用 12KB
+
+> 不能做的事：**判断某个元素是否存在**（没有类似`SISMEMBER`的命令）、把元素取回来、删除单个元素（要删只能删整个 key）。它的定位就是「只关心去重后的总数」
+
+> 结果是估算值，别拿它当账单或者库存的计数。它是给「UV 这种差一点无所谓、但量大到 set 存不下」的场景用的
+
+> `PFCOUNT`传多个 key 时会把它们临时合并再估算，复杂度从 O(1) 变成 O(N)；需要反复算同一个并集，用`PFMERGE`先落一个 key 更划算
+
+> 和 bitmap 一样，`TYPE`返回的也是`string`
+
+与 set 对比（统计 1 亿个不重复用户）：
+
+| 结构        | 是否存元素 | 内存占用  | 能否判断元素是否存在 | 误差  |
+| ----------- | ---------- | --------- | -------------------- | ----- |
+| set         | 存         | GB 级     | 能                   | 无    |
+| HyperLogLog | 不存       | 固定 12KB | 不能                 | 0.81% |
 
 ## 通用命令
 

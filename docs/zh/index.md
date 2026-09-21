@@ -6,7 +6,8 @@ hero:
   text: 'Yushuxing'
   tagline: ''
   image:
-    src: /ds.jpg
+    src: /mcdonalds.svg
+    alt: Vue
     # alt: Logo
     # width: 200
     # height: 200
