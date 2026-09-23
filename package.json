@@ -10,7 +10,7 @@
   },
   "scripts": {
     "docs:dev": "vitepress dev docs --port 8083",
-    "docs:build": "node scripts/gen-contrib.mjs && vitepress build docs",
+    "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "docs:contrib": "node scripts/gen-contrib.mjs",
     "commit": "git-cz"

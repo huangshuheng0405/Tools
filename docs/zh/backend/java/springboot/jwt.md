@@ -113,3 +113,115 @@ Header.Payload.Signature
 ```
 
 其中`Payload`通常只是base64编码，不是加密，所以不要往jwt里面放敏感信息，密码，银行卡号，身份证号等
+
+## 登录流程
+
+1. 先看拦截器，`WebConfig.java`：
+
+```java
+registry.addInterceptor(jwtInterceptor)
+        .addPathPatterns("/api/**")             // 所有 /api 开头的接口都要先登录
+        .excludePathPatterns("/api/auth/**");   // 注册和登录本身当然不能要求先登录
+```
+
+登录和注册接口必须排除在外
+
+2. 参数绑定和校验。在`AuthController.java `的`login`方法，`@RequestBody` 让 Jackson 把 JSON 变成 LoginRequest.java 对象，`@Valid` 触发 `@NotBlank` 校验。
+
+3. 查数据库。
+
+   ```java
+   User user = userMapper.selectOne(
+           Wrappers.<User>lambdaQuery().eq(User::getUsername, request.username()));
+   ```
+
+4. 对比密码。
+
+   ```java
+   if (user == null || !passwordEncoder.matches(request.password(), user.getPassword())) {
+       throw new BusinessException(401, "用户名或密码错误");
+   }
+   ```
+
+5. 签发token。
+
+   ```java
+   String token = jwtUtil.generate(user.getId(), user.getUsername());
+   ```
+
+   JwtUtil.java 里把用户 id 塞进 `sub`，加了签发时间和过期时间，然后用密钥签名。产出的字符串是三段：
+
+   ```java
+   eyJhbGciOiJIUzM4NCJ9 . eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJhbGljZSIsImlhdCI6MTc5MDA5MDIyMSwiZXhwIjoxNzkwMDk3NDIxfQ . DYrwr04nHmkLBYx2DqHX6b6K9psaqBskWDIemhc-YSXSAeb52s0snMuN8t1HNGWo
+         header                            payload（Base64 编码，谁都能解开看）                              signature
+   ```
+
+   **把中间那段拿去 Base64 解码，你会直接看到 `{"sub":"1","username":"alice","iat":...,"exp":...}`** —— 你可以自己复制到 jwt.io 试。它不是加密，是编码。所以 token 里绝对不能放密码、手机号这类东西。它的安全性全来自第三段签名：客户端改了 payload，签名就对不上。
+
+6. 返回token。
+
+## 请求
+
+1. 拦截器不放行。
+
+   ```java
+   String header = request.getHeader(HttpHeaders.AUTHORIZATION);   // "Bearer eyJhbGci..."
+   if (header == null || !header.startsWith(BEARER_PREFIX)) {
+       writeUnauthorized(response, "缺少登录凭证");
+       return false;
+   }
+   String token = header.substring(BEARER_PREFIX.length());        // 切掉 "Bearer " 前缀
+   ```
+
+   没带请求头 → 直接写回 401 并 `return false`。**注意 `return false` 的含义是"就此打住"**，Controller 根本不会被调用，方法栈直接结束。
+
+2. 验证token。
+
+   ```java
+   Claims claims = jwtUtil.parse(token);
+   ```
+
+   `Jwts.parser().verifyWith(key)` 做了三件事：用同一个密钥把 header.payload 重新算一遍 HMAC，和 token 第三段比对，顺便检查 `exp` 过期没有。任何一项不过关就抛 `JwtException`，被 catch 住后同样走 401。
+
+   这就是为什么我测试时**改签名、删签名、改 payload 全部返回 401**——服务端的密钥在前端拿不到，算不出正确的签名。
+
+3. 把身份挂到当前线程
+
+   ```java
+   UserContext.setUserId(Long.valueOf(claims.getSubject()));   // sub = "1" → 1L
+   return true;   // 放行
+   ```
+
+   UserContext.java 是个 ThreadLocal。为什么要它？因为接下来 Controller 的方法签名是固定的 `me()`，**没有 userId 参数**。总不能让拦截器把 id "传"给 Controller——ThreadLocal 相当于给当前线程挂了个随身便签，同一次请求里的任何代码都能读到。
+
+4. Controller取身份
+
+   ```java
+   @GetMapping("/me")
+   public Result<UserVO> me() {
+       User user = userService.getById(UserContext.getUserId());
+       return Result.ok(UserVO.from(user));
+   }
+   ```
+
+   **这个方法的签名里没有任何"用户 id"参数，这是整段流程里最重要的设计。** 用户身份只能由服务端从 token 解出来，客户端无法通过传参伪装成别人。如果你把接口写成 `GET /api/user/me?userId=1`，那谁也拦不住别人把 1 改成 2 去看别人的资料——这是新手项目里最高频的越权漏洞。
+
+   返回时用 UserVO.java 而不是直接返回 `User` 实体，因为实体上带着 `password` 字段（哪怕是哈希）。**永远不要把实体直接抛给前端。**
+
+5. 请求结束，必须清理。
+
+   ```java
+   @Override
+   public void afterCompletion(...) {
+       UserContext.clear();
+   }
+   ```
+
+   **这一步千万不能省。** Tomcat 用线程池，一个线程会依次处理成千上万个请求。如果不清，下一个请求调用 `UserContext.getUserId()` 时会读出**上一个用户的 id**——这是最隐蔽也最严重的一类 bug，因为它在开发环境（请求少、线程不复用）几乎测不出来，一上线就出事。
+
+   
+
+
+
+
+

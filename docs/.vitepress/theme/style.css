@@ -8,6 +8,9 @@
   --vp-c-brand-2: #f2b705;
   --vp-c-brand-3: #ffcc00;
   --vp-c-brand-soft: rgba(255, 204, 0, 0.14);
+
+  /* 行内代码文字颜色：默认跟随主题色（黄），改为黑色 */
+  --vp-code-color: #1a1a2e;
 }
 
 .dark {
@@ -15,6 +18,9 @@
   --vp-c-brand-2: #ffd84d;
   --vp-c-brand-3: #ffcc00;
   --vp-c-brand-soft: rgba(255, 204, 0, 0.16);
+
+  /* 深色模式下行内代码用浅色，避免黑字看不清 */
+  --vp-code-color: #e6e6e6;
 }
 
 /* Hero image background glow（黄色光晕） */
