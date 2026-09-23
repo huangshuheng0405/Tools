@@ -106,10 +106,78 @@ if (claims == null) {
 Long userId = claims.get("userId", Long.class);
 ```
 
-## 注意
+## JWT 结构
 
 ```
 Header.Payload.Signature
 ```
 
-其中`Payload`通常只是base64编码，不是加密，所以不要往jwt里面放敏感信息，密码，银行卡号，身份证号等
+### Header
+
+头部，描述token类型和签名算法
+
+```json
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+```
+
+### Payload
+
+载荷，存放claims（声明），也就是实际信息
+
+```json
+{
+  "sub": "123",
+  "name": "Alice",
+  "role": "admin",
+  "iat": 1700000000,
+  "exp": 1700003600
+}
+```
+
+常见标准claim
+
+- `iss`：签发者
+- `sub`：主体，通常是用户 ID
+- `aud`：接收方
+- `exp`：过期时间
+- `nbf`：生效时间
+- `iat`：签发时间
+- `jti`：JWT 唯一 ID
+
+### Signature
+
+签名，用来防篡改。比如HS256
+
+```java
+HMACSHA256(
+  base64UrlEncode(header) + "." + base64UrlEncode(payload),
+  secret
+)
+```
+
+服务端收到JWT后重新计算签名，如果对不上，说明token被改过
+
+### 注意
+
+其中`Payload`通常只是base64编码，不是加密，所以
+
+> 不要往jwt里面放密码，银行卡号，身份证号等敏感信息
+
+## 优点
+
+- 无状态：服务端不用保存session，适合分布式和微服务
+- 自包含：用户信息在token，减少查库
+- 跨域/跨服务方便：标准格式，前后端、移动端、第三方都能用
+
+## 缺点
+
+- 无法立即撤销
+- Payload可读
+- 体积比session id大：每次请求都带，可能浪费带宽
+- 密钥泄露可以伪造任意token
+- 过期和刷新逻辑复杂
+
+与session对比，详情见[login](/zh/misc/login.md)
