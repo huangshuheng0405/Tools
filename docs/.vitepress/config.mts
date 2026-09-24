@@ -23,7 +23,7 @@ export default defineConfig({
     ],
   },
   themeConfig: {
-    // logo: '/frontend-icon.svg',
+    logo: '/mcdonalds.svg',
     outline: {
       level: [1, 5],
     },
@@ -31,7 +31,7 @@ export default defineConfig({
   title: 'front-end',
   description: 'A VitePress Site',
   ignoreDeadLinks: true,
-  head: [['link', { rel: 'icon', href: '/frontend-icon.svg', sizes: 'any' }]],
+  head: [['link', { rel: 'icon', href: '/mcdonalds.svg', sizes: 'any' }]],
 
   // 多语言配置
   locales: {
