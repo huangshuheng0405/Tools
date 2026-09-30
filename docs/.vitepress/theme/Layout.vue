@@ -1,16 +1,11 @@
 <script setup lang="ts">
-// 包一层默认主题的 Layout，把技术栈塞到首页最底部（feature 卡片下面）
-// markdown 里的 layout: home 没法传插槽，只能这样接
+// 包一层默认主题的 Layout。技术栈已迁移到独立页面 /zh/tech-stack，
+// 首页底部不再渲染 TechStack 区块。
 import DefaultTheme from 'vitepress/theme'
-import TechStack from './components/TechStack.vue'
 
 const { Layout } = DefaultTheme
 </script>
 
 <template>
-  <Layout>
-    <template #home-features-after>
-      <TechStack />
-    </template>
-  </Layout>
+  <Layout />
 </template>
