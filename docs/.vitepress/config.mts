@@ -81,8 +81,12 @@ export default defineConfig({
             ],
           },
           {
-            text: 'network',
-            link: '/zh/network/',
+            text: 'base',
+            items: [
+              { text: 'network', link: '/zh/network/' },
+              { text: 'os', link: '/zh/os/' },
+              { text: 'security', link: '/zh/Security/' },
+            ],
           },
           {
             text: 'misc',

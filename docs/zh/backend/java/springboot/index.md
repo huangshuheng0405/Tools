@@ -163,6 +163,8 @@ MyBatis 扫描到 @Mapper
 Service 获取 UserMapper
 ```
 
+### @MapperScan
+
 如果你的Mapper很多，每个接口上都要加上`@Mapper`
 
 在启动类上加上
@@ -275,3 +277,96 @@ public class UserController {
 ### @Component
 
 告诉Spring，把这个类创建成对象，并交给IoC容器管理
+
+### @RestControllerAdvice
+
+本质上`@ControllerAdvice`和`@ResponseBody`的组合注解
+
+- `@ControllerAdvice`：把类变成全局控制器增强，能拦截所有（或指定范围）的Controller
+- `@ResponseBody`：类中所有方法的返回值都自动序列化成JSON/XML，写入响应体
+
+所以最常用于：**全局异常处理，统一返回json错误信息**
+
+### @Valid
+
+需要显示引入
+
+```java
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+```
+
+本身不是校验规则，真正规则来自`@NotNull`、`@NotBlank`、`@Size`、`@Email`等注解约束
+
+常见用法
+
+```java
+@PostMapping("/users")
+public User create(@Valid @RequestBody UserDTO user) {
+    // 如果校验失败，默认抛出 MethodArgumentNotValidException，返回 400
+    return userService.create(user);
+}
+```
+
+`UserDTO`里写约束：
+
+```java
+public class UserDTO {
+    @NotBlank(message = "姓名不能为空")
+    private String name;
+
+    @Email(message = "邮箱格式不正确")
+    private String email;
+
+    @Valid // 级联校验：AddressDTO 内部的约束也会生效
+    private AddressDTO address;
+}
+```
+
+如果希望自己处理错误，可以在`@Valid`参数后面紧跟`BindingResult`：
+
+```java
+@PostMapping("/users")
+public Result create(@Valid @RequestBody UserDTO user, BindingResult result) {
+    if (result.hasErrors()) {
+        // 自定义错误处理
+    }
+    return Result.ok();
+}
+```
+
+#### 级联校验
+
+嵌套对象必须加`@Valid`，否则只校验外层对象，不校验内层：
+
+```java
+public class OrderDTO {
+    @Valid
+    private UserDTO user; // 不加 @Valid，UserDTO 里的约束不会触发
+}
+```
+
+#### 方法级校验
+
+如果要在 Service 或 Controller 的普通方法参数上直接校验，例如 `@PathVariable`、`@RequestParam`，通常需要：
+
+- 类上加 `@Validated`
+
+- 参数上加约束注解，或 `@Valid`
+
+  ```java
+  @Validated
+  @RestController
+  public class UserController {
+  
+      @GetMapping("/users/{id}")
+      public User get(@PathVariable @Min(1) Long id) {
+          // id < 1 时抛 ConstraintViolationException
+          return userService.get(id);
+      }
+  }
+  ```
+
+  

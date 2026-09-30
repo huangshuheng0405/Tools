@@ -71,6 +71,8 @@ export default {
         { text: 'HttpClient', link: '/zh/backend/java/tool/httpClient.md' },
         { text: 'Hutool', link: '/zh/backend/java/tool/huTool.md' },
         { text: 'Lombok', link: '/zh/backend/java/tool/lombok.md' },
+        { text: 'Sa-Token', link: '/zh/backend/java/tool/sa-token.md' },
+        { text: 'JWT', link: '/zh/backend/java/springboot/jwt.md' },
       ],
     },
     {
@@ -102,11 +104,14 @@ export default {
           text: 'Interceptor',
           link: '/zh/backend/java/springboot/interceptor.md',
         },
-        { text: 'JWT', link: '/zh/backend/java/springboot/jwt.md' },
         { text: 'MyBatis', link: '/zh/backend/java/springboot/mybatis.md' },
         {
           text: 'MyBatis-Plus',
           link: '/zh/backend/java/springboot/mybatisPlus.md',
+        },
+        {
+          text: 'OSS',
+          link: '/zh/backend/java/springboot/oss.md',
         },
       ],
     },
@@ -286,6 +291,10 @@ export default {
         { text: 'PDF', link: '/zh/misc/pdfjs' },
         { text: 'rich text', link: '/zh/misc/richtext' },
         { text: 'login', link: '/zh/misc/login' },
+        { text: 'demo', link: '/zh/misc/demo' },
+        { text: 'vibe coding', link: '/zh/misc/vibecoding' },
+        { text: 'grill-me', link: '/zh/misc/grill-me' },
+        { text: 'ui-ux-pro-max', link: '/zh/misc/uupm' },
       ],
     },
   ],
@@ -662,7 +671,11 @@ export default {
   '/zh/Security/': [
     {
       text: 'security',
-      items: [{ text: 'XSS 跨站脚本攻击', link: '/zh/Security/xss' }],
+      items: [
+        { text: 'index', link: '/zh/Security/index' },
+        { text: 'XSS 跨站脚本攻击', link: '/zh/Security/xss' },
+        { text: 'CSRF', link: '/zh/Security/csrf' },
+      ],
     },
   ],
   '/zh/react/': [
@@ -796,4 +809,5 @@ export default {
       items: [{ text: 'Installation', link: '/zh/react/immer/installation' }],
     },
   ],
+  '/zh/os/': [],
 }
