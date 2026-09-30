@@ -48,7 +48,7 @@ export default defineConfig({
               { text: 'Vue', link: '/zh/vue/lifecycle' },
               { text: 'React', link: '/zh/react/index' },
               { text: 'Engineering', link: '/zh/Engineering/' },
-              { text: 'HTML/CSS', link: '/zh/frontend/h5c3' },
+              { text: 'Other', link: '/zh/frontend/index' },
             ],
           },
           {
@@ -56,11 +56,6 @@ export default defineConfig({
             items: [
               { text: 'Java', link: '/zh/backend/java/' },
               { text: 'NodeJS', link: '/zh/backend/nodejs/index.md' },
-              { text: 'Express', link: '/zh/backend/express' },
-              { text: 'Koa', link: '/zh/backend/koa' },
-              { text: 'MongoDB', link: '/zh/backend/MongoDB' },
-              { text: 'Mongoose', link: '/zh/backend/mongoose' },
-              { text: 'Sequelize', link: '/zh/backend/sequelize' },
             ],
           },
           {
@@ -68,6 +63,7 @@ export default defineConfig({
             items: [
               { text: 'SQL', link: '/zh/database/sql' },
               { text: 'MySQL', link: '/zh/database/mysql' },
+              { text: 'MongoDB', link: '/zh/database/MongoDB' },
               { text: 'Redis', link: '/zh/database/redis' },
             ],
           },

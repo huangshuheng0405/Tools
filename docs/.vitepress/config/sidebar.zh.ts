@@ -1,10 +1,14 @@
 export default {
   '/zh/backend/nodejs/': [
     {
-      text: 'Backend',
+      text: 'NodeJS',
       items: [
-        { text: 'Overview', link: '/zh/backend/index.md' },
-        { text: 'Koa', link: '/zh/backend/koa' },
+        { text: 'Overview', link: '/zh/backend/nodejs/index.md' },
+        { text: 'Koa', link: '/zh/backend/nodejs/koa' },
+        { text: 'Express', link: '/zh/backend/nodejs/express' },
+        { text: 'Sequelize', link: '/zh/backend/nodejs/sequelize' },
+        { text: 'Mongoose', link: '/zh/backend/nodejs/mongoose' },
+
         {
           text: 'Node.js',
           link: '/zh/backend/nodejs',
@@ -20,30 +24,29 @@ export default {
             },
           ],
         },
-        { text: 'Express', link: '/zh/backend/express' },
-        { text: 'Sequelize', link: '/zh/backend/sequelize' },
-        { text: 'MongoDB', link: '/zh/backend/MongoDB' },
-        { text: 'Mongoose', link: '/zh/backend/mongoose' },
       ],
     },
   ],
   '/zh/backend/java/': [
     {
       text: 'Java',
-      items: [{ text: '总览', link: '/zh/backend/java/index.md' }],
+      items: [{ text: 'Overview', link: '/zh/backend/java/index.md' }],
     },
     {
-      text: '面向对象',
+      text: 'OOP',
       link: '/zh/backend/java/oop/index.md',
       items: [
-        { text: '继承', link: '/zh/backend/java/oop/inheritance.md' },
-        { text: '多态', link: '/zh/backend/java/oop/Polymorphism.md' },
-        { text: '接口', link: '/zh/backend/java/oop/interface.md' },
-        { text: '抽象类', link: '/zh/backend/java/oop/abstractClass.md' },
+        { text: 'Inheritance', link: '/zh/backend/java/oop/inheritance.md' },
+        { text: 'Polymorphism', link: '/zh/backend/java/oop/Polymorphism.md' },
+        { text: 'Interface', link: '/zh/backend/java/oop/interface.md' },
+        {
+          text: 'AbstractClass',
+          link: '/zh/backend/java/oop/abstractClass.md',
+        },
       ],
     },
     {
-      text: '集合框架',
+      text: 'Collection',
       link: '/zh/backend/java/collection/index.md',
       items: [
         { text: 'List', link: '/zh/backend/java/collection/list.md' },
@@ -55,22 +58,23 @@ export default {
       text: 'Maven',
       link: '/zh/backend/java/maven/index.md',
       items: [
-        { text: '安装', link: '/zh/backend/java/maven/install.md' },
-        { text: '生命周期', link: '/zh/backend/java/maven/lifeCycle.md' },
+        { text: 'Installation', link: '/zh/backend/java/maven/install.md' },
+        { text: 'Lifecycle', link: '/zh/backend/java/maven/lifeCycle.md' },
       ],
     },
     {
-      text: '单元测试',
+      text: 'UnitTest',
       link: '/zh/backend/java/unitTest/index.md',
       items: [{ text: 'JUnit', link: '/zh/backend/java/unitTest/junit.md' }],
     },
     {
-      text: 'Java 工具库',
+      text: 'Tools',
       link: '/zh/backend/java/tool/index.md',
       items: [
         { text: 'HttpClient', link: '/zh/backend/java/tool/httpClient.md' },
         { text: 'Hutool', link: '/zh/backend/java/tool/huTool.md' },
         { text: 'Lombok', link: '/zh/backend/java/tool/lombok.md' },
+        { text: 'Redisson', link: '/zh/backend/java/tool/redisson.md' },
       ],
     },
     {
@@ -206,7 +210,8 @@ export default {
     {
       text: 'frontend',
       items: [
-        { text: 'HTML/CSS', link: '/zh/frontend/h5c3' },
+        { text: 'HTML', link: '/zh/frontend/html' },
+        { text: 'CSS', link: '/zh/frontend/css' },
         {
           text: 'GSAP',
           link: '/zh/frontend/gsap',
@@ -232,8 +237,8 @@ export default {
         { text: 'index', link: '/zh/database/index' },
         { text: 'SQL', link: '/zh/database/sql' },
         { text: 'MySQL', link: '/zh/database/mysql' },
+        { text: 'MongoDB', link: '/zh/database/MongoDB' },
         { text: 'Redis', link: '/zh/database/redis' },
-        { text: 'Redisson', link: '/zh/database/redisson' },
       ],
     },
   ],
