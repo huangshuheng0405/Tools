@@ -75,3 +75,10 @@ Lombok会自动帮你创建：
 ```java
 private static final Logger log = ...
 ```
+
+### @RequiredArgsConstructor
+
+自动生成一个包含`final`字段和标记了`@NonNull`字段的构造函数
+
+在Spring项目里，最常用来简化**构造器注入**，替代手写构造函数或者`@Autowired`
+

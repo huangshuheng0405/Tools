@@ -108,6 +108,7 @@ const groups: { title: string; icons: string[] }[] = [
     title: '运维部署与工具',
     icons: [
       'linux.svg',
+      'vmware.svg',
       'docker.svg',
       'kubernetes.svg',
       'nginx.svg',
@@ -161,7 +162,14 @@ const groups: { title: string; icons: string[] }[] = [
 
   {
     title: '其他',
-    icons: ['luogu.svg', 'atcoder.svg', 'leetcode.svg'],
+    icons: [
+      'luogu.svg',
+      'atcoder.svg',
+      'leetcode.svg',
+      'obs.svg',
+      'obsidian.svg',
+      'typora.svg',
+    ],
   },
 ]
 
