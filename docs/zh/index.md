@@ -15,6 +15,9 @@ hero:
     - theme: brand
       text: 开始学习
       link: /zh/Start
+    - theme: alt
+      text: 技术栈
+      link: /zh/tech-stack
 
 features:
   - icon:
