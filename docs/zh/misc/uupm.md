@@ -3,6 +3,47 @@
 > 来源：https://uupm.cc（AI-Powered Design Intelligence）
 > 更新时间：2026-09-29
 
+## use  claude marketplace
+
+```bash
+/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill
+/plugin install ui-ux-pro-max@ui-ux-pro-max-skill
+```
+
+## use cli
+
+```bash
+# Install CLI globally
+npm install -g ui-ux-pro-max-cli
+
+# Go to your project
+cd /path/to/your/project
+
+# Install for your AI assistant
+uipro init --ai claude      # Claude Code
+uipro init --ai cursor      # Cursor
+uipro init --ai windsurf    # Windsurf
+uipro init --ai antigravity # Antigravity
+uipro init --ai copilot     # GitHub Copilot
+uipro init --ai kiro        # Kiro
+uipro init --ai codex       # Codex CLI
+uipro init --ai qoder       # Qoder
+uipro init --ai roocode     # Roo Code
+uipro init --ai gemini      # Gemini CLI
+uipro init --ai trae        # Trae
+uipro init --ai opencode    # OpenCode
+uipro init --ai continue    # Continue
+uipro init --ai codebuddy   # CodeBuddy
+uipro init --ai droid       # Droid (Factory)
+uipro init --ai kilocode    # KiloCode
+uipro init --ai warp        # Warp
+uipro init --ai augment     # Augment
+uipro init --ai codewhale   # CodeWhale
+uipro init --ai zcode       # ZCode
+uipro init --ai universal   # Universal / Agent Standard (.agents/skills/)
+uipro init --ai all         # All assistants
+```
+
 ## 一句话定位
 
 **UI/UX Pro Max（uupm）** = 一个可搜索的 UI 设计智能数据库，覆盖界面风格、配色、字体搭配、图表类型、落地页模式、UX 指南，并配 AI 推荐，帮你从一句 prompt 直接产出漂亮、可直接使用的界面代码。

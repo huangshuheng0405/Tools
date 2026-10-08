@@ -2,6 +2,8 @@
 
 Spring 官方提供的 Redis 操作框架，让你不用手写 Redis 命令，直接用 Java 代码操作 Redis。
 
+前置知识[redis](../../../database/redis.md)
+
 ## 依赖
 
 ```xml
@@ -31,44 +33,64 @@ Spring Data Redis 最核心的类，通过它操作 Redis 各种数据结构。
 
 因为 Redis 不止有一种数据结构，所以 `RedisTemplate` 提供了多个 `opsForXxx()` 分别对应
 
-| 数据结构 | 操作方法 |
-| --- | --- |
-| String | `opsForValue()` |
-| Hash | `opsForHash()` |
-| List | `opsForList()` |
-| Set | `opsForSet()` |
-| ZSet | `opsForZSet()` |
+| 数据结构 | 操作方法        |
+| -------- | --------------- |
+| String   | `opsForValue()` |
+| Hash     | `opsForHash()`  |
+| List     | `opsForList()`  |
+| Set      | `opsForSet()`   |
+| ZSet     | `opsForZSet()`  |
 
 ## 序列化
 
+redis存的都是二进制字节。存对象时，必须把对象转为字节（**序列化**）；取的时候把字节转为对象（反序列化）
+
+两种常见的序列化：
+
+- JDK序列化（`RedisTemplate`默认）：key会带`\xAC\xED\x00\x05`之类的乱码前缀，不可读，而且对象必须实现`Serializable`。一般不推荐
+- JSON序列化：存为可读的JSON字符串，主流方案
+
+SpringBoot引入了`spring-boot-starter-web`，已经自动带上了Jackson（一个JSON工具类），容器里直接有一个配置好的`ObjectMapper`可用
+
 ```java
-redisTemplate.opsForValue().set("user", new User(...));
+    private final ObjectMapper objectMapper;
+
+    // 存对象：对象 -> json 字符串 -> 存入 redis
+    @Test
+    public void save() throws JsonProcessingException {
+        User user = new User(1L, "hsh", 18);
+        String json = objectMapper.writeValueAsString(user);
+        stringRedisTemplate.opsForValue().set("user:1", json); // {"id":1,"name":"hsh","age":18}
+        System.out.println(json);
+    }
+
+    // 取对象：从 Redis 取出 json -> 转回对象
+    @Test
+    void getObject() {
+        String json = stringRedisTemplate.opsForValue().get("user:1");
+        try {
+            User user = objectMapper.readValue(json, User.class);
+            System.out.println(user); // User(id=1, name=hsh, age=18)
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 ```
 
-Java 对象不能直接原样放进 Redis，需要先进行序列化
 
-```
-Java对象
- ↓
-ObjectMapper
- ↓
-JSON String
- ↓
-Redis
-```
 
 ### StringRedisTemplate 和 RedisTemplate
 
 `StringRedisTemplate` 是**专门处理 String** 的 `RedisTemplate`，key 和 value 都是字符串
 
-| | StringRedisTemplate | RedisTemplate |
-| --- | --- | --- |
-| 类型 | `StringRedisTemplate` | `RedisTemplate<K, V>` |
-| Key | String | 可以配置 |
-| Value | String | 各种 Java 类型 |
-| 默认序列化 | String | JDK 序列化，取决于配置 |
-| 适合 | 字符串、Hash 字段 | Java 对象、复杂数据 |
-| JSON 对象 | 不直接支持 | 可以配置 JSON |
+|            | StringRedisTemplate   | RedisTemplate          |
+| ---------- | --------------------- | ---------------------- |
+| 类型       | `StringRedisTemplate` | `RedisTemplate<K, V>`  |
+| Key        | String                | 可以配置               |
+| Value      | String                | 各种 Java 类型         |
+| 默认序列化 | String                | JDK 序列化，取决于配置 |
+| 适合       | 字符串、Hash 字段     | Java 对象、复杂数据    |
+| JSON 对象  | 不直接支持            | 可以配置 JSON          |
 
 实际开发中存对象有两种思路
 
@@ -116,6 +138,7 @@ redisTemplate.opsForValue().set("name", "张三");           // 存
 Object name = redisTemplate.opsForValue().get("name");     // 取
 redisTemplate.delete("name");                              // 删
 Boolean exists = redisTemplate.hasKey("name");             // 判断存在
+redisTemplate.opsForValue().set("name", "123", Duration.ofSeconds(10)); // 设置过期时间 10s
 
 // 自增，常用于计数
 Long count = redisTemplate.opsForValue().increment("view:1");
@@ -123,20 +146,28 @@ Long count = redisTemplate.opsForValue().increment("view:1");
 
 ### Hash
 
-存一个字段时不需要 `Map`
-
 ```java
-stringRedisTemplate.opsForHash().put("login:token:" + token, "id", "1");
-```
+    @Test
+    public void putAll() {
+        Map<String, String> map = new HashMap<>();
+        map.put("name", "hsh");
+        map.put("age", "18");
+        map.put("city", "chengdu");
+        stringRedisTemplate.opsForHash().putAll("user:001", map); // 一次存多个字段
 
-一次存多个字段用 `putAll`，要求传 `Map`
+        Map<Object, Object> entries = stringRedisTemplate.opsForHash().entries("user:001"); // 取全部字段
+        entries.forEach((k, v) -> {
+            System.out.println(k + " = "  + v);
+        });
+    }
 
-```java
-Map<String, Object> userMap = BeanUtil.beanToMap(userDTO);
-stringRedisTemplate.opsForHash().putAll("login:token:" + token, userMap);
-
-// 读取
-Object value = stringRedisTemplate.opsForHash().get("login:token:" + token, "id");
+    @Test
+    public void hssKeyAndDelete() {
+        stringRedisTemplate.opsForHash().put("user:2", "name", "hsh");
+        System.out.println(stringRedisTemplate.opsForHash().hasKey("user:2", "name")); // true
+        stringRedisTemplate.opsForHash().delete("user:2", "name");
+        System.out.println(stringRedisTemplate.opsForHash().hasKey("user:2", "name")); // false
+    }
 ```
 
 ### List
@@ -144,32 +175,124 @@ Object value = stringRedisTemplate.opsForHash().get("login:token:" + token, "id"
 底层是双向链表，适合做队列、消息列表
 
 ```java
-redisTemplate.opsForList().leftPush("msg", "消息1");       // 头插
-redisTemplate.opsForList().rightPush("msg", "消息2");      // 尾插
-List<Object> list = redisTemplate.opsForList().range("msg", 0, -1); // 取全部
+    @Test
+    public void push() {
+        stringRedisTemplate.opsForList().rightPush("list:todo", "task");
+        stringRedisTemplate.opsForList().rightPush("list:todo", "task2");
+        stringRedisTemplate.opsForList().leftPush("list:todo", "task3");
+
+        // 0 到 -1 表示取全部
+        List<String> list = stringRedisTemplate.opsForList().range("list:todo", 0, -1);
+        System.out.println(list); // [task3, task, task2]
+    }
+
+    @Test
+    public void pop() {
+        stringRedisTemplate.opsForList().rightPush("list:queue", "a");
+        stringRedisTemplate.opsForList().rightPush("list:queue", "b");
+
+        // 从左边弹出 先进先出
+        String s = stringRedisTemplate.opsForList().leftPop("list:queue");
+        System.out.println(s); // a
+    }
+
+    // 长度 + 取单个
+    @Test
+    public void sizeAndIndex() {
+        stringRedisTemplate.opsForList().rightPush("list:num", "10");
+        stringRedisTemplate.opsForList().rightPush("list:num", "20");
+        stringRedisTemplate.opsForList().rightPush("list:num", "30");
+
+        System.out.println(stringRedisTemplate.opsForList().size("list:num")); // 3
+        System.out.println(stringRedisTemplate.opsForList().index("list:num", 0)); // 10
+    }
 ```
 
 ### Set
 
-无序且元素唯一，适合标签、共同好友
+**无序且元素唯一**，最大特点是支持交集/并集/差集，适合去重、标签、共同好友
 
 ```java
-redisTemplate.opsForSet().add("tags", "java", "redis", "spring");
-Boolean has = redisTemplate.opsForSet().isMember("tags", "redis");
-redisTemplate.opsForSet().remove("tags", "spring");
+    // 添加 + 取全部 自动去重
+    @Test
+    public void addAndMembers() {
+        stringRedisTemplate.opsForSet().add("set:tags", "java", "redis", "java");
+        Set<String> members = stringRedisTemplate.opsForSet().members("set:tags");
+        System.out.println(members);
+    }
+
+    // 判断是否存在 + 删除 + 数量
+    @Test
+    public void isMemberAndDeleteAndSize() {
+        stringRedisTemplate.opsForSet().add("set:tags", "java", "redis", "java");
+        System.out.println(stringRedisTemplate.opsForSet().isMember("set:tags", "java")); // true
+        stringRedisTemplate.opsForSet().remove("set:tags", "java");
+        System.out.println(stringRedisTemplate.opsForSet().size("set:tags")); // 1
+    }
+
+    // 交集/并集/差集
+    @Test
+    public void intersectAndUnionAndDifference() {
+        stringRedisTemplate.opsForSet().add("set:tags1", "java", "redis", "spring");
+        stringRedisTemplate.opsForSet().add("set:tags2", "java", "python", "go");
+
+        Set<String> intersect = stringRedisTemplate.opsForSet().intersect("set:tags1", "set:tags2");
+        System.out.println(intersect); // [java]
+
+        Set<String> union = stringRedisTemplate.opsForSet().union("set:tags1", "set:tags2");
+        System.out.println(union); // [java, redis, spring, python, go]
+
+        // 差集 tag1 有的 tag2 没有的
+        Set<String> difference = stringRedisTemplate.opsForSet().difference("set:tags1", "set:tags2");
+        System.out.println(difference); // [redis, spring]
+    }
 ```
 
 ### ZSet
 
-成员 + 分数，适合排行榜
+有序且不重复的集合，每个元素带一个**分数（score）**，按分数排序，专为排行榜设计
 
 ```java
-redisTemplate.opsForZSet().add("rank", "张三", 100);
-redisTemplate.opsForZSet().add("rank", "李四", 90);
+    // 添加成员带分数 + 按分数升序取
+    @Test
+    public void addAndRange() {
+        stringRedisTemplate.opsForZSet().add("zset:score", "hsh", 90);
+        stringRedisTemplate.opsForZSet().add("zset:score", "hsh2", 85);
+        stringRedisTemplate.opsForZSet().add("zset:score", "hsh3", 70);
 
-// 升序取前 10，降序用 reverseRange
-Set<Object> top10 = redisTemplate.opsForZSet().reverseRange("rank", 0, 9);
+        Set<String> range = stringRedisTemplate.opsForZSet().range("zset:score", 0, -1);
+        System.out.println(range); // [hsh3, hsh2, hsh]
+    }
+
+    // 降序 （排行榜 分数高的在前面）
+    @Test
+    public void reverseRang() {
+        stringRedisTemplate.opsForZSet().add("zset:rank", "小明", 90);
+        stringRedisTemplate.opsForZSet().add("zset:rank", "小红", 85);
+        stringRedisTemplate.opsForZSet().add("zset:rank", "小张", 80);
+
+        Set<String> reversed = stringRedisTemplate.opsForZSet().reverseRange("zset:rank", 0, -1);
+        System.out.println(reversed); // [小明, 小红, 小张]
+    }
+
+    // 加分 + 查分数 查名次
+    @Test
+    public void scoreAndRank() {
+        stringRedisTemplate.opsForZSet().add("zset:rank", "小明", 90);
+        stringRedisTemplate.opsForZSet().add("zset:rank", "小红", 88);
+
+        // 给小红加 20 分
+        stringRedisTemplate.opsForZSet().incrementScore("zset:rank", "小红", 20);
+
+        Double score = stringRedisTemplate.opsForZSet().score("zset:rank", "小红");
+        Long reversedRank = stringRedisTemplate.opsForZSet().reverseRank("zset:rank", "小红");
+
+        System.out.println(score); // 108.0 // 分数
+        System.out.println(reversedRank); // 0 名次
+    }
 ```
+
+> `reverseRank`返回的是从0开始的名次
 
 ## 过期时间
 

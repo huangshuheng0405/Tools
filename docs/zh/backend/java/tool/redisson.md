@@ -1,26 +1,13 @@
 # Redisson
 
-[Redisson](https://redisson.org/) 是一个基于 Netty 的 Java Redis 客户端。它不只是把 Redis 命令翻译成 Java 方法，还把 Redis 封装成了 Java 里的分布式对象和分布式服务。
-
-| Java 概念  | Redisson API         | Redis 底层 |
-| ---------- | -------------------- | ---------- |
-| 分布式锁   | `RLock`              | Lua + Hash |
-| Map        | `RMap` / `RMapCache` | Hash       |
-| List       | `RList`              | List       |
-| Set        | `RSet`               | Set        |
-| 有序集合   | `RSortedSet`         | ZSet       |
-| 原子计数   | `RAtomicLong`        | String     |
-| 限流器     | `RRateLimiter`       | ZSet       |
-| 布隆过滤器 | `RBloomFilter`       | Bit 数组   |
-| 发布订阅   | `RTopic`             | Pub/Sub    |
-
-> 只是给普通方法加缓存时，Spring Data Redis + Spring Cache 已经够用；需要跨进程互斥、限流、延迟队列这类能力时，才需要 Redisson。
-
 ## 为什么用它写分布式锁
 
-上一篇 [Redis 笔记](redis.md#分布式锁) 手写了分布式锁：先 `SET key value NX EX` 加锁，再用 Lua 保证 `GET + 判断 + DEL` 是原子的。
+回顾我们手写的分布式锁，有两个缺点：
 
-这种方式能用，但很多细节要自己维护：
+- 锁会提前释放：给锁设定了固定TTL，如果业务执行超过了TTL，锁就会自动失效，别人就会再进来，从而引发并发问题
+- 不可重入：同一线程内如果还想再那一次锁，会自己锁死自己
+
+有很多细节要自己维护：
 
 | 要处理的问题       | 手写 Redis             | Redisson                    |
 | ------------------ | ---------------------- | --------------------------- |
@@ -33,9 +20,9 @@
 
 Redisson 底层也是靠 Redis 的原子命令 + Lua 实现的，只是把这些细节封装好了。
 
-## Spring Boot 集成
+## 引入
 
-引入 starter：
+`redisson-spring-boot-starter` 与 `spring-boot-starter-data-redis` 同时存在时，可能引发 `StackOverflowError`。原因是 Redisson 的自动配置会覆盖 Spring Data Redis 的 `ConnectionFactory`，导致 `DefaultedRedisConnection.pExpire()` 方法无限递归调用。
 
 ```xml
 <dependency>
@@ -45,20 +32,13 @@ Redisson 底层也是靠 Redis 的原子命令 + Lua 实现的，只是把这些
 </dependency>
 ```
 
-单机 Redis 可以直接用 Spring Boot 的 Redis 配置：
 
-```yaml
-spring:
-  data:
-    redis:
-      host: localhost
-      port: 6379
-      database: 0
-```
 
-starter 会自动注册 `RedissonClient`、`RedissonReactiveClient` 等 Bean。
+### 推荐方案
 
-如果不用 starter，只引入核心包：
+如果你只需要Redission的分布式锁和分布式对象功能，普通缓存操作仍想用`StringRedisTemplate`，值引入纯`redission`依赖即可，手动创建`RedissionClient`Bean，并显示指定`RedisConnectFactory`使用Letture
+
+只引入核心包：
 
 ```xml
 <dependency>
@@ -70,30 +50,23 @@ starter 会自动注册 `RedissonClient`、`RedissonReactiveClient` 等 Bean。
 
 需要自己精确控制配置时，可以手写一个 `RedissonClient` Bean，和 starter 自动配置二选一：
 
-```java
-import org.redisson.Redisson;
-import org.redisson.api.RedissonClient;
-import org.redisson.config.Config;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-public class RedissonConfig {
-
+```java [RedisConfig.java]
     @Bean(destroyMethod = "shutdown")
     public RedissonClient redissonClient() {
         Config config = new Config();
+
+        config.setPassword("password"); // 推荐在config层级设置密码
+
         config.useSingleServer()
-                .setAddress("redis://127.0.0.1:6379")
-                .setDatabase(0);
+                .setAddress("redis://127.0.0.1:6379");
+
         return Redisson.create(config);
     }
-}
 ```
 
 `RedissonClient` 是线程安全的，项目里注入同一个实例即可。
 
-## RLock 使用
+## RLock 
 
 先根据业务 key 拿到锁对象：
 
@@ -154,7 +127,7 @@ try {
 
 必须把 `unlock()` 放在 `finally` 里，否则业务抛异常后锁可能不会释放。
 
-## 看门狗（Watchdog）
+## 看门狗
 
 > 锁快过期了，Redission自动续期，防止业务没执行玩，锁提前失效
 
@@ -187,7 +160,7 @@ Redisson 的默认看门狗时间是 30 秒，底层仍然是“给锁设置一�
 config.setLockWatchdogTimeout(30_000);
 ```
 
-如果调用时传了 `leaseTime`，Redisson 就按固定时间释放，不再自动续期：
+如果调用时传了 `leaseTime`，Redisson 就**按固定时间释放，不再自动续期：**
 
 ```java
 // 10 秒后自动释放，业务不能超过 10 秒
@@ -198,19 +171,13 @@ lock.lock(10, TimeUnit.SECONDS);
 
 如果直接设置一个很长的过期时间，一旦服务奔溃，就会导致死锁/长时间锁死
 
-## 可重入
+## 可重入锁
 
-`RLock` 默认和 Java 的 `ReentrantLock` 一样可重入：同一个线程可以重复获取锁，释放几次才算真正释放。
+可重入：同一个线程可以反复拿到同一把锁，不会锁死
 
-```java
-lock.lock();
-lock.lock();
+实现：用hash结果记录线程id+加锁次数，每`lock`一次，次数加一，每`unlock`一次，次数减一，减到0才真正释放
 
-lock.unlock(); // 还持有一层
-lock.unlock(); // 真正释放
-```
-
-只有持锁线程能 `unlock()`，其他线程调用会抛 `IllegalMonitorStateException`。
+场景：方法A调用方法B，两个方法都要拿同一把锁，如果锁不可重入，就卡死自己了
 
 ## 其他分布式对象
 
@@ -246,3 +213,12 @@ boolean maybeExists = bloom.contains("1001");
 - 锁名粒度要合适：用业务 ID，不要全局只用一个锁，否则所有订单串行
 - 锁内只放需要互斥的业务，不要在锁里做慢查询或远程调用，否则会拖慢所有争锁线程
 - 普通业务用 `RLock` 即可；老资料里的 RedLock 争议较大，Redisson 4.x 已把 RedLock 标记为过时，不再作为推荐方案
+
+## 与 Lettuce 的共存策略
+
+| 客户端                      | 适合场景                                                     |
+| --------------------------- | ------------------------------------------------------------ |
+| Letture/StringRedisTemplate | 普通缓存读写、简单KV操作、String类型命令                     |
+| Redission                   | 分布式锁（RLock）、分布式集合（RMap/RList）、限流器、分布式原子类 |
+
+Redission虽然功能强大，但**对String类型命令的支持较弱**，不支持排序、事务、管道、分区等特性。如果你的业务大量使用String类型操作，仍然需要保留Letture

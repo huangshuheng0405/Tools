@@ -29,20 +29,33 @@ Spring Boot 4 使用 `spring-boot4-starter`，从 3.5.13 开始支持，最新�
 ```yml
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/你的数据库
-    username: root
-    password: 密码
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
 
 mybatis-plus:
+  # 1. 基础配置
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.example.demo.entity
+  config-location: classpath:mybatis-config.xml   # 指定外部 MyBatis 配置文件（一般不用）
+
+  # 2. 原生 MyBatis 配置（继承自 MyBatis）
   configuration:
-    map-underscore-to-camel-case: true   # 下划线转驼峰，默认开启
+    map-underscore-to-camel-case: true            # 驼峰命名自动映射（默认 true）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 控制台打印 SQL（开发环境用）
+    cache-enabled: false                          # 关闭二级缓存
+    default-enum-type-handler: ...                # 枚举类型处理器（可选）
+
+  # 3. 全局策略配置
   global-config:
+    banner: false                                 # 关闭控制台 Banner
     db-config:
-      id-type: auto                       # 主键策略：数据库自增
-      logic-delete-field: deleted         # 逻辑删除字段名
-      logic-delete-value: 1
-      logic-not-delete-value: 0
+      id-type: assign_id                          # 主键策略（默认雪花算法）
+      logic-delete-field: deleted                 # 逻辑删除字段名（全局配置）
+      logic-delete-value: 1                       # 逻辑已删除值
+      logic-not-delete-value: 0                   # 逻辑未删除值
+      # table-prefix: t_                          # 表名前缀（可选）
 ```
 
 在Spring Boot启动类中添加`@MapperScan`注解，扫描Mapper文件夹
@@ -66,7 +79,7 @@ public class Application {
 
 > Mapper 接口和 Service 层的具体写法放在文末，见 [Mapper](#mapper)、[Service](#service)
 
-## 实体类
+## 常见注解
 
 ```java
 @Data
@@ -85,6 +98,12 @@ public class User {
 
     @TableField(fill = FieldFill.INSERT)  // 插入时自动填充
     private LocalDateTime createTime;
+    
+    @TableField("`order`") 				  // 成员变量名与数据库关键字冲突
+    private Integer order;
+    
+    @TableField(exist = false)            // 在数据库中不存在
+    private String address;
 
     @TableLogic                           // 逻辑删除标记
     private Integer deleted;
@@ -227,7 +246,55 @@ Wrapper
    └─ LambdaUpdateWrapper      // UpdateWrapper 的 Lambda 版本
 ```
 
-区别只有一个核心点：`QueryWrapper`里写的**是数据库字段字符串**，容易写错且不支持编译器检查；`LambdaQueryWrapper`用`user::getName`这类方法引用，字段名改动时代码会直接报错，日常开发推荐后者
+以下是`QueryWrapper`和`LambdaQueryWrapper`的演示
+
+```java
+    @Test
+    void testQueryWrapper() {
+        // 构建查询条件
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>()
+                .select("id", "username", "info", "balance")
+                .like("username", "ww")
+                .ge("balance", 500);
+
+        // 查询
+        List<User> userList = userMapper.selectList(queryWrapper);
+        userList.forEach(System.out::println);
+    }
+
+    @Test
+    void testUpdateByQueryWrapper() {
+        // 要更新的数据
+        User user = new User();
+        user.setBalance(BigDecimal.valueOf(2000));
+        // 更新的条件
+        QueryWrapper<User> wrapper = new QueryWrapper<User>()
+                .eq("username", "ww");
+        // 执行更新
+        userMapper.update(user, wrapper);
+    }
+
+    @Test
+    void testUpdateWrapper() {
+        List<Integer> ids = List.of(1, 2, 3);
+        UpdateWrapper<User> wrapper = new UpdateWrapper<User>()
+                .setSql("balance = balance - 200")
+                .in("id", ids);
+        userMapper.update(null, wrapper);
+    }
+
+    @Test
+    void testLambdaQueryWrapper() {
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .select(User::getId, User::getUsername, User::getInfo, User::getBalance)
+                .like(User::getUsername, "ww")
+                .ge(User::getBalance, 500);
+        List<User> userList = userMapper.selectList(wrapper);
+        userList.forEach(System.out::println);
+    }
+```
+
+区别只有一个核心点：`QueryWrapper`里写的**是数据库字段字符串**，容易写错且不支持编译器检查`LambdaQueryWrapper`用`user::getName`这类方法引用，字段名改动时代码会直接报错，日常开发**推荐后者**
 
 ```java
 List<User> users = userService.list(
@@ -245,7 +312,7 @@ List<User> users = userService.list(
 );
 ```
 
-##### 动态参数处理
+### 动态参数处理
 
 最常见的一个实用点是：条件方法第一个参数可以传`boolean`，为`false`时该条件不生效
 
@@ -310,6 +377,103 @@ boolean removed = userService.remove(
 wrapper.like(StringUtils.hasText(name), User::getName, name);
 ```
 
+## IService
+
+`IService<T>`配合`ServiceImpl<M,N>`使用。把`BaseMapper`的单表查询CRUD进一步封装到Service层
+
+Service接口
+
+```java
+public interface UserService extends IService<User> {
+}
+```
+
+Service实现
+
+```java
+@Service
+public class UserServiceImpl 
+        extends ServiceImpl<UserMapper, User> 
+        implements UserService {
+}
+```
+
+泛型含义：
+
+- `IService<User>`：表示这个Service处理`User`实体
+- `ServiceImpl<UserMapper, User>`：第一个是Mapper类型，第二个是实体类型
+- `ServiceImpl`内部会注入`UserMapper`，并提供`getBaseMapper()`获取它
+
+### 新增/保存
+
+```java
+userService.save(user);
+userService.saveBatch(list);
+userService.saveBatch(list, 500);
+userService.saveOrUpdate(user);
+userService.saveOrUpdateBatch(list);
+```
+
+`saveOrUpdate` 判断逻辑通常是：主键为空或根据主键查不到，则 insert；否则 update。注意它主要看主键，不是唯一索引。
+
+### 删除
+
+```java
+userService.removeById(1L);
+userService.removeByIds(ids);
+userService.removeByMap(map);
+userService.remove(wrapper);
+```
+
+### 修改
+
+```java
+userService.updateById(user);
+userService.update(user, wrapper);
+userService.updateBatchById(list);
+```
+
+### 查询
+
+```java
+User user = userService.getById(1L);
+User one = userService.getOne(wrapper, false);
+List<User> list = userService.list();
+List<User> list2 = userService.list(wrapper);
+List<User> list3 = userService.listByIds(ids);
+long count = userService.count(wrapper);
+```
+
+`getOne(wrapper)`如果查询到多条会抛异常，确定只有一条时可用`getOne(wrapper, false)`取第一条
+
+## LambdaQuery
+
+在`ServiceImpl`使用，直接链式调用，无需new对象，最后以`.list()`、`.one()`等方法返回结果
+
+```java
+// 在 UserServiceImpl 中
+public List<User> getUsers(String name, Integer minAge) {
+    return lambdaQuery()
+            .like(StringUtils.isNotBlank(name), User::getUsername, name)
+            .ge(minAge != null, User::getAge, minAge)
+            .list(); // 直接返回 List<User>
+}
+```
+
+而`LambdaQueryWrapper`更灵活，需要手动创建`Wrapper`对象，然后显示交给`BaseMapper`执行
+
+```java
+// 在 UserServiceImpl 中，或者任何能拿到 baseMapper 的地方
+public List<User> getUsers(String name, Integer minAge) {
+    LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+    wrapper.like(StringUtils.isNotBlank(name), User::getUsername, name)
+           .ge(minAge != null, User::getAge, minAge);
+    return baseMapper.selectList(wrapper); // 需手动调用 baseMapper
+}
+```
+
+优先使用`LambdaQuery`
+
 ## 分页插件
 
 v3.5.9 之后分页插件需要单独引入 `mybatis-plus-jsqlparser`
@@ -322,7 +486,7 @@ v3.5.9 之后分页插件需要单独引入 `mybatis-plus-jsqlparser`
 </dependency>
 ```
 
-配置拦截器
+分页需要配置分页插件，否则不会真正分页：
 
 ```java
 @Configuration

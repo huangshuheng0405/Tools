@@ -658,7 +658,7 @@ redisTemplate.opsForValue().set("key:" + i, value, baseTime + randomTime, TimeUn
 
 3. **服务限流降级**：数据库层加限流（如 Sentinel、Hystrix），超出承受能力直接降级返回
 
-> **总结对比**：
+### 总结
 
 | 问题     | 场景                           | 解决方案                             |
 | -------- | ------------------------------ | ------------------------------------ |
@@ -721,61 +721,159 @@ A和B时两个JVM，锁只能锁住当前JVM内的线程
 
 ### 实现
 
-假设两个服务器同时抢锁：
+首先是最简单的版本，通过redis的`setnx`命令（set if not exist）
 
-```
-服务器A → SET lock:order:1001 owner-A NX
-服务器B → SET lock:order:1001 owner-B NX
-```
+`setnx key value`
 
-Redis是单线程执行命令，并且`SET NX`是原子操作，只能有一个成功
+这个命令会使redis中如果不存在key就会创建值为vlaue的key，存在的话就会返0
 
-代码大致如下：
+![](/database/redis/image1.png)
 
-```java
-String lockKey = "lock:order:" + orderId;
-String value = UUID.randomUUID().toString();
+#### 过期时间
 
-Boolean success = stringRedisTemplate.opsForValue()
-        .setIfAbsent(lockKey, value, 30, TimeUnit.SECONDS);
+如果获取锁的机器服务挂了呢？
 
-if (Boolean.TRUE.equals(success)) {
-    try {
-        // 执行业务
-        createOrder();
-    } finally {
-        // 释放锁
-        stringRedisTemplate.delete(lockKey);
-    }
-}
-```
+![](/database/redis/image2.png)
 
-一定要设置**过期时间**，如果服务器A拿到了锁，突然宕机了，那么别的服务器拿不到这个锁，就永远处理不了这个订单了
+其他机器一直获取不到锁
 
-#### 不能直接删除锁
+所有有个兜底策略：设置**过期时间**
 
-假设服务器A获得了锁，但是由于执行业务太久了，导致锁过期了，这时候服务器B获得了锁，这时候服务器A刚好又执行完业务，准备删除锁，但是这时候删除的是服务器B的锁，所以需要在删除锁的时候加个判断
+Redis自带原子性的操作命令：`setnx key value ne ex 100`，时间单位是秒
+
+#### 万一释放错了怎么办
+
+![](/database/redis/image3.png)
+
+涉及到两个问题
+
+1. 任务还没处理完锁就过期了
+2. 释放掉别人的锁
+
+对应的解决办法
+
+1. 给锁续时间（根据业务加长时间，并且每隔一段时间访问锁，如果存在就续）
+2. 给每个锁区分一下，这是谁的锁（锁的value可以设置`UUID`等唯一的值）
+
+优化过后：
+
+![](/database/redis/image4.png)
 
 ### Lua
 
-Lua脚本可以把`GET`和判断和`DEL`放进一个Lua脚本，保证原子性
+![](/database/redis/image5.png)
+
+如果线程1在拿到锁之后、删除锁之前，锁刚好过期，线程2拿到锁；线程1再执行删除，就会把线程2的锁删掉
+
+所以要保证判断和删除是原子性，所以我们可以把它们放进`Lua`脚本
 
 ```lua
-if redis.call('GET', KEYS[1]) == ARGV[1] then
-    return redis.call('DEL', KEYS[1])
+if redis.call('get', KEYS[1]) == ARGV[1] then
+    return redis.call('del', KEYS[1])
+else
+    return 0
 end
-return 0
 ```
 
 `Java`调用
 
 ```java
-redisTemplate.execute(
-    script,
-    Collections.singletonList("lock:order:1001"),
-    "owner-A"
-);
+String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+redisTemplate.execute(new DefaultRedisScript<>(script, Long.class),
+    Collections.singletonList(lockKey), uuid);
 ```
+
+### 应用
+
+以抢购商品为例，假设库存只剩**一件**，这时两个请求同时抢
+
+两个请求都拿到库存等于一这个旧数据，都以为还有库存，都把库存减一，结果库存变成了`-1`，就会超卖
+
+所以**查和减必须是原子性操作**，不能让别的请求插进来
+
+```lua
+local stock = tonumber(redis.call('get', KEYS[1])) // redis存的是字符串“1”，转为数字
+if stock == nil then return -1 end // 商品不存在
+if stock <= 0 then return 0 end // 库存为0 已售完
+redis.call('decr', KEYS[1]) // 库存减1
+return 1
+```
+
+service
+
+```java
+package com.demo.redisdemo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+
+@Service
+public class SeckillService {
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    // Lua 脚本：原子地「检查库存 + 扣减库存」
+    // 返回  1 = 抢购成功，0 = 已售罄，-1 = 商品库存不存在
+    private static final DefaultRedisScript<Long> SECKILL_SCRIPT = new DefaultRedisScript<>(
+        "local stock = tonumber(redis.call('get', KEYS[1])) " +
+        "if stock == nil then return -1 end " +
+        "if stock <= 0 then return 0 end " +
+        "redis.call('decr', KEYS[1]) " +
+        "return 1", Long.class);
+
+    // 抢购
+    public String seckill(String goodsId, String userId) {
+        String key = "stock:" + goodsId;
+        Long result = stringRedisTemplate.execute(
+                SECKILL_SCRIPT, Collections.singletonList(key));
+
+        if (result == null) {
+            return "系统错误";
+        }
+        switch (result.intValue()) {
+            case -1: return "商品不存在";
+            case 0:  return "已售罄";
+            case 1:  return "抢购成功";
+            default: return "未知结果";
+        }
+    }
+
+}
+```
+
+直接在reids里新建一个`stock:1`的库存，然后用jmeter进行压测即可，在redis查看，stock绝对不会变为负数
+
+#### `.execute(...)`
+
+`RedisTemplate`提供的执行redis脚本的方法
+
+```java
+<T> T execute(RedisScript<T> script, List<K> keys, Object... args)
+```
+
+#### `SECKILL_SCRIPT`
+
+这是一个`RedisScript<Long>`类型的对象，封装了：
+
+- Lua脚本内容
+- 脚本的返回类型（这里是`Long.class`）
+
+一般用`DefaultRedisScript`创建
+
+#### `Collection.singletonList(key)`
+
+创建一个只包含一个元素的不可变List，所以Lua从`KEYS[1]`拿到`key`
+
+> Lua的table用作数组时，索引从1开始，不是0
+
+
+
+
 
 ### 可重入锁
 
@@ -908,16 +1006,16 @@ BGSAVE
 
 ##### 常用配置
 
-| 配置项                          | 默认值                     | 作用                                        |
-| ------------------------------- | -------------------------- | ------------------------------------------- |
-| `save <seconds> <changes>`      | `3600 1 300 100 60 10000`  | 自动保存的触发条件，可以写多组              |
-| `save ""`                       | —                          | 关闭所有自动保存，但手动`BGSAVE`仍可用      |
-| `dbfilename`                    | `dump.rdb`                 | 文件名                                      |
-| `dir`                           | `./`                       | 数据目录，RDB 和 AOF 都落在这里             |
-| `rdbcompression`                | `yes`                      | 用 LZF 压缩字符串对象，关掉省 CPU 但文件暴涨 |
-| `rdbchecksum`                   | `yes`                      | 文件尾部写入 CRC64 校验和，关掉加载快约 10% |
-| `stop-writes-on-bgsave-error`   | `yes`                      | 上次 BGSAVE 失败后拒绝所有写命令            |
-| `rdb-del-sync-files`            | `no`                       | 未开 AOF 时，主从同步用完的 RDB 是否删除    |
+| 配置项                        | 默认值                    | 作用                                         |
+| ----------------------------- | ------------------------- | -------------------------------------------- |
+| `save <seconds> <changes>`    | `3600 1 300 100 60 10000` | 自动保存的触发条件，可以写多组               |
+| `save ""`                     | —                         | 关闭所有自动保存，但手动`BGSAVE`仍可用       |
+| `dbfilename`                  | `dump.rdb`                | 文件名                                       |
+| `dir`                         | `./`                      | 数据目录，RDB 和 AOF 都落在这里              |
+| `rdbcompression`              | `yes`                     | 用 LZF 压缩字符串对象，关掉省 CPU 但文件暴涨 |
+| `rdbchecksum`                 | `yes`                     | 文件尾部写入 CRC64 校验和，关掉加载快约 10%  |
+| `stop-writes-on-bgsave-error` | `yes`                     | 上次 BGSAVE 失败后拒绝所有写命令             |
+| `rdb-del-sync-files`          | `no`                      | 未开 AOF 时，主从同步用完的 RDB 是否删除     |
 
 > `stop-writes-on-bgsave-error`是把双刃剑：开着能避免"以为有持久化其实早写不进去了"（磁盘满时只读不报错的静默故障最致命），但代价是磁盘满会直接升级成"Redis 拒绝所有写入"的服务不可用。线上要监控`rdb_last_bgsave_status`，或者显式关掉它并接受"持久化可能已经悄悄失效"
 
@@ -958,13 +1056,13 @@ Redis 启动时，如果 AOF 没开启（或 AOF 文件不存在），就会去`
 
 ##### 与 AOF 的关系
 
-| 维度     | RDB                                | AOF                          |
-| -------- | ---------------------------------- | ---------------------------- |
-| 记录内容 | 某个时间点的全量数据               | 每条写命令                   |
-| 数据安全 | 差，宕机丢几分钟                   | 好，最多丢 1 秒（`everysec`） |
-| 文件体积 | 小                                 | 大，需要定期重写压缩         |
-| 恢复速度 | 快                                 | 慢，要逐条回放               |
-| 主要用途 | 备份、灾难恢复、主从全量同步       | 尽量不丢数据                 |
+| 维度     | RDB                          | AOF                           |
+| -------- | ---------------------------- | ----------------------------- |
+| 记录内容 | 某个时间点的全量数据         | 每条写命令                    |
+| 数据安全 | 差，宕机丢几分钟             | 好，最多丢 1 秒（`everysec`） |
+| 文件体积 | 小                           | 大，需要定期重写压缩          |
+| 恢复速度 | 快                           | 慢，要逐条回放                |
+| 主要用途 | 备份、灾难恢复、主从全量同步 | 尽量不丢数据                  |
 
 两者可以同时开启，**恢复时优先用 AOF**，因为它理论上更完整。Redis 4.0 起支持混合持久化，`aof-use-rdb-preamble yes`会让 AOF 文件的前半段是 RDB 格式、后半段才是增量命令，兼顾恢复速度和数据完整性
 
@@ -1019,11 +1117,11 @@ appendonlydir/
 
 AOF 只是把命令写进了用户态的缓冲区，真正落盘要靠`fsync`。这个配置就是控制多久`fsync`一次，也是 AOF 唯一需要权衡的地方：
 
-| 取值       | 行为                                         | 最多丢多少   | 性能           |
-| ---------- | -------------------------------------------- | ------------ | -------------- |
-| `always`   | 每批命令都`fsync`，完成之后才回复客户端      | 几乎不丢     | 极慢，必须配 SSD |
-| `everysec` | 后台线程每秒`fsync`一次                      | 1 秒         | 默认档，兼顾   |
-| `no`       | 完全不`fsync`，交给操作系统                  | 通常 30 秒   | 最快           |
+| 取值       | 行为                                    | 最多丢多少 | 性能             |
+| ---------- | --------------------------------------- | ---------- | ---------------- |
+| `always`   | 每批命令都`fsync`，完成之后才回复客户端 | 几乎不丢   | 极慢，必须配 SSD |
+| `everysec` | 后台线程每秒`fsync`一次                 | 1 秒       | 默认档，兼顾     |
+| `no`       | 完全不`fsync`，交给操作系统             | 通常 30 秒 | 最快             |
 
 > `always`的名义是"每条命令都刷盘"，实际上 Redis 会把同一时刻到达的多个命令合并成一次`write`+一次`fsync`（组提交），并且**在把回复发给客户端之前**完成。所以它保证的是"客户端收到 OK 就意味着已经落盘"——代价是吞吐量断崖式下跌，而且极度依赖磁盘的`fsync`延迟，机械盘上基本不可用
 
@@ -1060,19 +1158,19 @@ RDB 里讲的`fork`+写时复制在这里完全一样，开销和风险也完全
 
 ##### 常用配置
 
-| 配置项                          | 默认值          | 作用                                       |
-| ------------------------------- | --------------- | ------------------------------------------ |
-| `appendonly`                    | `no`            | 是否开启 AOF                               |
-| `appendfilename`                | `appendonly.aof`| 文件名（Redis 7 起实际会加上序号和后缀）   |
-| `appenddirname`                 | `appendonlydir` | 存放多部分 AOF 的目录                      |
-| `appendfsync`                   | `everysec`      | 刷盘策略，见上文                           |
-| `auto-aof-rewrite-percentage`   | `100`           | 增长多少比例触发重写，`0` 表示关闭         |
-| `auto-aof-rewrite-min-size`     | `64mb`          | 触发重写的最小文件大小                     |
-| `no-appendfsync-on-rewrite`     | `no`            | 重写期间暂停`fsync`，避免 I/O 争抢         |
-| `aof-use-rdb-preamble`          | `yes`           | base 文件用 RDB 格式，见下文               |
-| `aof-load-truncated`            | `yes`           | 文件末尾截断时仍然照常启动                 |
-| `aof-rewrite-incremental-fsync` | `yes`           | 重写时每写入 32MB 就刷一次盘               |
-| `aof-timestamp-enabled`         | `no`            | 在 AOF 里插入时间戳注释，便于按时间点恢复  |
+| 配置项                          | 默认值           | 作用                                      |
+| ------------------------------- | ---------------- | ----------------------------------------- |
+| `appendonly`                    | `no`             | 是否开启 AOF                              |
+| `appendfilename`                | `appendonly.aof` | 文件名（Redis 7 起实际会加上序号和后缀）  |
+| `appenddirname`                 | `appendonlydir`  | 存放多部分 AOF 的目录                     |
+| `appendfsync`                   | `everysec`       | 刷盘策略，见上文                          |
+| `auto-aof-rewrite-percentage`   | `100`            | 增长多少比例触发重写，`0` 表示关闭        |
+| `auto-aof-rewrite-min-size`     | `64mb`           | 触发重写的最小文件大小                    |
+| `no-appendfsync-on-rewrite`     | `no`             | 重写期间暂停`fsync`，避免 I/O 争抢        |
+| `aof-use-rdb-preamble`          | `yes`            | base 文件用 RDB 格式，见下文              |
+| `aof-load-truncated`            | `yes`            | 文件末尾截断时仍然照常启动                |
+| `aof-rewrite-incremental-fsync` | `yes`            | 重写时每写入 32MB 就刷一次盘              |
+| `aof-timestamp-enabled`         | `no`             | 在 AOF 里插入时间戳注释，便于按时间点恢复 |
 
 > `no-appendfsync-on-rewrite`是把双刃剑：开着能避免主进程的`fsync`和重写子进程的写盘互相抢 I/O 造成延迟尖峰，代价是这段时间内**相当于`appendfsync no`**，宕机可能丢 30 秒数据。用不用取决于你更怕延迟还是更怕丢数据
 
@@ -1119,13 +1217,13 @@ redis-check-aof --fix appendonlydir/appendonly.aof.1.incr.aof
 
 AOF 存的是命令，但有些命令**在不同时刻重放会得到不同结果**。如果原样写进 AOF，重放出来的数据集就可能和原实例不一致。所以 Redis 在写入 AOF（以及发给从节点）之前，会先把这类命令改写成确定性形式：
 
-| 你发出的命令                        | 写进 AOF 的形式                  | 为什么                                               |
-| ----------------------------------- | -------------------------------- | ---------------------------------------------------- |
-| `EXPIRE key 60`、`SET key v EX 60`  | `PEXPIREAT key <绝对毫秒时间戳>` | 相对时间会漂移，"60 秒后"在重放那一刻早就过去了      |
-| `SPOP key`                          | `SREM key <实际弹出的成员>`      | 弹出哪个成员是随机的，重放时必须指定具体是哪一个     |
-| `INCRBYFLOAT key 0.1`               | `SET key <计算后的结果>`         | 浮点实现差异可能导致末位不同                         |
-| `HINCRBYFLOAT key field 0.1`        | `HSET key field <结果>`          | 同上                                                 |
-| `XADD key * field value`            | `XADD key <实际生成的 ID> ...`   | 自动生成的 ID 和当前时间有关，重放时必须固定下来     |
+| 你发出的命令                       | 写进 AOF 的形式                  | 为什么                                           |
+| ---------------------------------- | -------------------------------- | ------------------------------------------------ |
+| `EXPIRE key 60`、`SET key v EX 60` | `PEXPIREAT key <绝对毫秒时间戳>` | 相对时间会漂移，"60 秒后"在重放那一刻早就过去了  |
+| `SPOP key`                         | `SREM key <实际弹出的成员>`      | 弹出哪个成员是随机的，重放时必须指定具体是哪一个 |
+| `INCRBYFLOAT key 0.1`              | `SET key <计算后的结果>`         | 浮点实现差异可能导致末位不同                     |
+| `HINCRBYFLOAT key field 0.1`       | `HSET key field <结果>`          | 同上                                             |
+| `XADD key * field value`           | `XADD key <实际生成的 ID> ...`   | 自动生成的 ID 和当前时间有关，重放时必须固定下来 |
 
 > 这是**传播层面**的改写，你发出去的命令和执行结果都不变，只是落进 AOF 的东西换了形式。理解这一点就能想通"AOF 重放为什么一定能得到和原实例完全一致的数据集"
 

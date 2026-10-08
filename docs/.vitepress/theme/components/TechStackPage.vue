@@ -5,7 +5,7 @@
 const groups: { title: string; icons: string[] }[] = [
   {
     // 站内文章按篇数排：JavaScript 58、backend/java 31、react 38、vue 36、Engineering 21
-    title: '语言基础',
+    title: 'language',
     icons: [
       'javascript.svg',
       'typescript.svg',
@@ -19,15 +19,20 @@ const groups: { title: string; icons: string[] }[] = [
       'dart.svg',
       'lua.svg',
       'yaml.svg',
+      'promises.svg',
+      'go.svg',
+      'rust.svg',
     ],
   },
   {
-    title: '前端框架与库',
+    title: 'framework',
     icons: [
       'vue.svg',
       'react.svg',
+      'angular.svg',
       'nuxt.svg',
       'nextjs.svg',
+      'electron.svg',
       'uniapp.png',
       'redux.svg',
       'immer.svg',
@@ -35,11 +40,21 @@ const groups: { title: string; icons: string[] }[] = [
       'vueuse.svg',
       'axios.svg',
       'lodash.svg',
-      'promises.svg',
       'd3.svg',
       'socket-io.svg',
-      'mdn.svg',
       'flutter.svg',
+      'nestjs.svg',
+      'spring.svg',
+      'springboot.svg',
+      'express.svg',
+      'koa.svg',
+      'fastapi.svg',
+      'mybatis.png',
+      'sequelize.svg',
+      'volar.svg',
+      'docusaurus.svg',
+      'gin.svg',
+      'minio.svg',
     ],
   },
   {
@@ -52,21 +67,15 @@ const groups: { title: string; icons: string[] }[] = [
       'echarts.svg',
       'threejs.svg',
       'gsap.svg',
+      'figma.svg',
     ],
   },
   {
-    title: '工程化',
+    title: 'Engineering',
     icons: [
-      'vite.svg',
-      'webpack.svg',
-      'rolldown.svg',
-      'oxc.svg',
-      'rollup.svg',
-      'esbuild.svg',
       'turborepo.svg',
-      'babel.svg',
-      'postcss.svg',
       'tailwind.svg',
+      'windicss.svg',
       'unocss.svg',
       'eslint.svg',
       'sass.svg',
@@ -80,31 +89,24 @@ const groups: { title: string; icons: string[] }[] = [
       'bun.svg',
       'nvm.svg',
       'leaflet.svg',
+      'jest.svg',
+      'deno.svg',
     ],
   },
   {
-    title: '后端与数据库',
+    title: 'end',
     icons: [
       'node.svg',
-      'express.svg',
-      'koa.svg',
-      'fastapi.svg',
-      'sequelize.svg',
-      'spring.svg',
-      'springboot.svg',
-      'mybatis.png',
       'maven.svg',
       'jwt.svg',
-      'mysql.svg',
-      'mongodb.svg',
-      'postgresql.svg',
-      'redis.svg',
       'kafka.svg',
       'rabbitmq.svg',
+      'zookeeper.svg',
+      'elasticsearch.svg',
     ],
   },
   {
-    title: '运维部署与工具',
+    title: 'devtools',
     icons: [
       'linux.svg',
       'docker.svg',
@@ -121,6 +123,9 @@ const groups: { title: string; icons: string[] }[] = [
       'gitea.svg',
       'pm2.svg',
       'supabase.svg',
+      'railway.svg',
+      'playwright.svg',
+      'gitlab.svg',
     ],
   },
   {
@@ -135,14 +140,19 @@ const groups: { title: string; icons: string[] }[] = [
       'datagrip.svg',
       'webstorm.svg',
       'pycharm.svg',
-      'chrome.svg',
       'apifox.svg',
+      'obs.svg',
+      'obsidian.svg',
+      'typora.svg',
+      'vmware.svg',
     ],
   },
   {
     title: 'AI',
     icons: [
       'claude.svg',
+      'claude-code.svg',
+      'codex.svg',
       'chatgpt.svg',
       'deepseek.svg',
       'langchain.svg',
@@ -154,13 +164,84 @@ const groups: { title: string; icons: string[] }[] = [
       'harness.svg',
       'xiaomi-mimo.svg',
       'qwen.svg',
+      'cursor.svg',
       'nvidia.svg',
+      'copilot.svg',
+      'ollama.svg',
+      'minimax.svg',
+      'manus.svg',
+      'grok.svg',
+      'bytedance.svg',
+      'antigravity.svg',
     ],
   },
+  {
+    title: 'browser',
+    icons: [
+      'chrome.svg',
+      'firefox.svg',
+      'edge.svg',
+      'safari.svg',
+      'chromium.svg',
+      'bing.svg',
+    ],
+  },
+  {
+    title: 'complier',
+    icons: [
+      'babel.svg',
+      'esbuild.svg',
+      'swc.svg',
+      'rollup.svg',
+      'webpack.svg',
+      'turbopack.svg',
+      'rspack.svg',
+      'rsbuild.svg',
+      'postcss.svg',
+      'rolldown.svg',
+      'oxc.svg',
+      'vite.svg',
 
+      'webassembly.svg',
+    ],
+  },
+  {
+    title: 'database',
+    icons: [
+      'redis.svg',
+      'mysql.svg',
+      'mongodb.svg',
+      'postgresql.svg',
+      'sqlite.svg',
+      'prisma.svg',
+    ],
+  },
   {
     title: '其他',
-    icons: ['luogu.svg', 'atcoder.svg', 'leetcode.svg'],
+
+    icons: [
+      'luogu.svg',
+      'atcoder.svg',
+      'leetcode.svg',
+      'mdn.svg',
+      'duolingo.svg',
+      'codeforces.svg',
+      'rog.svg',
+      'steam.svg',
+      'bilibili.svg',
+    ],
+  },
+  {
+    title: 'Phone',
+    icons: [
+      'vivo.svg',
+      'huawei.svg',
+      'oneplus.svg',
+      'xiaomi.svg',
+      'oppo.svg',
+      'samsung.svg',
+      'apple.svg',
+    ],
   },
 ]
 
@@ -227,10 +308,7 @@ const invert = new Set([
 <template>
   <section class="tech-stack-page">
     <div class="container">
-      <h1 class="tech-stack-page__title">技术栈</h1>
-      <p class="tech-stack-page__desc">
-        本站覆盖的语言、框架与工具一览。图标全部来自各家官方素材。
-      </p>
+      <h1 class="tech-stack-page__title">Logo</h1>
 
       <div v-for="group in groups" :key="group.title" class="group">
         <div class="group__title">{{ group.title }}</div>
@@ -338,7 +416,10 @@ const invert = new Set([
   box-sizing: border-box;
   /* 各家 logo 画布比例不一样，contain 保证只缩不放、不拉变形 */
   object-fit: contain;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
   opacity: 0.9;
 }
 

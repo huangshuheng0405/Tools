@@ -30,7 +30,10 @@ export default {
   '/zh/backend/java/': [
     {
       text: 'Java',
-      items: [{ text: 'Overview', link: '/zh/backend/java/index.md' }],
+      items: [
+        { text: 'Overview', link: '/zh/backend/java/index.md' },
+        { text: 'basic', link: '/zh/backend/java/basic.md' },
+      ],
     },
     {
       text: 'OOP',
@@ -77,6 +80,8 @@ export default {
         { text: 'Sa-Token', link: '/zh/backend/java/tool/sa-token.md' },
         { text: 'JWT', link: '/zh/backend/java/springboot/jwt.md' },
         { text: 'Redisson', link: '/zh/backend/java/tool/redisson.md' },
+        { text: 'Apache Fesod', link: '/zh/backend/java/tool/apacheFesod.md' },
+        { text: 'Apache POI', link: '/zh/backend/java/tool/apachePOI.md' },
       ],
     },
     {
@@ -116,6 +121,14 @@ export default {
         {
           text: 'OSS',
           link: '/zh/backend/java/springboot/oss.md',
+        },
+        {
+          text: 'Schedule',
+          link: '/zh/backend/java/springboot/schedule.md',
+        },
+        {
+          text: 'WebSocket',
+          link: '/zh/backend/java/springboot/websocket.md',
         },
       ],
     },
@@ -220,6 +233,14 @@ export default {
         {
           text: 'GSAP',
           link: '/zh/frontend/gsap',
+        },
+        {
+          text: 'uniapp',
+          link: 'zh/frontend/uniapp',
+        },
+        {
+          text: 'uview-plus',
+          link: '/zh/frontend/uview-plus',
         },
       ],
     },
@@ -437,10 +458,6 @@ export default {
         {
           text: 'Vue Router',
           link: '/zh/vue/vueRouter',
-        },
-        {
-          text: 'uniapp',
-          link: '/zh/vue/uniapp',
         },
       ],
     },
@@ -661,7 +678,10 @@ export default {
   '/zh/': [
     {
       text: '首页',
-      items: [{ text: 'Start', link: '/zh/Start' }],
+      items: [
+        { text: 'Start', link: '/zh/Start' },
+        { text: 'logo', link: '/zh/logo' },
+      ],
     },
   ],
   '/zh/network/': [

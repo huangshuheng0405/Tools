@@ -82,3 +82,4 @@ private static final Logger log = ...
 
 在Spring项目里，最常用来简化**构造器注入**，替代手写构造函数或者`@Autowired`
 
+> 因为`final`在声明时必须被初始化

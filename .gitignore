@@ -9,3 +9,6 @@ docs/.vitepress/cache/
 .env.*.local
 .DS_Store
 Thumbs.db
+
+
+.workbuddy/**

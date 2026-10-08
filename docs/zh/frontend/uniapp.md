@@ -335,3 +335,25 @@ uni-app 默认使用 `rpx` 作为响应式单位，设计稿一般以 750px 为�
 }
 </style>
 ```
+
+## 注意事项
+
+### axios
+
+小程序/APP没有`XMLHttpRequest`,axios得额外适配；`uni.request`才是三端统一的。所以没法直接用
+
+### localStorage
+
+小程序/APP不存在，统一用`uni.setStorageSync`/`getStorageSync`
+
+### #ifdef
+
+`// #ifdef`条件编译注释要顶格写，前面不能有缩进，否则uniapp的预处理器不认
+
+### server.proxy
+
+`server.proxy`只对H5的`dev server`生效。小程序端没有proxy，走上面那段完整地址
+
+### 401
+
+401跳转要防重入。假设首页3个请求，会连着触发3次跳登录，可以加`redirecting`标志位，记得登录页一定要在`page.json`先登记好，否则跳转不过去

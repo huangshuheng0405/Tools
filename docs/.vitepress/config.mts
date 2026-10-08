@@ -11,9 +11,10 @@ import enSidebar from './config/sidebar.en'
 export default defineConfig({
   markdown: {
     math: true,
-    // config(md) {
-    //   md.use(groupIconMdPlugin)
-    // },
+    // 代码块标题/代码组的图标由这个 md 插件注入（vite 插件只负责图标资源，两半缺一不可）
+    config(md) {
+      md.use(groupIconMdPlugin)
+    },
   },
   vite: {
     plugins: [
@@ -47,6 +48,7 @@ export default defineConfig({
               { text: 'JavaScript', link: '/zh/JavaScript/' },
               { text: 'Vue', link: '/zh/vue/lifecycle' },
               { text: 'React', link: '/zh/react/index' },
+              { text: 'uniapp', link: '/zh/frontend/uniapp' },
               { text: 'Engineering', link: '/zh/Engineering/' },
               { text: 'Other', link: '/zh/frontend/index' },
             ],

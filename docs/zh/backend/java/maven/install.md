@@ -13,3 +13,44 @@
 在环境变量里面新增`PATH`，值为`%MAVEN_HOME%\bin`
 
 在命令行里面输入`mvn -version`，如果显示版本号，说明安装成功
+
+## 配置国内镜像源
+
+首先找到`setting.xml`文件的位置，在你安装目录下的`conf`目录下 
+
+打开`setting.xml`文件，找到`<mirrors>`标签，在其中添加`mirror`字节点
+
+### 阿里云
+
+```xml
+<mirror>
+  <id>aliyunmaven</id>
+  <name>阿里云公共仓库</name>
+  <url>https://maven.aliyun.com/repository/public</url>
+  <mirrorOf>central</mirrorOf>
+</mirror>
+```
+
+### 配置多个
+
+为避免单一镜像源构建失败，可配置多个镜像源，Maven会按镜像的声明顺序进行匹配
+
+```xml
+<mirrors>
+  <!-- 首选：阿里云 -->
+  <mirror>
+    <id>aliyunmaven</id>
+    <name>阿里云公共仓库</name>
+    <url>https://maven.aliyun.com/repository/public</url>
+    <mirrorOf>central</mirrorOf>
+  </mirror>
+  <!-- 备用：华为云 -->
+  <mirror>
+    <id>huaweicloud</id>
+    <name>华为云镜像</name>
+    <url>https://repo.huaweicloud.com/repository/maven/</url>
+    <mirrorOf>central</mirrorOf>
+  </mirror>
+</mirrors>
+```
+
