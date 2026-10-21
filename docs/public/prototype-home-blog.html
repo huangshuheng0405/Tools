@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>幻梦 · 笔记 | Esther</title>
+<meta name="description" content="前端 · 后端 · 工程化 —— 记录思考，沉淀成长">
+<style>
+/* ---------------------------------------------------------------
+   字体：用 local() 映射到系统已装字体，避免远程字体导致的闪烁/卡顿
+   --------------------------------------------------------------- */
+@font-face{
+  font-family:'Site Sans';font-style:normal;font-weight:100 900;font-display:swap;
+  src:local('Inter'),local('Inter Variable'),local('PingFang SC'),local('HarmonyOS Sans SC'),
+      local('Microsoft YaHei UI'),local('Microsoft YaHei'),local('Segoe UI'),local('system-ui');
+}
+
+/* ===================== 设计令牌 ===================== */
+:root{
+  --font-sans:'Site Sans',system-ui,-apple-system,'Segoe UI',Roboto,'PingFang SC','Microsoft YaHei',sans-serif;
+
+  --cw-xl:1140px;
+  --sz-header:82px;
+  --sz-hero-right:360px;
+  --sz-post-img:200px;
+
+  --blur-md:8px;--blur-lg:16px;
+  --rd-sm:.5rem;--rd-md:.75rem;--rd-lg:1rem;--rd-xl:1.5rem;--rd-2xl:2rem;--rd-3xl:3rem;--rd-full:9999px;
+
+  --sp-1:.25rem;--sp-2:.5rem;--sp-3:.75rem;--sp-4:1rem;--sp-5:1.25rem;--sp-6:1.5rem;
+  --sp-8:2rem;--sp-10:2.5rem;--sp-12:3rem;--sp-16:4rem;--sp-20:5rem;
+
+  --fs-xs:.75rem;--fs-sm:.875rem;--fs-base:1rem;--fs-md:1.25rem;--fs-lg:1.563rem;
+  --fs-xl:1.953rem;--fs-2xl:2.441rem;--fs-3xl:3.052rem;--fs-4xl:3.815rem;
+
+  --lh-tight:1.2;--lh-snug:1.375;--lh-normal:1.6;--lh-relaxed:1.75;
+  --fw-normal:400;--fw-medium:500;--fw-semibold:600;--fw-bold:700;--fw-extrabold:800;
+
+  --tr-fast:150ms;--tr-base:300ms;--tr-slow:500ms;
+  --ez-default:cubic-bezier(.25,.46,.45,.94);
+  --ez-spring:cubic-bezier(.175,.885,.32,1.275);
+  --ez-smooth:cubic-bezier(.4,0,.2,1);
+
+  /* —— 暖陶土 / 珊蝴 —— */
+  --c-primary-100:#FDF3EE;--c-primary-200:#FCE6DC;--c-primary-300:#F0C4B8;
+  --c-primary-400:#E8927C;--c-primary-500:#D07058;--c-primary-600:#B05840;
+  --c-primary-700:#904028;--c-primary-800:#702C18;--c-primary-900:#501C0C;
+
+  --c-bg:#FDF8F5;
+  --c-surface:#FFFCFA;
+  --c-surface-overlay:rgba(255,252,250,.72);
+  --c-text-primary:#2E2825;
+  --c-text-secondary:#5E524C;
+  --c-text-tertiary:#7E6E66;
+  --c-border:#E8DED6;
+  --c-border-light:#F0E8E0;
+
+  --shadow-xs:0 1px 2px rgba(208,112,88,.04);
+  --shadow-sm:0 1px 3px rgba(208,112,88,.06);
+  --shadow-md:0 4px 14px rgba(208,112,88,.08);
+  --shadow-lg:0 10px 30px rgba(208,112,88,.10);
+  --shadow-xl:0 0 40px rgba(240,196,184,.12);
+
+  --gradient-primary:linear-gradient(135deg,#E8927C 0%,#F0A888 50%,#E8B870 100%);
+  --gradient-subtle:linear-gradient(135deg,rgba(232,146,124,.10) 0%,rgba(240,168,136,.06) 100%);
+
+  --overlay:rgba(253,248,245,.60);
+  --hover-bg:rgba(208,112,88,.06);
+  --active-bg:rgba(208,112,88,.12);
+  --selection-bg:rgba(232,146,124,.30);
+  --c-header-bg:rgba(248,240,236,.75);
+  --c-header-scrolled-bg:rgba(255,252,250,.92);
+  --c-footer-bg:rgba(248,240,236,.90);
+}
+
+html[data-theme="dark"]{
+  --c-primary-100:#1C1210;--c-primary-200:#2E1A14;--c-primary-300:#583830;
+  --c-primary-400:#E8927C;--c-primary-500:#F0A890;--c-primary-600:#F5B8A0;
+  --c-primary-700:#F5C8B8;--c-primary-800:#FCE6DC;--c-primary-900:#FDF3EE;
+
+  --c-bg:#0E0A08;
+  --c-surface:#1A1412;
+  --c-surface-overlay:rgba(26,20,18,.72);
+  --c-text-primary:#EDE0D8;
+  --c-text-secondary:#B8A89E;
+  --c-text-tertiary:#8A7A6E;
+  --c-border:#302822;
+  --c-border-light:#261E1A;
+
+  --shadow-xs:0 1px 2px rgba(0,0,0,.15);
+  --shadow-sm:0 1px 3px rgba(0,0,0,.30);
+  --shadow-md:0 4px 14px rgba(88,48,40,.22);
+  --shadow-lg:0 10px 30px rgba(88,48,40,.32);
+  --shadow-xl:0 0 40px rgba(232,146,124,.15);
+
+  --gradient-primary:linear-gradient(135deg,#F0A890 0%,#F5B898 50%,#E8B870 100%);
+  --gradient-subtle:linear-gradient(135deg,rgba(240,168,136,.12) 0%,rgba(245,184,152,.08) 100%);
+
+  --overlay:rgba(14,10,8,.65);
+  --hover-bg:rgba(240,168,136,.12);
+  --active-bg:rgba(240,168,136,.20);
+  --selection-bg:rgba(240,168,136,.35);
+  --c-header-bg:rgba(30,24,22,.80);
+  --c-header-scrolled-bg:rgba(26,20,18,.95);
+  --c-footer-bg:rgba(30,24,22,.92);
+}
+
+/* ===================== 基础 ===================== */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;font-family:var(--font-sans);font-size:var(--fs-base);line-height:var(--lh-normal);
+  color:var(--c-text-primary);background:var(--c-bg);min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  transition:color var(--tr-base),background var(--tr-base);
+}
+body.is-locked{overflow:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+h1,h2,h3,p{margin:0}
+::selection{background:var(--selection-bg)}
+.ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--c-primary-300);border-radius:var(--rd-full);border:2px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:var(--c-primary-400);background-clip:content-box}
+
+.container{width:100%;max-width:var(--cw-xl);margin:0 auto;padding:0 var(--sp-5)}
+section[id]{scroll-margin-top:calc(var(--sz-header) + var(--sp-4))}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ===================== 背景层 ===================== */
+.bg-layer{position:fixed;inset:0;pointer-events:none}
+.bg-image-layer{z-index:-2;background:
+  radial-gradient(110% 80% at 12% 8%,#F6D9CB 0%,transparent 55%),
+  radial-gradient(90% 70% at 88% 20%,#F3D8AE 0%,transparent 60%),
+  linear-gradient(150deg,#FBEFE8 0%,#F3E2D8 45%,#EFD9C9 100%);}
+html[data-theme="dark"] .bg-image-layer{background:
+  radial-gradient(110% 80% at 12% 8%,#3A2116 0%,transparent 55%),
+  radial-gradient(90% 70% at 88% 20%,#3A2C16 0%,transparent 60%),
+  linear-gradient(150deg,#150E0A 0%,#100B08 45%,#0B0706 100%);}
+/* 背景图只作为一层柔和纹理：轻微模糊 + 放大，避免随机壁纸与正文抢视觉 */
+.bg-image{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease;
+  transform:scale(1.06);filter:blur(2.5px) saturate(1.02)}
+.bg-image.is-ready{opacity:1}
+html[data-theme="dark"] .bg-image{filter:brightness(.5) saturate(.85) blur(2.5px)}
+.bg-overlay-layer{z-index:-1;background:var(--overlay)}
+
+.content-wrapper{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+
+/* ===================== 头部 ===================== */
+.site-header{
+  position:sticky;top:0;z-index:1000;
+  background:var(--c-header-bg);
+  backdrop-filter:blur(var(--blur-lg)) saturate(1.4);
+  -webkit-backdrop-filter:blur(var(--blur-lg)) saturate(1.4);
+  box-shadow:0 1px 0 var(--c-border),var(--shadow-sm);
+  transition:background var(--tr-base),box-shadow var(--tr-base);
+}
+.site-header.is-scrolled{background:var(--c-header-scrolled-bg);box-shadow:0 1px 0 var(--c-border),var(--shadow-md)}
+.header-content{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--sp-6);
+  min-height:var(--sz-header);max-width:1600px;margin:0 auto;padding:0 var(--sp-5);
+}
+.site-brand{display:flex;align-items:center;gap:var(--sp-3);flex-shrink:0;min-width:0}
+.brand-mark{
+  width:36px;height:36px;border-radius:11px;flex-shrink:0;
+  background:var(--gradient-primary);color:#fff;
+  display:grid;place-items:center;font-weight:var(--fw-extrabold);font-size:17px;
+  box-shadow:var(--shadow-md);letter-spacing:-.02em;
+}
+.site-brand__txt{display:flex;flex-direction:column;gap:1px;min-width:0}
+.site-title{font-weight:var(--fw-bold);font-size:var(--fs-md);line-height:var(--lh-tight);letter-spacing:-.02em;white-space:nowrap}
+.site-subtitle{font-size:var(--fs-xs);color:var(--c-text-tertiary);letter-spacing:.06em;white-space:nowrap}
+
+.main-nav{flex:1;display:flex;justify-content:center;min-width:0}
+.menu-list{display:flex;align-items:center;gap:var(--sp-1);list-style:none;margin:0;padding:0;overflow-x:auto;scrollbar-width:none}
+.menu-list::-webkit-scrollbar{display:none}
+.nav-link{
+  display:flex;align-items:center;gap:var(--sp-2);
+  padding:var(--sp-2) var(--sp-4);border-radius:var(--rd-full);
+  color:var(--c-text-secondary);font-weight:var(--fw-medium);font-size:var(--fs-sm);
+  white-space:nowrap;transition:color var(--tr-fast),background var(--tr-fast);
+}
+.nav-link .ic{font-size:.9em;opacity:.75;transition:opacity var(--tr-fast)}
+.nav-link:hover{color:var(--c-primary-600);background:var(--hover-bg)}
+.nav-link:hover .ic{opacity:1}
+.nav-link[aria-current="page"]{color:#fff;background:var(--gradient-primary);box-shadow:var(--shadow-sm)}
+.nav-link[aria-current="page"] .ic{opacity:1}
+
+.header-actions{display:flex;align-items:center;gap:var(--sp-2);flex-shrink:0}
+.icon-btn{
+  width:38px;height:38px;border-radius:var(--rd-full);display:grid;place-items:center;
+  color:var(--c-text-secondary);border:1px solid transparent;
+  transition:all var(--tr-fast) var(--ez-default);
+}
+.icon-btn .ic{width:18px;height:18px}
+.icon-btn:hover{color:var(--c-primary-600);background:var(--hover-bg);border-color:var(--c-border)}
+.icon-btn:active{transform:scale(.94)}
+html[data-theme="light"] .i-sun,html[data-theme="dark"] .i-moon{display:none}
+
+/* ===================== Hero ===================== */
+.hero{
+  position:relative;min-height:calc(100vh - var(--sz-header));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:var(--sp-16) 0 var(--sp-10);overflow:hidden;
+}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(64px);pointer-events:none;opacity:.5}
+.hero-blob--a{width:340px;height:340px;background:var(--c-primary-300);top:6%;left:-6%;animation:float 14s ease-in-out infinite}
+.hero-blob--b{width:280px;height:280px;background:#F3D8AE;bottom:2%;right:4%;animation:float 18s ease-in-out infinite reverse}
+html[data-theme="dark"] .hero-blob{opacity:.28}
+
+.hero-inner{
+  display:flex;flex-direction:column;align-items:center;gap:var(--sp-10);
+  width:100%;max-width:1080px;padding:0 var(--sp-5);position:relative;z-index:1;
+}
+.hero-left{width:100%;text-align:center}
+.hero-content{max-width:640px;margin:0 auto}
+.hero-right{width:100%;max-width:420px;margin:0 auto}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:var(--sp-2);
+  background:var(--gradient-subtle);border:1px solid var(--c-border);
+  padding:var(--sp-2) var(--sp-5);border-radius:var(--rd-full);
+  font-size:var(--fs-sm);color:var(--c-primary-600);
+  backdrop-filter:blur(var(--blur-md));margin-bottom:var(--sp-8);
+}
+.hero-badge .ic{width:15px;height:15px}
+
+.hero-title{font-size:clamp(2.4rem,6vw,var(--fs-4xl));font-weight:var(--fw-extrabold);line-height:var(--lh-tight);letter-spacing:-.03em;margin-bottom:var(--sp-6)}
+.hero-greeting{display:block;font-size:var(--fs-lg);color:var(--c-text-secondary);font-weight:var(--fw-normal);letter-spacing:0;margin-bottom:var(--sp-3)}
+.hero-name{
+  display:block;background:var(--gradient-primary);background-size:280% 280%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:gradientFlow 9s ease infinite;padding-bottom:.08em;
+}
+.hero-subtitle{
+  display:flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  font-size:var(--fs-lg);color:var(--c-text-secondary);margin-bottom:var(--sp-5);
+}
+.hero-subtitle .ic{color:var(--c-primary-500);width:20px;height:20px}
+.typed-text::after{content:'';display:inline-block;width:2px;height:1.05em;background:var(--c-primary-500);margin-left:2px;vertical-align:-.14em;animation:blink 1.05s step-end infinite}
+.hero-description{font-size:var(--fs-base);color:var(--c-text-secondary);line-height:var(--lh-relaxed);margin-bottom:var(--sp-10);max-width:520px;margin-inline:auto}
+.hero-actions{display:flex;gap:var(--sp-4);justify-content:center;flex-wrap:wrap}
+
+.btn{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  padding:var(--sp-4) var(--sp-8);border-radius:var(--rd-full);
+  font-weight:var(--fw-medium);font-size:var(--fs-sm);line-height:1;
+  min-height:46px;border:1px solid transparent;cursor:pointer;
+  transition:transform var(--tr-fast) var(--ez-default),background var(--tr-fast),color var(--tr-fast),box-shadow var(--tr-fast);
+}
+.btn .ic{width:17px;height:17px;position:relative;z-index:1}
+.btn span{position:relative;z-index:1}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn-primary{background:var(--gradient-primary);color:#fff;box-shadow:var(--shadow-md)}
+.btn-primary:hover{box-shadow:var(--shadow-lg)}
+.btn-secondary{background:var(--c-surface-overlay);color:var(--c-text-primary);border-color:var(--c-border);backdrop-filter:blur(var(--blur-lg));-webkit-backdrop-filter:blur(var(--blur-lg))}
+.btn-secondary:hover{border-color:var(--c-primary-400);color:var(--c-primary-600)}
+
+.rbtn__wave{
+  position:absolute;border-radius:50%;pointer-events:none;z-index:0;
+  background:rgba(255,255,255,.55);
+  transform:translate(-50%,-50%) scale(0);
+  animation:ripple .62s var(--ez-smooth) forwards;
+}
+.btn-secondary .rbtn__wave{background:rgba(208,112,88,.22)}
+
+.fancy-quote{
+  position:relative;text-align:center;padding:var(--sp-10) var(--sp-8);
+  background:var(--gradient-subtle);border:1px solid var(--c-border);
+  border-radius:var(--rd-3xl);backdrop-filter:blur(var(--blur-lg));-webkit-backdrop-filter:blur(var(--blur-lg));
+  box-shadow:var(--shadow-lg);
+}
+.quote-icon{font-size:var(--fs-3xl);color:var(--c-primary-300);opacity:.6;margin-bottom:var(--sp-5);display:flex;justify-content:center}
+.quote-icon .ic{width:44px;height:44px;fill:currentColor;stroke:none}
+.quote-text{font-size:1.55rem;color:var(--c-text-primary);line-height:var(--lh-relaxed);font-style:italic;margin-bottom:var(--sp-5)}
+.quote-author{font-size:var(--fs-base);color:var(--c-primary-500);font-weight:var(--fw-semibold);letter-spacing:.02em}
+
+.hero-scroll-hint{
+  position:relative;z-index:1;margin-top:var(--sp-12);
+  display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);
+  color:var(--c-text-secondary);font-size:var(--fs-sm);animation:bounceDown 2.6s var(--ez-default) infinite;
+}
+.scroll-mouse{width:26px;height:42px;border:2px solid var(--c-border);border-radius:14px;position:relative;background:var(--c-surface-overlay)}
+.scroll-wheel{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:4px;height:9px;border-radius:2px;background:var(--c-primary-400);animation:scrollWheel 2s ease-in-out infinite}
+
+/* ===================== 区块标题 ===================== */
+.section-header{text-align:center;margin-bottom:var(--sp-8);padding:var(--sp-10) 0 var(--sp-2)}
+.section-icon{
+  width:56px;height:56px;display:inline-grid;place-items:center;
+  background:var(--gradient-primary);border-radius:var(--rd-lg);color:#fff;
+  font-size:var(--fs-2xl);margin-bottom:var(--sp-5);box-shadow:var(--shadow-md);
+}
+.section-icon .ic{width:26px;height:26px;stroke-width:1.8}
+.section-title{font-size:clamp(1.8rem,3.6vw,var(--fs-3xl));font-weight:var(--fw-bold);letter-spacing:-.02em;margin-bottom:var(--sp-3)}
+.section-subtitle{font-size:var(--fs-md);color:var(--c-text-secondary)}
+
+/* ===================== 分类条 ===================== */
+.catbar{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-2);margin-bottom:var(--sp-8)}
+.pill{
+  display:inline-flex;align-items:center;gap:var(--sp-2);
+  padding:var(--sp-2) var(--sp-4);border-radius:var(--rd-full);
+  background:var(--c-surface-overlay);border:1px solid var(--c-border);
+  backdrop-filter:blur(var(--blur-md));-webkit-backdrop-filter:blur(var(--blur-md));
+  font-size:var(--fs-xs);font-weight:var(--fw-medium);color:var(--c-text-secondary);
+  transition:all var(--tr-fast) var(--ez-default);
+}
+.pill:hover{color:var(--c-primary-600);border-color:var(--c-primary-300);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.pill.is-on{color:#fff;background:var(--gradient-primary);border-color:transparent;box-shadow:var(--shadow-md)}
+.pill__dot{width:7px;height:7px;border-radius:50%;background:var(--dot,var(--c-primary-400));flex-shrink:0}
+.pill.is-on .pill__dot{background:rgba(255,255,255,.85)}
+.pill__n{opacity:.6;font-variant-numeric:tabular-nums}
+
+/* ===================== 文章网格 ===================== */
+.posts-section{padding:0 0 var(--sp-20)}
+.posts-grid{display:grid;grid-template-columns:1fr;gap:var(--sp-6);margin-bottom:var(--sp-10)}
+.grid-foot{display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)}
+.grid-count{font-size:var(--fs-sm);color:var(--c-text-tertiary);font-variant-numeric:tabular-nums}
+
+.post-card{
+  display:flex;flex-direction:column;height:100%;overflow:hidden;
+  background:var(--c-surface-overlay);border:1px solid var(--c-border);border-radius:var(--rd-xl);
+  backdrop-filter:blur(var(--blur-lg));-webkit-backdrop-filter:blur(var(--blur-lg));
+  box-shadow:var(--shadow-sm);will-change:transform;
+  transition:transform var(--tr-base) var(--ez-spring),box-shadow var(--tr-base) var(--ez-spring),border-color var(--tr-base);
+}
+.post-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--c-primary-300)}
+
+.post-cover{position:relative;display:block;height:var(--sz-post-img);overflow:hidden;flex-shrink:0}
+.post-cover__art{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(120% 95% at 12% 8%,rgba(255,255,255,.55) 0%,transparent 58%),
+    linear-gradient(var(--ang,135deg),var(--c1,#E8927C) 0%,var(--c2,#D07058) 100%);
+  transition:transform var(--tr-slow) var(--ez-smooth);
+}
+.post-cover__art::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.5) 1px,transparent 1.4px);
+  background-size:15px 15px;opacity:.35;
+}
+.post-card:hover .post-cover__art{transform:scale(1.07)}
+.post-cover__glyph{
+  position:absolute;right:-10px;bottom:-30px;line-height:1;
+  font-size:112px;font-weight:var(--fw-extrabold);letter-spacing:-.06em;
+  color:rgba(255,255,255,.22);user-select:none;
+}
+.post-cover__overlay{position:absolute;inset:auto 0 0 0;height:55%;background:linear-gradient(transparent,rgba(0,0,0,.10))}
+.post-category{
+  position:absolute;top:var(--sp-4);left:var(--sp-4);
+  background:var(--gradient-primary);color:#fff;
+  padding:var(--sp-1) var(--sp-4);border-radius:var(--rd-full);
+  font-size:var(--fs-sm);font-weight:var(--fw-semibold);box-shadow:var(--shadow-sm);
+}
+
+.post-content{display:flex;flex-direction:column;flex:1;padding:var(--sp-6)}
+.post-title{font-size:var(--fs-lg);font-weight:var(--fw-semibold);line-height:var(--lh-snug);margin-bottom:var(--sp-3);min-height:2.75em}
+.post-title a{transition:color var(--tr-fast)}
+.post-card:hover .post-title a{color:var(--c-primary-600)}
+.post-meta{display:flex;flex-wrap:wrap;gap:var(--sp-5);font-size:var(--fs-sm);color:var(--c-text-tertiary);margin-bottom:var(--sp-4)}
+.post-meta span{display:inline-flex;align-items:center;gap:var(--sp-2)}
+.post-meta .ic{width:14px;height:14px}
+.post-tags{display:flex;flex-wrap:wrap;gap:var(--sp-1);margin-bottom:var(--sp-4)}
+.post-tag{
+  font-size:var(--fs-xs);color:var(--c-primary-700);background:var(--c-primary-100);
+  padding:var(--sp-1) var(--sp-3);border-radius:var(--rd-full);transition:all var(--tr-fast);white-space:nowrap;
+}
+html[data-theme="dark"] .post-tag{color:var(--c-primary-600)}
+.post-tag:hover{background:var(--c-primary-200)}
+.post-excerpt{
+  font-size:var(--fs-sm);color:var(--c-text-secondary);line-height:1.7;margin-bottom:var(--sp-5);
+  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.read-more{
+  display:inline-flex;align-items:center;gap:var(--sp-2);margin-top:auto;
+  color:var(--c-primary-600);font-size:var(--fs-sm);font-weight:var(--fw-semibold);transition:gap var(--tr-fast) var(--ez-default);
+}
+.read-more .ic{width:15px;height:15px}
+.read-more:hover{gap:var(--sp-3)}
+
+/* ===================== CTA ===================== */
+.cta-section{padding:0 0 var(--sp-16)}
+.cta-card{
+  position:relative;overflow:hidden;text-align:center;
+  padding:var(--sp-16) var(--sp-8);border-radius:var(--rd-3xl);
+  background:var(--c-surface-overlay);border:1px solid var(--c-border);
+  backdrop-filter:blur(var(--blur-lg));-webkit-backdrop-filter:blur(var(--blur-lg));
+  box-shadow:var(--shadow-lg);
+}
+.cta-card::before{
+  content:'';position:absolute;inset:-40% -10% auto -10%;height:70%;
+  background:radial-gradient(60% 100% at 50% 100%,var(--c-primary-200),transparent 70%);
+  opacity:.85;pointer-events:none;
+}
+.cta-card h2{position:relative;font-size:clamp(1.6rem,3vw,var(--fs-2xl));font-weight:var(--fw-bold);letter-spacing:-.02em;margin-bottom:var(--sp-4)}
+.cta-card p{position:relative;color:var(--c-text-secondary);margin-bottom:var(--sp-8)}
+.cta-stats{position:relative;display:flex;justify-content:center;flex-wrap:wrap;gap:var(--sp-10);margin-bottom:var(--sp-8)}
+.cta-stat b{display:block;font-size:var(--fs-2xl);font-weight:var(--fw-extrabold);background:var(--gradient-primary);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em}
+.cta-stat span{font-size:var(--fs-sm);color:var(--c-text-tertiary)}
+.cta-actions{position:relative;display:flex;justify-content:center;gap:var(--sp-4);flex-wrap:wrap}
+
+/* ===================== 页脚 ===================== */
+.site-footer{background:var(--c-footer-bg);box-shadow:0 -1px 0 var(--c-border);padding:var(--sp-16) 0 var(--sp-8);margin-top:auto}
+.footer-content{display:grid;grid-template-columns:1fr;gap:var(--sp-8)}
+.footer-section h3{
+  font-size:var(--fs-sm);font-weight:var(--fw-semibold);letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:var(--sp-5);position:relative;display:inline-block;
+}
+.footer-section h3::after{content:'';position:absolute;bottom:-6px;left:0;width:var(--sp-8);height:2.5px;background:var(--gradient-primary);border-radius:var(--rd-full)}
+.footer-section p{font-size:var(--fs-sm);line-height:var(--lh-relaxed);color:var(--c-text-secondary)}
+.footer-links{display:flex;flex-direction:column;gap:var(--sp-2)}
+.footer-links a{display:inline-flex;align-items:center;gap:var(--sp-2);font-size:var(--fs-sm);color:var(--c-text-secondary);transition:all var(--tr-fast)}
+.footer-links a .ic{width:13px;height:13px;opacity:.55}
+.footer-links a:hover{color:var(--c-primary-600);transform:translateX(4px)}
+.footer-links a:hover .ic{opacity:1}
+.footer-note{margin-top:var(--sp-5);padding-left:var(--sp-3);border-left:2px solid var(--c-primary-300);font-style:italic;font-size:var(--fs-sm);color:var(--c-text-tertiary)}
+.footer-bottom{margin-top:var(--sp-10);padding-top:var(--sp-6);border-top:1px solid var(--c-border);display:flex;flex-wrap:wrap;gap:var(--sp-4);justify-content:space-between;align-items:center;font-size:var(--fs-xs);color:var(--c-text-tertiary)}
+
+/* ===================== 浮动按钮 ===================== */
+.fab-stack{position:fixed;right:var(--sp-5);bottom:var(--sp-5);z-index:900;display:flex;flex-direction:column;gap:var(--sp-3)}
+.fab{
+  width:46px;height:46px;border-radius:var(--rd-full);display:grid;place-items:center;
+  background:var(--c-surface-overlay);border:1px solid var(--c-border);color:var(--c-text-secondary);
+  backdrop-filter:blur(var(--blur-lg));-webkit-backdrop-filter:blur(var(--blur-lg));
+  box-shadow:var(--shadow-md);transition:all var(--tr-fast) var(--ez-spring);
+}
+.fab .ic{width:18px;height:18px}
+.fab:hover{color:#fff;background:var(--gradient-primary);border-color:transparent;transform:translateY(-3px)}
+.fab--top{opacity:0;pointer-events:none}
+.fab--top.is-on{opacity:1;pointer-events:auto}
+
+/* ===================== 搜索面板 ===================== */
+.search-modal{position:fixed;inset:0;z-index:1200;display:none}
+.search-modal.is-open{display:block}
+.search-modal__backdrop{position:absolute;inset:0;background:rgba(20,14,10,.45);backdrop-filter:blur(6px);animation:fadeIn .2s ease}
+.search-modal__panel{
+  position:relative;width:min(640px,calc(100% - 2rem));margin:10vh auto 0;
+  background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--rd-2xl);
+  box-shadow:var(--shadow-lg);overflow:hidden;animation:popIn .26s var(--ez-spring);
+}
+.search-modal__head{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-4) var(--sp-5);border-bottom:1px solid var(--c-border)}
+.search-modal__head .ic{width:18px;height:18px;color:var(--c-text-tertiary)}
+.search-modal__head input{flex:1;border:none;outline:none;background:none;font-size:var(--fs-md);color:var(--c-text-primary);font-family:inherit}
+.search-modal__head input::placeholder{color:var(--c-text-tertiary)}
+.search-modal__close{width:30px;height:30px;border-radius:var(--rd-full);display:grid;place-items:center;color:var(--c-text-tertiary);transition:all var(--tr-fast)}
+.search-modal__close:hover{background:var(--hover-bg);color:var(--c-primary-600)}
+.search-modal__body{max-height:52vh;overflow-y:auto;padding:var(--sp-3)}
+.sres{display:flex;flex-direction:column;gap:var(--sp-1)}
+.sres__item{display:block;padding:var(--sp-3) var(--sp-4);border-radius:var(--rd-lg);transition:background var(--tr-fast)}
+.sres__item:hover{background:var(--hover-bg)}
+.sres__t{font-size:var(--fs-base);font-weight:var(--fw-medium);margin-bottom:3px}
+.sres__d{font-size:var(--fs-xs);color:var(--c-text-tertiary);display:-webkit-box;-webkit-line-clamp:1;line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.sres__empty{padding:var(--sp-10);text-align:center;color:var(--c-text-tertiary);font-size:var(--fs-sm)}
+
+/* ===================== 动效 ===================== */
+[data-aos]{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ez-default) var(--d,0ms),transform .7s var(--ez-default) var(--d,0ms)}
+[data-aos].is-in{opacity:1;transform:none}
+
+@keyframes ripple{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
+@keyframes gradientFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0) translateX(0)}50%{transform:translateY(-26px) translateX(14px)}}
+@keyframes bounceDown{0%,100%{transform:translateY(0);opacity:.85}50%{transform:translateY(7px);opacity:1}}
+@keyframes scrollWheel{0%{transform:translate(-50%,0);opacity:0}30%{opacity:1}100%{transform:translate(-50%,14px);opacity:0}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes popIn{from{opacity:0;transform:translateY(-10px) scale(.98)}to{opacity:1;transform:none}}
+
+/* ===================== 响应式 ===================== */
+@media (max-width:900px){
+  .nav-link span{display:none}
+  .nav-link{padding:var(--sp-3)}
+  .site-subtitle{display:none}
+}
+@media (min-width:768px){
+  .container{padding:0 var(--sp-8)}
+  .hero-inner{flex-direction:row;align-items:center;gap:var(--sp-12)}
+  .hero-left{flex:1;text-align:left}
+  .hero-content{max-width:none;margin:0}
+  .hero-description{margin-inline:0}
+  .hero-subtitle{justify-content:flex-start}
+  .hero-actions{justify-content:flex-start}
+  .hero-right{flex:0 0 var(--sz-hero-right);max-width:var(--sz-hero-right);margin:0}
+  .posts-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-content{grid-template-columns:repeat(2,1fr)}
+}
+@media (min-width:992px){
+  .container{padding:0 var(--sp-10)}
+  .site-subtitle{display:block}
+  .posts-grid{grid-template-columns:repeat(3,1fr)}
+  .footer-content{grid-template-columns:2fr 1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  [data-aos]{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- 图标精灵 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-tools" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="i-feather" viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><path d="M9.5 5C6 5 3.5 7.6 3.5 11.2V19h7.6v-7.6H7.3c0-2.3 1.2-3.5 3.1-3.6zM20.5 5c-3.5 0-6 2.6-6 6.2V19h7.6v-7.6h-3.8c0-2.3 1.2-3.5 3.1-3.6z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="3.5"/><line x1="12" y1="20.5" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="3.5" y2="12"/><line x1="20.5" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></symbol>
+</defs></svg>
+
+<!-- 背景 -->
+<div class="bg-layer bg-image-layer"><img class="bg-image" id="bgImg" alt="" width="1920" height="1080"></div>
+<div class="bg-layer bg-overlay-layer"></div>
+
+<div class="content-wrapper">
+  <header class="site-header" id="siteHeader">
+    <div class="header-content">
+      <div class="site-brand">
+        <a class="brand-mark" href="/zh/" aria-label="首页">E</a>
+        <div class="site-brand__txt">
+          <a class="site-title" href="/zh/">幻梦 · 笔记</a>
+          <div class="site-subtitle">Esther · Front &amp; Back</div>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="主导航">
+        <ul class="menu-list">
+          <li><a class="nav-link" href="/zh/" aria-current="page"><svg class="ic"><use href="#i-home"/></svg><span>首页</span></a></li>
+          <li><a class="nav-link" href="#posts"><svg class="ic"><use href="#i-file"/></svg><span>文章</span></a></li>
+          <li><a class="nav-link" href="#cats"><svg class="ic"><use href="#i-tag"/></svg><span>分类</span></a></li>
+          <li><a class="nav-link" href="/zh/logo"><svg class="ic"><use href="#i-code"/></svg><span>技能栈</span></a></li>
+          <li><a class="nav-link" href="/zh/Start"><svg class="ic"><use href="#i-book"/></svg><span>开始学习</span></a></li>
+          <li><a class="nav-link" href="#footer"><svg class="ic"><use href="#i-user"/></svg><span>关于</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn" id="searchBtn" aria-label="搜索"><svg class="ic"><use href="#i-search"/></svg></button>
+        <button class="icon-btn" id="themeBtn" aria-label="切换主题">
+          <svg class="ic i-moon"><use href="#i-moon"/></svg>
+          <svg class="ic i-sun"><use href="#i-sun"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-blob hero-blob--a"></div>
+      <div class="hero-blob hero-blob--b"></div>
+      <div class="hero-inner">
+        <div class="hero-left">
+          <div class="hero-content" data-aos>
+            <div class="hero-badge"><svg class="ic"><use href="#i-sparkle"/></svg><span>欢迎来到我的世界</span></div>
+            <h1 class="hero-title">
+              <span class="hero-greeting">你好，我是</span>
+              <span class="hero-name">Esther Yushuxing</span>
+            </h1>
+            <p class="hero-subtitle"><svg class="ic"><use href="#i-terminal"/></svg><span class="typed-text" id="typed"></span></p>
+            <p class="hero-description">这里记录我在前端、后端与工程化路上的探索与思考。不追求一次写对，只求每次都比上一篇更清楚。</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary rbtn" href="#posts"><svg class="ic"><use href="#i-book"/></svg><span>阅读文章</span></a>
+              <a class="btn btn-secondary rbtn" href="/zh/logo"><svg class="ic"><use href="#i-heart"/></svg><span>关于我们</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="hero-right" data-aos style="--d:180ms">
+          <blockquote class="fancy-quote">
+            <div class="quote-icon"><svg class="ic"><use href="#i-quote"/></svg></div>
+            <p class="quote-text">代码是诗，键盘是笔，屏幕是画布，让我们一起书写数字世界的篇章。</p>
+            <footer class="quote-author">— Esther</footer>
+          </blockquote>
+        </div>
+      </div>
+      <div class="hero-scroll-hint" data-aos style="--d:420ms">
+        <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+        <span>向下滚动探索</span>
+      </div>
+    </section>
+
+    <!-- 文章 -->
+    <section class="posts-section" id="posts">
+      <div class="container">
+        <div class="section-header" data-aos>
+          <div class="section-icon"><svg class="ic"><use href="#i-feather"/></svg></div>
+          <h2 class="section-title">最新文章</h2>
+          <p class="section-subtitle">记录思考，沉淀成长</p>
+        </div>
+        <div class="catbar" id="catbar" data-aos style="--d:80ms"></div>
+        <div class="posts-grid" id="grid"></div>
+        <div class="grid-foot">
+          <button class="btn btn-secondary rbtn" id="moreBtn"><svg class="ic"><use href="#i-arrow-up"/></svg><span>加载更多</span></button>
+          <p class="grid-count" id="gridCount"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-card" id="cats" data-aos>
+          <h2>继续，写下下一篇</h2>
+          <p>每一个知识点，都值得被清楚地记下来一次。</p>
+          <div class="cta-stats">
+            <div class="cta-stat"><b id="statNotes">0</b><span>篇笔记</span></div>
+            <div class="cta-stat"><b id="statCats">0</b><span>个分类</span></div>
+            <div class="cta-stat"><b>∞</b><span>持续记录中</span></div>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-primary rbtn" href="/zh/Start"><svg class="ic"><use href="#i-book"/></svg><span>开始学习</span></a>
+            <a class="btn btn-secondary rbtn" href="/zh/JavaScript/"><svg class="ic"><use href="#i-code"/></svg><span>浏览 JavaScript</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>关于本站</h3>
+          <p>个人技术笔记站：把学到的东西写下来，是我确认自己真的学会了的方式。</p>
+          <p class="footer-note">慢一点没关系，方向对就行。</p>
+        </div>
+        <div class="footer-section">
+          <h3>快速链接</h3>
+          <div class="footer-links">
+            <a href="/zh/"><svg class="ic"><use href="#i-home"/></svg>首页</a>
+            <a href="/zh/Start"><svg class="ic"><use href="#i-book"/></svg>开始学习</a>
+            <a href="/zh/logo"><svg class="ic"><use href="#i-code"/></svg>技能栈</a>
+            <a href="#posts"><svg class="ic"><use href="#i-file"/></svg>全部文章</a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>分类导航</h3>
+          <div class="footer-links" id="footerCats"></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Esther Yushuxing · 用 VitePress 构建</span>
+        <span>Made with care · 持续记录中</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- 浮动按钮 -->
+<div class="fab-stack">
+  <button class="fab" id="fabSearch" aria-label="搜索"><svg class="ic"><use href="#i-search"/></svg></button>
+  <button class="fab" id="fabTheme" aria-label="切换主题"><svg class="ic i-moon"><use href="#i-moon"/></svg><svg class="ic i-sun"><use href="#i-sun"/></svg></button>
+  <button class="fab fab--top" id="fabTop" aria-label="回到顶部"><svg class="ic"><use href="#i-up"/></svg></button>
+</div>
+
+<!-- 搜索面板 -->
+<div class="search-modal" id="searchModal" aria-hidden="true">
+  <div class="search-modal__backdrop" data-close></div>
+  <div class="search-modal__panel" role="dialog" aria-label="搜索笔记">
+    <div class="search-modal__head">
+      <svg class="ic"><use href="#i-search"/></svg>
+      <input id="searchInput" type="search" placeholder="搜索笔记…" autocomplete="off">
+      <button class="search-modal__close" data-close aria-label="关闭">✕</button>
+    </div>
+    <div class="search-modal__body" id="searchResults"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   数据：由 docs/zh 下的 md 文件抽取而来
+   ============================================================ */
+const DATA = {"feed":[{"title":"MyBatis-Plus","url":"/zh/backend/java/springboot/mybatisPlus","cat":"backend","date":"2026-10-11","mtime":1791722480186.8853,"excerpt":"MyBatis-Plus 是 MyBatis 的增强工具，不改变 MyBatis，只做增强，核心目标是不写 SQL 也能完成单表 CRUD。","mins":44},{"title":"basic","url":"/zh/backend/java/basic","cat":"backend","date":"2026-10-07","mtime":1791391553530.0835,"excerpt":"单次拼接（如\"a\" + b + \"c\"）编译器会自动优化成StringBuilder，不用手动改","mins":6},{"title":"Lombok","url":"/zh/backend/java/tool/lombok","cat":"backend","date":"2026-10-07","mtime":1791360261584.8235,"excerpt":"调用System.out.println(user)，会得到类似：User(id=1, name=张三)","mins":2},{"title":"Vibecoding","url":"/zh/misc/vibecoding","cat":"misc","date":"2026-10-05","mtime":1791210275675.207,"excerpt":"用在不知道还要等多久的时候：圆环匀速旋转，只表达「在忙」，不表达「还剩多少」。","mins":64},{"title":"Redisson","url":"/zh/backend/java/tool/redisson","cat":"backend","date":"2026-10-05","mtime":1791187014538.99,"excerpt":"Redisson 底层也是靠 Redis 的原子命令 + Lua 实现的，只是把这些细节封装好了。","mins":11},{"title":"Redis","url":"/zh/database/redis","cat":"database","date":"2026-10-04","mtime":1791138413402.624,"excerpt":"Redis是一个键值对（key-value）数据库，它的value支持多种结构","mins":78},{"title":"Spring Cache","url":"/zh/backend/java/spring/springCache","cat":"backend","date":"2026-10-04","mtime":1791104886724.5583,"excerpt":"新建RedisConfig.java（config包），配置缓存用JSON + 过期时间","mins":10},{"title":"Spring Data Redis","url":"/zh/backend/java/spring/springDataRedis","cat":"backend","date":"2026-10-03","mtime":1791051570352.1777,"excerpt":"Spring 官方提供的 Redis 操作框架，让你不用手写 Redis 命令，直接用 Java 代码操作 Redis。","mins":24},{"title":"Maven 安装","url":"/zh/backend/java/maven/install","cat":"backend","date":"2026-10-03","mtime":1791031892451.0356,"excerpt":"在环境变量里面新增MAVENHOME，值为D:\\apache-maven-3.9.x（下载的目录）","mins":3},{"title":"Apache POI","url":"/zh/backend/java/tool/apachePOI","cat":"backend","date":"2026-10-03","mtime":1791026508242.6138,"excerpt":"主要围绕Workbook、Sheet、Row、Cell这几个接口展开","mins":5},{"title":"Spring Boot WebSocket","url":"/zh/backend/java/springboot/websocket","cat":"backend","date":"2026-10-02","mtime":1790937813057.8445,"excerpt":"WebSocket 解决的是「服务端主动推消息给浏览器」这件事。HTTP 是请求-响应,服务端想说句话得等客户端来问;WebSocket 握手一次之后就是全双工长连接,两边随时能发。","mins":39},{"title":"UI/UX Pro Max 笔记","url":"/zh/misc/uupm","cat":"misc","date":"2026-10-02","mtime":1790915746857.023,"excerpt":"React（state/hooks/性能）、Next.js（SSR/路由/API routes）、Vue（Composition API/Pinia/Vue Router）、Svelte（Runes/stores/SvelteKit）、SwiftUI（View","mins":9},{"title":"Spring Boot 定时任务","url":"/zh/backend/java/springboot/schedule","cat":"backend","date":"2026-10-01","mtime":1790876108661.8123,"excerpt":"Java 里做定时任务有两条路,选哪条取决于你的服务部署几个实例。","mins":22},{"title":"uview-plus","url":"/zh/frontend/uview-plus","cat":"frontend","date":"2026-10-01","mtime":1790858534242.077,"excerpt":"uview-plus 是 uni-app 生态的 UI 组件库,60+ 组件 + 一堆工具函数,fork 自 uView 2.0。原来的 uView 2.0 只支持 Vue2,uview-plus 把它移植到了 Vue3 + Vite,并且全面兼容 nvue(","mins":31},{"title":"Apache Fesod","url":"/zh/backend/java/tool/apacheFesod","cat":"backend","date":"2026-10-01","mtime":1790848706452.705,"excerpt":"Apache Fesod(Incubating) 是读写 Excel 的 Java 库。它的前身就是大家熟悉的 EasyExcel —— 阿里开源的、用来替代 Apache POI 的内存友好型 Excel 库。","mins":28},{"title":"apifox","url":"/zh/misc/apifox","cat":"misc","date":"2026-10-01","mtime":1790826185130.3923,"excerpt":"在类上加文档注释，利用/可以用目录分级，但是注意如果有()和逗号，这些特殊字符会导致解析异常，只能创建空目录，无法将方法正确关联进去","mins":1},{"title":"uniapp","url":"/zh/frontend/uniapp","cat":"frontend","date":"2026-10-01","mtime":1790823425766.435,"excerpt":"uni-app 是 DCloud 出品的跨端框架，基于 Vue.js，一套代码可以编译到多个平台：","mins":9},{"title":"Tips","url":"/zh/frontend/index","cat":"frontend","date":"2026-09-30","mtime":1790766320433.823,"excerpt":"这里记录了一些前端开发的技巧和经验。","mins":1},{"title":"Index","url":"/zh/database/index","cat":"database","date":"2026-09-30","mtime":1790766320432.819,"excerpt":"这里记录数据库相关的学习笔记。","mins":1},{"title":"MongoDB","url":"/zh/database/MongoDB","cat":"database","date":"2026-09-30","mtime":1790766320432.819,"excerpt":"MongoDB是关系型（如MySQL）完全不同。非关系型数据库每一行的结构可以不同。","mins":3},{"title":"CSS","url":"/zh/frontend/css","cat":"frontend","date":"2026-09-30","mtime":1790766320432.819,"excerpt":"display: flex 让一个容器变成弹性容器，它的直接子元素会自动成为「弹性项目」，沿主轴排列。主轴方向由 flex-direction 决定，默认是水平方向（从左到右）。","mins":5},{"title":"HTML","url":"/zh/frontend/html","cat":"frontend","date":"2026-09-30","mtime":1790766320432.819,"excerpt":"#t=0.1这是URL媒体片段参数，告诉浏览器，从视频的第0.1秒开始加载和播放，因为第0秒的关键帧可能是一张黑屏","mins":1},{"title":"mongoose","url":"/zh/backend/nodejs/mongoose","cat":"backend","date":"2026-09-30","mtime":1790766320432.2676,"excerpt":"Mongoose 是 Node.js 中用于操作 MongoDB 数据库的 ORM（对象关系映射）库。","mins":6},{"title":"Node.js","url":"/zh/backend/nodejs/nodejs","cat":"backend","date":"2026-09-30","mtime":1790766320432.2676,"excerpt":"学习笔记 Node.js","mins":1},{"title":"Sequelize","url":"/zh/backend/nodejs/sequelize","cat":"backend","date":"2026-09-30","mtime":1790766320432.2676,"excerpt":"sequelize 是一个 Node.js ORM，支持 MySQL / PostgreSQL / SQLite / MSSQL，提供模型定义、CRUD、关联、事务、校验、Hook 等能力。","mins":10},{"title":"Koa","url":"/zh/backend/nodejs/koa","cat":"backend","date":"2026-09-30","mtime":1790766320431.9783,"excerpt":"koa 是一个轻量、基于中间件的 Node.js Web 框架，核心特点是洋葱模型（async (ctx, next)）与极简内核（路由、body 解析等通常依赖社区中间件）。","mins":13},{"title":"express","url":"/zh/backend/nodejs/express","cat":"backend","date":"2026-09-30","mtime":1790766320431.255,"excerpt":"","mins":1},{"title":"Node.js","url":"/zh/backend/nodejs/index","cat":"backend","date":"2026-09-30","mtime":1790766320431.255,"excerpt":"这里记录 Node.js 后端相关的学习笔记和技巧。","mins":1},{"title":"Grill Me 笔记","url":"/zh/misc/grill-me","cat":"misc","date":"2026-09-29","mtime":1790685174013.7908,"excerpt":"它本质是一个对齐工具：软件失败最常见的根因是\"你以为对方懂，其实没懂\"。grill-me 用追问把这条沟通鸿沟填平。","mins":6},{"title":"OSS","url":"/zh/backend/java/springboot/oss","cat":"backend","date":"2026-09-27","mtime":1790495517226.9407,"excerpt":"先在application.yaml里面配置","mins":6},{"title":"Sa-Token","url":"/zh/backend/java/tool/sa-token","cat":"backend","date":"2026-09-26","mtime":1790446102799.9749,"excerpt":"一个轻量的 Java 权限认证框架，把登录、鉴权、会话、单点登录这些事封装成了几个静态方法。文档见 sa-token.com","mins":45},{"title":"Hutool","url":"/zh/backend/java/tool/huTool","cat":"backend","date":"2026-09-26","mtime":1790442239762.263,"excerpt":"Hutool 没有 Spring Boot Starter，它就是一个普通的工具 jar。加完依赖直接调静态方法 —— 不用 @Configuration、不用 @EnableXxx、不用写任何配置项。","mins":4},{"title":"CSRF (Cross-Site Request Forgery)","url":"/zh/Security/csrf","cat":"Security","date":"2026-09-26","mtime":1790427328742.6028,"excerpt":"CSRF（跨站请求伪造，也叫「跨站请求伪造」或 XSRF）是一种「借用你的身份发请求」的攻击。","mins":15},{"title":"login","url":"/zh/misc/login","cat":"misc","date":"2026-09-26","mtime":1790412125651.275,"excerpt":"以一个最简单的 Spring Boot 项目为例，完整流程拆成三块：登录建会话、拦截器鉴权、登出销毁。","mins":26},{"title":"Spring Boot","url":"/zh/backend/java/springboot/index","cat":"backend","date":"2026-09-25","mtime":1790348722018.8042,"excerpt":"Entity（实体）、DTO（数据传输对象）、VO（视图对象）","mins":14},{"title":"后端项目实战（巩固练习 · 完整代码版）","url":"/zh/misc/demo","cat":"misc","date":"2026-09-25","mtime":1790328205678.9146,"excerpt":"一个最简单的「用户登录 + 商品 CRUD」管理系统：","mins":56},{"title":"network security","url":"/zh/Security/index","cat":"Security","date":"2026-09-25","mtime":1790327500132.4248,"excerpt":"","mins":1},{"title":"index","url":"/zh/os/index","cat":"os","date":"2026-09-25","mtime":1790305746247.6519,"excerpt":"","mins":1},{"title":"auth","url":"/zh/misc/auth","cat":"misc","date":"2026-09-25","mtime":1790305286303.1538,"excerpt":"","mins":1},{"title":"Claude","url":"/zh/misc/claude","cat":"misc","date":"2026-09-24","mtime":1790260248639.4944,"excerpt":"完整的软件开发方法论,基于一组可组合的 skills 和初始指令,让编码代理自动按流程工作。核心原则:TDD(红绿) + YAGNI + DRY。","mins":9},{"title":"JWT","url":"/zh/backend/java/springboot/jwt","cat":"backend","date":"2026-09-23","mtime":1790165871294.6328,"excerpt":"JWT（JSON Web Token）实现无状态用户认证/鉴权通常分为以下几个步骤","mins":14},{"title":"git","url":"/zh/devops/git","cat":"devops","date":"2026-09-21","mtime":1790006901958.2605,"excerpt":"git pull是用于从远程仓库拉去最新代码并合并到本地分支，它本质是两个命令的组合：git fetch和git merge。","mins":13},{"title":"GSAP","url":"/zh/frontend/gsap","cat":"frontend","date":"2026-09-21","mtime":1790005756617.5898,"excerpt":"GSAP（GreenSock Animation Platform）官方 AI Skill，仓库地址：greensock/gsap-skills。","mins":10},{"title":"rich text（Vue）","url":"/zh/misc/richtext","cat":"misc","date":"2026-09-21","mtime":1789997731747.3574,"excerpt":"富文本编辑器没有\"最好用\"的，只有\"最合适\"的。选型时真正决定成本的是三件事：内核架构（决定了你能改到什么程度）、是否自带 UI（决定了你从零开始还是从半成品开始）、维护状态与 License（决定了半年后会不会变成技术债）。","mins":26},{"title":"http","url":"/zh/network/http","cat":"network","date":"2026-09-20","mtime":1789920924849.3152,"excerpt":"HTTP 是无状态的：服务端处理完一个请求就忘了你是谁。Cookie 就是让浏览器替服务端存一小段数据、之后每次请求自动带上的机制，用来把多次请求串成一次「会话」——登录状态、购物车、埋点 ID 都靠它","mins":8},{"title":"index","url":"/zh/network/index","cat":"network","date":"2026-09-20","mtime":1789919766732.587,"excerpt":"","mins":1},{"title":"index","url":"/zh/misc/index","cat":"misc","date":"2026-09-20","mtime":1789919535248.6091,"excerpt":"","mins":1},{"title":"Vitepress Plugin Froup Icons","url":"/zh/misc/vitepress-icon","cat":"misc","date":"2026-09-20","mtime":1789919227362.7698,"excerpt":"","mins":1},{"title":"vscode plugin","url":"/zh/misc/vscodePlugin","cat":"misc","date":"2026-09-20","mtime":1789919227362.7698,"excerpt":"","mins":1},{"title":"ref reactive","url":"/zh/vue/ref-reactive","cat":"vue","date":"2026-09-20","mtime":1789919227362.7698,"excerpt":"Proxy只能代理对象，所以reactive只能代理对象，而ref会包一层而变成对象","mins":2},{"title":"Trae","url":"/zh/misc/trae","cat":"misc","date":"2026-09-20","mtime":1789919227362.2578,"excerpt":"","mins":1},{"title":"IDE Setting","url":"/zh/misc/Tutorial","cat":"misc","date":"2026-09-20","mtime":1789919227362.2578,"excerpt":"python解释器:pypy （这个要快一点）","mins":23},{"title":"微信小程序","url":"/zh/misc/wxapp","cat":"misc","date":"2026-09-20","mtime":1789919227361.5757,"excerpt":"这里会把item.id、item.name放到e.currentTarget.dataset中。","mins":4},{"title":"图片懒加载","url":"/zh/misc/lazyImages","cat":"misc","date":"2026-09-20","mtime":1789919227360.5635,"excerpt":"只有当图片即将进入视口范围时才进行加载。这可以大大减轻页面 的加载时间，并降低带宽消耗，提高了用户的体验。","mins":2},{"title":"PDF.js、pdfjs-dist 与 vue-pdf-embed","url":"/zh/misc/pdfjs","cat":"misc","date":"2026-09-20","mtime":1789919227360.5635,"excerpt":"PDF.js 是 Mozilla 社区维护的 PDF 渲染引擎。它用 HTML5 / JavaScript 解析并渲染 PDF，不需要浏览器安装 PDF 插件。pdfjs-dist 是 PDF.js 发布到 npm 的预编译版本，vue-pdf-embed 是","mins":16},{"title":"vue 性能分析优化","url":"/zh/misc/performanceOptimization","cat":"misc","date":"2026-09-20","mtime":1789919227360.5635,"excerpt":"在编译阶段由构建工具根据代码的引用关系，预先将代码拆分成多个独立的Bundle","mins":3},{"title":"文件上传","url":"/zh/misc/fileUpload","cat":"misc","date":"2026-09-20","mtime":1789919227360.0574,"excerpt":"后端：multer + express + cors","mins":47},{"title":"Web API","url":"/zh/misc/WebAPI","cat":"misc","date":"2026-09-20","mtime":1789919227360.0574,"excerpt":"animate(keyframes, options)","mins":14},{"title":"JMeter","url":"/zh/devops/jmeter","cat":"devops","date":"2026-09-20","mtime":1789919227359.046,"excerpt":"Apache JMeter 是一个开源的性能/压力测试工具，用 Java 编写，可以模拟大量并发请求来测试接口或系统的吞吐量和稳定性。","mins":6},{"title":"nginx","url":"/zh/devops/nginx","cat":"devops","date":"2026-09-20","mtime":1789919227359.046,"excerpt":"Nginx 是高性能的 HTTP 服务器，常用作静态资源托管、反向代理和负载均衡。","mins":15},{"title":"MySQL","url":"/zh/database/mysql","cat":"database","date":"2026-09-20","mtime":1789919227357.534,"excerpt":"INSERT INTO table (name1,name2, ...) VALUES (value1, value2, ...);","mins":12},{"title":"SQL","url":"/zh/database/sql","cat":"database","date":"2026-09-20","mtime":1789919227357.534,"excerpt":"","mins":4},{"title":"Docker","url":"/zh/devops/docker","cat":"devops","date":"2026-09-20","mtime":1789919227357.534,"excerpt":"Windows，直接下载Docker Desktop即可","mins":6},{"title":"Map","url":"/zh/backend/java/collection/map","cat":"backend","date":"2026-09-17","mtime":1789646415030.564,"excerpt":"如果key不存在，则返回null，和List类似，Map也是接口，最常用的实现类是HashMap","mins":14},{"title":"Volta","url":"/zh/Engineering/volta","cat":"Engineering","date":"2026-09-13","mtime":1789269200709.1643,"excerpt":"Volta 是一个用 Rust 编写的 JavaScript 工具链版本管理器,用来管理 node、npm、yarn、pnpm 的版本。","mins":10},{"title":"vue-router","url":"/zh/vue/vueRouter","cat":"vue","date":"2026-09-11","mtime":1789138381870.2969,"excerpt":"注意：这里route.params.id通常是字符串，如果需要数字","mins":9},{"title":"Day.js","url":"/zh/Engineering/dayjs","cat":"Engineering","date":"2026-09-11","mtime":1789135367647.6929,"excerpt":"Day.js 是一个轻量的日期时间库，API 与 Moment.js 接近，但默认不可变，核心包体积很小。","mins":19},{"title":"Axios","url":"/zh/Engineering/axios","cat":"Engineering","date":"2026-09-11","mtime":1789135036272.4888,"excerpt":"Axios 是一个基于 Promise 的 HTTP 客户端，可用于浏览器和 Node.js。","mins":36},{"title":"List","url":"/zh/backend/java/collection/list","cat":"backend","date":"2026-09-07","mtime":1788786215842.6465,"excerpt":"因为List本身就是一个接口（Interface），所以你不能直接new List()。你必须使用它的具体实现类。最常用的实现类ArrayList和LinkedList","mins":10},{"title":"Engineer","url":"/zh/Engineering/index","cat":"Engineering","date":"2026-09-06","mtime":1788700966879.747,"excerpt":"这里记录关于前端工程化的笔记，包括构建工具、代码规范、自动化测试、持续集成等内容。","mins":3},{"title":"Git","url":"/zh/Engineering/workflow","cat":"Engineering","date":"2026-09-06","mtime":1788700220950.3582,"excerpt":"关键点：代码质量在提交前把关，提交信息在提交时把关。","mins":9},{"title":"Webpack","url":"/zh/Engineering/webpack","cat":"Engineering","date":"2026-09-06","mtime":1788698264706.3167,"excerpt":"当运行webpack命令，它会先读取配置文件webpack.config.js，并于内部默认配置合并。接着，会实例化一个对象Compiler","mins":5},{"title":"Vite","url":"/zh/Engineering/vite","cat":"Engineering","date":"2026-09-06","mtime":1788698058261.4639,"excerpt":"如果请求是/api开头的，就会被代理到http://localhost:8080","mins":19},{"title":"Spring","url":"/zh/backend/java/spring/index","cat":"backend","date":"2026-09-05","mtime":1788620382533.0503,"excerpt":"Spring Framework 核心与数据模块。","mins":1},{"title":"Java 工具库","url":"/zh/backend/java/tool/index","cat":"backend","date":"2026-09-05","mtime":1788620382532.0505,"excerpt":"常用 Java 第三方工具库。","mins":1},{"title":"单元测试","url":"/zh/backend/java/unitTest/index","cat":"backend","date":"2026-09-05","mtime":1788620382531.0454,"excerpt":"Java 单元测试框架。","mins":1},{"title":"Maven","url":"/zh/backend/java/maven/index","cat":"backend","date":"2026-09-05","mtime":1788620382530.306,"excerpt":"Maven 使用笔记。","mins":1},{"title":"集合框架","url":"/zh/backend/java/collection/index","cat":"backend","date":"2026-09-05","mtime":1788620382529.7295,"excerpt":"Java 集合容器。","mins":1},{"title":"面向对象","url":"/zh/backend/java/oop/index","cat":"backend","date":"2026-09-05","mtime":1788620382529.1665,"excerpt":"Java 面向对象的核心概念。","mins":1},{"title":"Java","url":"/zh/backend/java/index","cat":"backend","date":"2026-09-05","mtime":1788620382528.1458,"excerpt":"Java 后端相关笔记按知识点分目录整理。","mins":1},{"title":"Configuration 配置类","url":"/zh/backend/java/springboot/configuration","cat":"backend","date":"2026-09-04","mtime":1788532486435.922,"excerpt":"配置类是用来集中管理 Bean 和配置的类，替代传统的 XML 配置。","mins":7},{"title":"Interceptor","url":"/zh/backend/java/springboot/interceptor","cat":"backend","date":"2026-09-04","mtime":1788532486435.922,"excerpt":"HandlerInterceptor 是 Spring MVC 提供用于拦截 HTTP 请求的接口，主要包含 3 个回调方法。","mins":7},{"title":"AOP","url":"/zh/backend/java/spring/aop","cat":"backend","date":"2026-09-03","mtime":1788450283595.041,"excerpt":"引入依赖，SpringBoot默认集成了Spring AOP，只需引入Web启动器或AOP Starter","mins":9},{"title":"IoC DI","url":"/zh/backend/java/spring/IoC_DI","cat":"backend","date":"2026-09-03","mtime":1788450283595.041,"excerpt":"控制反转（Inversion of Controll），把对象交给Spring创建和管理","mins":6},{"title":"Teleport","url":"/zh/vue/teleport","cat":"vue","date":"2026-08-31","mtime":1788184468683.3706,"excerpt":"Teleport是一个内置组件，它可以将一个组件内部的一部分模板传送到该组件的DOM结构外层的位置","mins":3},{"title":"Mybatis","url":"/zh/backend/java/springboot/mybatis","cat":"backend","date":"2026-08-31","mtime":1788184468682.365,"excerpt":"这里的mapper-locations: classpath:mapper/.xml表示","mins":13},{"title":"TypeScript","url":"/zh/JavaScript/ts","cat":"JavaScript","date":"2026-08-22","mtime":1787408620422.728,"excerpt":"","mins":2},{"title":"esbuild","url":"/zh/Engineering/esbuild","cat":"Engineering","date":"2026-08-22","mtime":1787408256504.74,"excerpt":"","mins":2},{"title":"ESlint","url":"/zh/Engineering/ESlint","cat":"Engineering","date":"2026-08-22","mtime":1787408052750.5498,"excerpt":"安装完后会问一些配置问题，接着会安装对应依赖。eslint、@eslint/js、globals、eslint-plugin-vue（取决于你回答问题时用什么框架） 也会生成默认的eslint.config.js","mins":9},{"title":"Prettier","url":"/zh/Engineering/Prettier","cat":"Engineering","date":"2026-08-22","mtime":1787408007822.1167,"excerpt":"Then,create an empty config file .prettierrc","mins":17},{"title":"Rollup","url":"/zh/Engineering/rollup","cat":"Engineering","date":"2026-08-22","mtime":1787407865070.508,"excerpt":"rollup 是一个以 ES Module 为核心的打包器，擅长打包库（library）与可 Tree Shaking 的产物。Vite 的生产构建底层也基于 Rollup。","mins":16},{"title":"Vue","url":"/zh/vue/index","cat":"vue","date":"2026-08-22","mtime":1787407600632.0776,"excerpt":"","mins":1},{"title":"HttpClient","url":"/zh/backend/java/tool/httpClient","cat":"backend","date":"2026-08-22","mtime":1787402303287.0557,"excerpt":"引入依赖","mins":1},{"title":"Vue 组件通信方式汇总","url":"/zh/vue/Components-Connect","cat":"vue","date":"2026-08-21","mtime":1787314495384.2458,"excerpt":"Vue 组件之间的通信方式多种多样，根据组件之间的关系（父子、兄弟、跨级）选择最合适的方式。","mins":9},{"title":"query_params","url":"/zh/vue/query_params","cat":"vue","date":"2026-08-21","mtime":1787314402766.6328,"excerpt":"在 Vue Router 中，query 和 params 是两种最常用的传参方式。它们最直观的区别就像是 GET 请求与 POST 请求在地址栏表现上的差异。","mins":9},{"title":"reponsive","url":"/zh/vue/reponsive","cat":"vue","date":"2026-08-21","mtime":1787314402766.6328,"excerpt":"","mins":1},{"title":"virtual list","url":"/zh/vue/virtualList","cat":"vue","date":"2026-08-21","mtime":1787314402766.6328,"excerpt":"渲染10万条数据时，浏览器要创建10万个DOM节点，导致：","mins":9},{"title":"Vue2不能监听数组下标原因","url":"/zh/vue/vue2_ArrayIndex","cat":"vue","date":"2026-08-21","mtime":1787314402766.6328,"excerpt":"去操作数组,以最大程度保证框架的性能稳定","mins":1},{"title":"watch","url":"/zh/vue/watch","cat":"vue","date":"2026-08-21","mtime":1787314402766.6328,"excerpt":"当侦听的数据发生变化时，该函数会被调用。它接受三个参数","mins":8},{"title":"Plugins 目录","url":"/zh/vue/nuxt/Structure/app/plugins","cat":"vue","date":"2026-08-21","mtime":1787314402766.12,"excerpt":"Nuxt 拥有一个插件系统，允许你在创建 Vue 应用程序时运行代码。这对于使用 Vue 插件（如 Vuetify、i18n 等）或向应用注入全局函数/常量非常有用。","mins":3},{"title":"Pinia","url":"/zh/vue/pinia","cat":"vue","date":"2026-08-21","mtime":1787314402766.12,"excerpt":"在深入研究核心概念之前，我们得知道 Store 是用 defineStore() 定义的，它的第一个参数要求是一个独一无二的名字：","mins":11},{"title":"Nuxt 3 项目知识点总结","url":"/zh/vue/nuxt/Structure/app/nuxt","cat":"vue","date":"2026-08-21","mtime":1787314402765.6118,"excerpt":"","mins":20},{"title":"Pages 目录","url":"/zh/vue/nuxt/Structure/app/pages","cat":"vue","date":"2026-08-21","mtime":1787314402765.6118,"excerpt":"Nuxt 提供了一个可选的 pages/ 目录，基于文件的路由系统。如果你创建了这个目录，Nuxt 会自动根据文件结构生成 Vue Router 配置。","mins":4},{"title":"Composables 目录","url":"/zh/vue/nuxt/Structure/app/composables","cat":"vue","date":"2026-08-21","mtime":1787314402765.045,"excerpt":"Nuxt 使用 composables/ 目录来自动导入你的 Vue 组合式函数 (Composables)。这使得你可以将可重用的逻辑封装起来，并在整个应用中直接使用，而无需手动导入。","mins":4},{"title":"Nuxt 3 布局系统 (Layouts)","url":"/zh/vue/nuxt/Structure/app/layout","cat":"vue","date":"2026-08-21","mtime":1787314402765.045,"excerpt":"Nuxt 提供了一个强大的布局系统，允许你将通用的 UI 结构（如页眉、页脚、侧边栏）提取到可重用的布局组件中。","mins":4},{"title":"路由中间件 (Middleware)","url":"/zh/vue/nuxt/Structure/app/middleware","cat":"vue","date":"2026-08-21","mtime":1787314402765.045,"excerpt":"Nuxt 提供了一个可定制的路由中间件框架，允许你在导航到特定路由之前运行代码。这对于权限验证（如检查用户是否登录）、重定向、日志记录或修改页面元数据非常有用。","mins":5},{"title":"Nuxt 3 项目创建步骤","url":"/zh/vue/nuxt/Structure/app/nuxt-start","cat":"vue","date":"2026-08-21","mtime":1787314402765.045,"excerpt":"开发服务器默认运行在 http://localhost:3000","mins":5},{"title":"手写vue3","url":"/zh/vue/handwriting/vue3-jindu","cat":"vue","date":"2026-08-21","mtime":1787314402764.0396,"excerpt":"get(target, propKey, receiver)依次是目标对象、属性名和proxy实例本身","mins":6},{"title":"Vue 生命周期","url":"/zh/vue/lifecycle","cat":"vue","date":"2026-08-21","mtime":1787314402764.0396,"excerpt":"Vue 3 使用 unmount 代替了 destroy。","mins":4},{"title":"修饰符","url":"/zh/vue/modifier","cat":"vue","date":"2026-08-21","mtime":1787314402764.0396,"excerpt":"在默认情况下, v-model 会在每次 input 事件触发后更新数据, 你可以添加 .lazy 修饰符, 从而在每次 change 事件触发后更新数据","mins":3},{"title":"Nuxt 3 路由系统（深度进阶）","url":"/zh/vue/nuxt/Routing","cat":"vue","date":"2026-08-21","mtime":1787314402764.0396,"excerpt":"Nuxt 3 的路由系统基于 vue-router，通过文件系统约定自动配置。","mins":6},{"title":"Components 目录","url":"/zh/vue/nuxt/Structure/app/components","cat":"vue","date":"2026-08-21","mtime":1787314402764.0396,"excerpt":"components/ 目录是 Nuxt 项目中用于存放 Vue 组件的地方。Nuxt 会自动导入这些组件，这意味着你可以在页面和其他组件中直接使用它们，而无需显式地 import。","mins":6},{"title":"Promise","url":"/zh/vue/handwriting/Promise","cat":"vue","date":"2026-08-21","mtime":1787314402763.5364,"excerpt":"promise-aplus-tests","mins":10},{"title":"vue-router","url":"/zh/vue/handwriting/vue-router","cat":"vue","date":"2026-08-21","mtime":1787314402763.5364,"excerpt":"defineComponent只是为了类型推导和代码提示，只是把接收到的对象原封不动的返回了","mins":5},{"title":"手写Vue2","url":"/zh/vue/handwriting/vue2-jindu","cat":"vue","date":"2026-08-21","mtime":1787314402763.5364,"excerpt":"","mins":14},{"title":"computed","url":"/zh/vue/computed","cat":"vue","date":"2026-08-21","mtime":1787314402762.8376,"excerpt":"当alwaysSmall的值发生变化时，count的值也会发生变化。","mins":2},{"title":"created 与 mounted 区别","url":"/zh/vue/created_mounted","cat":"vue","date":"2026-08-21","mtime":1787314402762.8376,"excerpt":"","mins":1},{"title":"动态组件 (Dynamic Components)","url":"/zh/vue/dynamic-components","cat":"vue","date":"2026-08-21","mtime":1787314402762.8376,"excerpt":"在 Vue 中，我们经常需要在不同的组件之间进行切换，比如在一个多标签页 (Tab) 界面中。Vue 提供了一个 <component> 元素，专门用于实现这种场景。","mins":4},{"title":"effect","url":"/zh/vue/effect","cat":"vue","date":"2026-08-21","mtime":1787314402762.8376,"excerpt":"","mins":1},{"title":"h","url":"/zh/vue/h","cat":"vue","date":"2026-08-21","mtime":1787314402762.8376,"excerpt":"创建虚拟DOM节点（vnode）","mins":2},{"title":"透传Attribute","url":"/zh/vue/attribute","cat":"vue","date":"2026-08-21","mtime":1787314402762.307,"excerpt":"透传指的是传递给一个组件，却没有被该组件声明为props或emits的attribute或者v-on的事件监听器。常见的是class、style、id","mins":5},{"title":"SSR","url":"/zh/vue/SSR","cat":"vue","date":"2026-08-21","mtime":1787314402762.307,"excerpt":"在传统的CSR(Client-Side Rendering,客户端渲染)中浏览器拿到的是一个“空壳“HTML和一堆JS文件，必须等到JS下载并执行完，页面内容才会显示，而SSR让页面在到达浏览器时就已经包含完整内容","mins":18},{"title":"Vue 中 key 的作用","url":"/zh/vue/Key","cat":"vue","date":"2026-08-21","mtime":1787314402761.786,"excerpt":"key 是 Vue 的一个特殊 attribute，主要用于 Vue 的虚拟 DOM 算法，在新旧节点对比（Diff 算法）时辨识 VNodes。","mins":3},{"title":"Props","url":"/zh/vue/Props","cat":"vue","date":"2026-08-21","mtime":1787314402761.786,"excerpt":"在使用 <script setup> 的单文件组件中，props 可以使用 defineProps() 宏来声明：","mins":1},{"title":"Reflect 与 Vue 3 响应式","url":"/zh/vue/Reflect","cat":"vue","date":"2026-08-21","mtime":1787314402761.786,"excerpt":"Reflect 是 ES6 引入的一个内置对象，它提供了一系列拦截 JavaScript 操作的方法。在 Vue 3 中，Reflect 与 Proxy 配合使用，是实现响应式系统的关键。","mins":5},{"title":"Zustand","url":"/zh/react/zustand/installation","cat":"react","date":"2026-08-21","mtime":1787314402760.3757,"excerpt":"Zustand是德语单词，意思是“状态”。中文空耳 猝死丹特,基本上每一个框架都会有自己的状态管理工具，比如 Vue 的 Vuex，React 的 Redux，Zustand 自然也是一个状态管理工具。","mins":6},{"title":"devtools 开发者工具中间件","url":"/zh/react/zustand/middlewares/devtools","cat":"react","date":"2026-08-21","mtime":1787314402760.3757,"excerpt":"devtools 是 Zustand 内置的中间件，用于连接 Redux DevTools 浏览器扩展，让你可以在开发时直观地看到 store 状态的变化、时间旅行调试、手动触发 action 等。","mins":9},{"title":"persist 持久化中间件","url":"/zh/react/zustand/middlewares/persist","cat":"react","date":"2026-08-21","mtime":1787314402760.3757,"excerpt":"persist 是 Zustand 内置的中间件，用于将 store 状态持久化到本地存储（如 localStorage、sessionStorage），页面刷新后状态仍然保留。","mins":10},{"title":"subscribeWithSelector 选择器订阅中间件","url":"/zh/react/zustand/middlewares/subscribeWithSelector","cat":"react","date":"2026-08-21","mtime":1787314402760.3757,"excerpt":"subscribeWithSelector 是 Zustand 内置的中间件，为 store 添加一个 subscribe 方法，允许你监听 state 中某个特定字段的变化，而不是每次 state 变化都触发回调。","mins":9},{"title":"过度渲染","url":"/zh/react/zustand/overRendering","cat":"react","date":"2026-08-21","mtime":1787314402760.3757,"excerpt":"虽然 football 没变，但是 Left 和 Right 都会重新渲染。","mins":2},{"title":"参数传递","url":"/zh/react/router/transfer","cat":"react","date":"2026-08-21","mtime":1787314402759.8704,"excerpt":"参数传递指的是在路由跳转时，将参数传递给目标路由","mins":4},{"title":"状态处理","url":"/zh/react/zustand/handleState","cat":"react","date":"2026-08-21","mtime":1787314402759.8704,"excerpt":"Zustand会合并第一层的 state，但是对于深层次的状态更新，我们需要特别注意。让我们通过一个葫芦娃的例子来演示。","mins":3},{"title":"operation","url":"/zh/react/router/operation","cat":"react","date":"2026-08-21","mtime":1787314402759.2837,"excerpt":"在平时工作中大部分都是在做增刪查改(CRUD)的操作，所以一个界面的接口过多之后就会使逻辑臃肿复杂，难以维护，所以需要使用路由的高级操作来优化代码。","mins":5},{"title":"路由","url":"/zh/react/router/router","cat":"react","date":"2026-08-21","mtime":1787314402759.2837,"excerpt":"嵌套路由就是父路由中嵌套子路由children，子路由可以继承父路由的布局，也可以有自己的布局。","mins":4},{"title":"index","url":"/zh/react/router/index","cat":"react","date":"2026-08-21","mtime":1787314402758.781,"excerpt":"","mins":1},{"title":"安装","url":"/zh/react/router/installation","cat":"react","date":"2026-08-21","mtime":1787314402758.781,"excerpt":"React Router 是 React 的官方路由库。当前最新版本为 v8。","mins":5},{"title":"懒加载","url":"/zh/react/router/lazy","cat":"react","date":"2026-08-21","mtime":1787314402758.781,"excerpt":"懒加载是一种优化技术，用于延迟加载组件，直到需要时才加载。这样可以减少初始加载时间，提高页面性能。","mins":3},{"title":"路由模式","url":"/zh/react/router/mode","cat":"react","date":"2026-08-21","mtime":1787314402758.781,"excerpt":"在React RouterV7 中，是拥有不同的路由模式，路由模式的选择将直接影响你的整个项目。React Router 提供了四种核心路由创建函数： createBrowserRouter、createHashRouter、createMemoryRoute","mins":3},{"title":"Immer","url":"/zh/react/immer/installation","cat":"react","date":"2026-08-21","mtime":1787314402758.3965,"excerpt":"Immer 是德语单词，意思是\"总是\"。它的核心思想是：让你以可变的方式编写不可变数据。","mins":7},{"title":"React","url":"/zh/react/index","cat":"react","date":"2026-08-21","mtime":1787314402758.3965,"excerpt":"React 官方文档","mins":1},{"title":"useState","url":"/zh/react/hooks/useState","cat":"react","date":"2026-08-21","mtime":1787314402757.893,"excerpt":"useState 返回的 set 函数允许你将 state 更新为不同的值并触发重新渲染。你可以直接传递新状态，也可以传递一个根据先前状态来计算新状态的函数：","mins":8},{"title":"useSyncExternalStore","url":"/zh/react/hooks/useSyncExternalStore","cat":"react","date":"2026-08-21","mtime":1787314402757.893,"excerpt":"用于从外部存储（例如状态管理库、浏览器 API 等）获取状态并在组件中同步显示。这对于需要跟踪外部状态的应用非常有用。","mins":8},{"title":"useTransition","url":"/zh/react/hooks/useTransition","cat":"react","date":"2026-08-21","mtime":1787314402757.893,"excerpt":"帮你对状态更新进行“限流与降级”，从而防止耗时的任务阻塞用户的高频操作（如打字、点击、滚动），让应用保持丝滑流畅。","mins":6},{"title":"useMemo","url":"/zh/react/hooks/useMemo","cat":"react","date":"2026-08-21","mtime":1787314402757.3743,"excerpt":"useMemo在每次重新渲染的时候能够缓存计算结果","mins":4},{"title":"useRef","url":"/zh/react/hooks/useRef","cat":"react","date":"2026-08-21","mtime":1787314402757.3743,"excerpt":"当你在React中需要处理DOM元素或需要在组件渲染之间保持持久性数据时，便可以使用useRef","mins":7},{"title":"useImperativeHandle","url":"/zh/react/hooks/useImperativeHandle","cat":"react","date":"2026-08-21","mtime":1787314402756.8708,"excerpt":"父组件可以调用子组件的方法，或者访问子组件的属性。 如果你学过Vue，就类似于Vue的defineExpose","mins":6},{"title":"useLayoutEffect","url":"/zh/react/hooks/useLayoutEffect","cat":"react","date":"2026-08-21","mtime":1787314402756.8708,"excerpt":"用于在浏览器重新绘制屏幕之前触发。与useEffect类似。","mins":7},{"title":"useDeferredValue","url":"/zh/react/hooks/useDeferredValue","cat":"react","date":"2026-08-21","mtime":1787314402756.4312,"excerpt":"以下示例展示了如何使用 useDeferredValue 延迟处理输入内容，以提高大型数据的搜索性能。","mins":3},{"title":"useEffect","url":"/zh/react/hooks/useEffect","cat":"react","date":"2026-08-21","mtime":1787314402756.4312,"excerpt":"useEffect是React中用于处理副作用的钩子。并且可以充当生命周期函数","mins":4},{"title":"useId","url":"/zh/react/hooks/useId","cat":"react","date":"2026-08-21","mtime":1787314402756.4312,"excerpt":"返回一个唯一的字符串ID，与此组件中的useId调用相关联","mins":2},{"title":"useCallback","url":"/zh/react/hooks/useCallback","cat":"react","date":"2026-08-21","mtime":1787314402755.8645,"excerpt":"在React中，函数组件的重新渲染会导致组件内的函数被重新创建，这可能会导致性能问题。useCallback 通过缓存函数，可以减少不必要的重新渲染，提高性能。","mins":5},{"title":"useContext","url":"/zh/react/hooks/useContext","cat":"react","date":"2026-08-21","mtime":1787314402755.8645,"excerpt":"useContext 提供了一个无需为每层组件手动添加 props，就能在组件树间进行数据传递的方法。设计的目的就是解决组件树间数据传递的问题。","mins":5},{"title":"CSS Module","url":"/zh/react/css/cssModule","cat":"react","date":"2026-08-21","mtime":1787314402755.3516,"excerpt":"CSS Modules 是 React 中一种解决 CSS 样式冲突的方案，它的核心思想就是：","mins":3},{"title":"React Hooks","url":"/zh/react/hooks/index","cat":"react","date":"2026-08-21","mtime":1787314402755.3516,"excerpt":"Hooks 是 React 16.8 引入的特性，让你在函数组件中使用 state 以及其他 React 功能，无需编写 class 组件。","mins":2},{"title":"异步组件","url":"/zh/react/component/suspense","cat":"react","date":"2026-08-21","mtime":1787314402754.8474,"excerpt":"Suspense用于处理异步加载的组件。它可以在某些内容没准备好时，先显示一个占位UI（fallback），等内容加载完成后再显示真正的内容","mins":3},{"title":"Atomic CSS","url":"/zh/react/css/atomic","cat":"react","date":"2026-08-21","mtime":1787314402754.8474,"excerpt":"框架：tailwindcss、UnoCSS、Windi CSS","mins":3},{"title":"createPortal","url":"/zh/react/apis/createPortal","cat":"react","date":"2026-08-21","mtime":1787314402753.9426,"excerpt":"允许你将JSX作为Children渲染至DOM的不同部分","mins":6},{"title":"index","url":"/zh/react/apis/index","cat":"react","date":"2026-08-21","mtime":1787314402753.9426,"excerpt":"","mins":1},{"title":"memo","url":"/zh/react/apis/memo","cat":"react","date":"2026-08-21","mtime":1787314402753.9426,"excerpt":"memo允许你的组件在props没有改变的情况下跳过重新渲染","mins":3},{"title":"use","url":"/zh/react/apis/use","cat":"react","date":"2026-08-21","mtime":1787314402753.9426,"excerpt":"用来直接读取Promise或Context的值，通常和Suspense一起使用","mins":8},{"title":"组件通信","url":"/zh/react/component/connect","cat":"react","date":"2026-08-21","mtime":1787314402753.9426,"excerpt":"React 的组件通信，本质上就是不同组件之间如何传递数据和触发事件。","mins":7},{"title":"受控组件与非受控组件","url":"/zh/react/component/controlled","cat":"react","date":"2026-08-21","mtime":1787314402753.9426,"excerpt":"React 中的受控组件（Controlled Component）和非受控组件（Uncontrolled Component），本质上是在说：","mins":3},{"title":"index","url":"/zh/react/component/index","cat":"react","date":"2026-08-21","mtime":1787314402753.9426,"excerpt":"","mins":1},{"title":"modularity","url":"/zh/backend/nodejs/modularity","cat":"backend","date":"2026-08-21","mtime":1787314402752.937,"excerpt":"不能使用exports = value的形式暴露数据","mins":1},{"title":"SSE","url":"/zh/network/SSE","cat":"network","date":"2026-08-21","mtime":1787314402752.937,"excerpt":"大模型开发中，通常有复杂的鉴权（如Headers: {Authorization: 'Bearer ' + token}）, 或者提示词很长需要POST请求，必须用fetch手动解析文本流","mins":7},{"title":"\\_\\_dirname","url":"/zh/backend/nodejs/__dirname","cat":"backend","date":"2026-08-21","mtime":1787314402752.369,"excerpt":"在ES模块中（\"type: module\"或.mjs文件中），dirname是不可用的，解决方法时通过import.meta.url来手动构建","mins":1},{"title":"\\_\\_filename","url":"/zh/backend/nodejs/__filename","cat":"backend","date":"2026-08-21","mtime":1787314402752.369,"excerpt":"","mins":1},{"title":"JUnit","url":"/zh/backend/java/unitTest/junit","cat":"backend","date":"2026-08-21","mtime":1787314402751.366,"excerpt":"JUnit 是 Java 最主流的单元测试框架，JUnit 5（也叫 JUnit Jupiter）是目前的标准版本。","mins":10},{"title":"Filter","url":"/zh/backend/java/springboot/filter","cat":"backend","date":"2026-08-21","mtime":1787314402750.857,"excerpt":"Spring Boot中的Filter（过滤器）是基于Java Servlet规范（Servlet API）组件，主要作用是在请求到达Controller之前以及需要给客户端之前，对请求和响应进行拦截与处理","mins":6},{"title":"Maven 生命周期","url":"/zh/backend/java/maven/lifeCycle","cat":"backend","date":"2026-08-21","mtime":1787314402749.804,"excerpt":"Maven 的生命周期（Lifecycle）是一个流程框架，它定义了一系列的阶段（Phase），告诉 Maven\"什么时候做什么事\"。","mins":5},{"title":"set","url":"/zh/backend/java/collection/set","cat":"backend","date":"2026-08-21","mtime":1787314402748.3982,"excerpt":"如果我们只需要存储不重复的key，并不需要存储映射的value，那么就可以使用Set","mins":2},{"title":"接口","url":"/zh/backend/java/oop/interface","cat":"backend","date":"2026-08-21","mtime":1787314402748.3982,"excerpt":"在Java中，接口使用interface关键字声明，类使用implements来实现接口","mins":4},{"title":"抽象类","url":"/zh/backend/java/oop/abstractClass","cat":"backend","date":"2026-08-21","mtime":1787314402747.7693,"excerpt":"使用abstract关键字声明一个类为抽象类，抽象类不能被实例化，只能被继承","mins":4},{"title":"继承","url":"/zh/backend/java/oop/inheritance","cat":"backend","date":"2026-08-21","mtime":1787314402747.7693,"excerpt":"Java只支持单继承，不支持多继承。一个类只能有一个直接父类","mins":3},{"title":"多态","url":"/zh/backend/java/oop/Polymorphism","cat":"backend","date":"2026-08-21","mtime":1787314402747.7693,"excerpt":"编译时，编译器只知道a1是一个Animal，所以只能调用Animal里的方法","mins":7},{"title":"index","url":"/zh/backend/index","cat":"backend","date":"2026-08-21","mtime":1787314402746.8896,"excerpt":"","mins":1},{"title":"XSS (Cross-Site Scripting)","url":"/zh/Security/xss","cat":"Security","date":"2026-08-21","mtime":1787314402746.3872,"excerpt":"XSS（跨站脚本攻击）是最常见的 Web 安全漏洞之一。攻击者通过注入恶意脚本到目标网页中，当其他用户访问该页面时，恶意脚本会在用户的浏览器中执行，从而窃取用户信息、劫持会话或执行其他恶意操作。","mins":10},{"title":"this","url":"/zh/JavaScript/this","cat":"JavaScript","date":"2026-08-21","mtime":1787314402743.471,"excerpt":"可以看出，this指向调用它所在方法的对象，test方法在obj对象下，所以this指向obj，test在window对象下，所以this指向window。也可以看出：this和声明位置无关，和调用位置有关","mins":13},{"title":"trim()","url":"/zh/JavaScript/trim","cat":"JavaScript","date":"2026-08-21","mtime":1787314402743.471,"excerpt":"","mins":1},{"title":"null和undefined的区别","url":"/zh/JavaScript/nullUndefined","cat":"JavaScript","date":"2026-08-21","mtime":1787314402742.4666,"excerpt":"","mins":2},{"title":"parseInt","url":"/zh/JavaScript/parseInt","cat":"JavaScript","date":"2026-08-21","mtime":1787314402742.4666,"excerpt":"parseInt(string, radix)解析一个字符串并返回指定基数的十进制整数，radix是2-36之间的整数，表示被解析字符串的基数","mins":1},{"title":"JavaScript变量在内存中的堆栈存储","url":"/zh/JavaScript/stack-heap","cat":"JavaScript","date":"2026-08-21","mtime":1787314402742.4666,"excerpt":"这段代码的关键在于理解函数参数的按值传递（Call by Value）以及引用类型的存储方式。","mins":3},{"title":"startWith和indexOf的区别","url":"/zh/JavaScript/startWith_indexOf","cat":"JavaScript","date":"2026-08-21","mtime":1787314402742.4666,"excerpt":"","mins":1},{"title":"JavaScript","url":"/zh/JavaScript/index","cat":"JavaScript","date":"2026-08-21","mtime":1787314402741.923,"excerpt":"@datastructures-js/priority-queue 优先队列","mins":1},{"title":"如何判断object为空","url":"/zh/JavaScript/judge-object","cat":"JavaScript","date":"2026-08-21","mtime":1787314402741.923,"excerpt":"以上方法都是不太严谨，因为处理不了const obj = {[Sumbol('a')]: 1} 更严谨的方法：Reflect.ownKeys(obj).length === 0","mins":1},{"title":"let、var、const","url":"/zh/JavaScript/let_var_const","cat":"JavaScript","date":"2026-08-21","mtime":1787314402741.923,"excerpt":"在全局作用域使用var声明的变量会成为全局对象的属性","mins":5},{"title":"module_commonJS","url":"/zh/JavaScript/module_commonJS","cat":"JavaScript","date":"2026-08-21","mtime":1787314402741.923,"excerpt":"这是一个前端面试中的经典问题。虽然现在我们习惯用 Vite 或 Webpack 自动处理，但理解这两者的底层差异对理解代码运行逻辑（尤其是调试 SSR 或 Node.js 脚本时）非常重要。","mins":4},{"title":"假值和真值","url":"/zh/JavaScript/falsy_truthy","cat":"JavaScript","date":"2026-08-21","mtime":1787314402741.371,"excerpt":"","mins":1},{"title":"for","url":"/zh/JavaScript/for","cat":"JavaScript","date":"2026-08-21","mtime":1787314402741.371,"excerpt":"for...in主要用于循环遍历对象的可枚举属性。如果用于数组，他遍历的是数组的索引","mins":3},{"title":"FormData","url":"/zh/JavaScript/formData","cat":"JavaScript","date":"2026-08-21","mtime":1787314402741.371,"excerpt":"返回 Iterator，可用 for...of 遍历。","mins":12},{"title":"globalThis","url":"/zh/JavaScript/globalThis","cat":"JavaScript","date":"2026-08-21","mtime":1787314402741.371,"excerpt":"随着javascript运行环境的多样化（浏览器、Node.js、Web Workers），访问全局对象变得非常混乱","mins":1},{"title":"index","url":"/zh/JavaScript/array/index","cat":"JavaScript","date":"2026-08-21","mtime":1787314402740.2854,"excerpt":"","mins":1},{"title":"JavaScript 数组的快速模式和字典模式","url":"/zh/JavaScript/array-fast-dict-mode","cat":"JavaScript","date":"2026-08-21","mtime":1787314402740.2854,"excerpt":"在 V8 这类 JS 引擎里，数组有两种主要的内部存储方式：","mins":4},{"title":"bind apply call","url":"/zh/JavaScript/bind_apply_call","cat":"JavaScript","date":"2026-08-21","mtime":1787314402740.2854,"excerpt":"call和apply方法非常相似，唯一区别就是传参的形式 bind不会立即执行函数，而是创建一个副本，并将你指定的obj绑定到该函数的this上","mins":5},{"title":"装箱机制","url":"/zh/JavaScript/boxing","cat":"JavaScript","date":"2026-08-21","mtime":1787314402740.2854,"excerpt":"在JavaScript中，const a = 1定义了一个原始类型的数字","mins":1},{"title":"JS监听对象属性的改变","url":"/zh/JavaScript/defineProperty_Proxy","cat":"JavaScript","date":"2026-08-21","mtime":1787314402740.2854,"excerpt":"configurable 为 false 时,不能使用 delete 删除属性","mins":3},{"title":"类型转换","url":"/zh/JavaScript/TypeConversion","cat":"JavaScript","date":"2026-08-21","mtime":1787314402739.783,"excerpt":"toPrimitive转换规则详见ToPrimitive","mins":2},{"title":"URL","url":"/zh/JavaScript/URL","cat":"JavaScript","date":"2026-08-21","mtime":1787314402739.783,"excerpt":"JavaScript中用于解析、构造和操作URL的标准API，在浏览器和Node.js中都可用。","mins":4},{"title":"WeakMap and WeakSet","url":"/zh/JavaScript/WeakMap_WeakSet","cat":"JavaScript","date":"2026-08-21","mtime":1787314402739.783,"excerpt":"通常，当对象、数组之类的数据结构在内存中，他们的子元素，例如对象的属性、数组的元素都被认为是可达的","mins":7},{"title":"Throttle","url":"/zh/JavaScript/Throttle","cat":"JavaScript","date":"2026-08-21","mtime":1787314402739.3257,"excerpt":"规定在一个周期内，事件最多触发一次。如果事件在周期内再次触发，则忽略","mins":2},{"title":"ToPrimitive","url":"/zh/JavaScript/ToPrimitive","cat":"JavaScript","date":"2026-08-21","mtime":1787314402739.3257,"excerpt":"对象到字符串的转换，当我们对期望一个字符串的对象执行操作时，如“alert”：","mins":7},{"title":"Prototype Chain","url":"/zh/JavaScript/Prototype_Chain","cat":"JavaScript","date":"2026-08-21","mtime":1787314402738.7085,"excerpt":"要了解原型链，首先要知道prototype和proto","mins":6},{"title":"Reflect","url":"/zh/JavaScript/Reflect","cat":"JavaScript","date":"2026-08-21","mtime":1787314402738.7085,"excerpt":"原因：当调用child.alias时，由于child自身没有这个属性，它会去原型链找。在proxy的get中，如果你返回target[key]，那么parent里 的getter函数的this就会指向target（即parent对象）","mins":2},{"title":"重排和重绘","url":"/zh/JavaScript/Repaint_Reflow","cat":"JavaScript","date":"2026-08-21","mtime":1787314402738.7085,"excerpt":"答案：触发两次（利用合并特性，减少一次）","mins":4},{"title":"Symbol","url":"/zh/JavaScript/Symbol","cat":"JavaScript","date":"2026-08-21","mtime":1787314402738.7085,"excerpt":"否则，如果使用另一种类型，例如数字，它会被自动转换为字符串。所以obj[1]与obj['1']相同，而obj[true] 与 obj[\"true\"] 相同。","mins":6},{"title":"命名规范","url":"/zh/JavaScript/NameConvention","cat":"JavaScript","date":"2026-08-21","mtime":1787314402738.2056,"excerpt":"js的保留字不能做变量名，例如class，let，const等","mins":9},{"title":"new","url":"/zh/JavaScript/New","cat":"JavaScript","date":"2026-08-21","mtime":1787314402738.2056,"excerpt":"手写new操作符","mins":1},{"title":"Object.keys, values, entries","url":"/zh/JavaScript/Object.keys_values_entries","cat":"JavaScript","date":"2026-08-21","mtime":1787314402738.2056,"excerpt":"在map里，有map.keys，map.values，map.entries方法，这次方法是通用的","mins":2},{"title":"Promise","url":"/zh/JavaScript/Promise","cat":"JavaScript","date":"2026-08-21","mtime":1787314402738.2056,"excerpt":"将一个Promise可迭代对象作为输入，并返回一个Promise，当输入的任何一个Promise兑现时，返回第一个兑现的值， 如果所有Promise都拒绝，返回一个AggregateError异常，包含所有拒绝的原因。","mins":5},{"title":"Map and Set（映射和集合）","url":"/zh/JavaScript/MapAndSet","cat":"JavaScript","date":"2026-08-21","mtime":1787314402737.822,"excerpt":"Map 是一个带键的数据项的集合，就像一个 Object 一样。 但是它们最大的差别是 Map 允许任何类型的键（key）。","mins":12},{"title":"Memoization","url":"/zh/JavaScript/Memoization","cat":"JavaScript","date":"2026-08-21","mtime":1787314402737.822,"excerpt":"通常通过一个高阶函数或装饰器来实现","mins":2},{"title":"Higher-Order Function","url":"/zh/JavaScript/High-Order","cat":"JavaScript","date":"2026-08-21","mtime":1787314402737.0613,"excerpt":"对于这个通用函数animation，如果不传递第四个参数，就不能确定怎么使用它。但是传递了我就可以在回调函数里针对当前情况拿到animation计算好的值去使用","mins":8},{"title":"变量提升和暂时性死区（TDZ）","url":"/zh/JavaScript/Hoisting_TDZ","cat":"JavaScript","date":"2026-08-21","mtime":1787314402737.0613,"excerpt":"变量提升是js引擎在执行代码前的编译阶段，将变量和函数声明移动到其所在作用于顶部的行为","mins":5},{"title":"可迭代对象","url":"/zh/JavaScript/IterableObject","cat":"JavaScript","date":"2026-08-21","mtime":1787314402737.0613,"excerpt":"例如，我们有一个对象，它并不是数组，但是看上去很适合使用 for..of 循环。","mins":8},{"title":"JSON.stringify","url":"/zh/JavaScript/JSON.stringify","cat":"JavaScript","date":"2026-08-21","mtime":1787314402737.0613,"excerpt":"JSON.stringify() 将 JavaScript 值转换为 JSON 字符串。","mins":9},{"title":"Lazy Function","url":"/zh/JavaScript/Lazy_Function","cat":"JavaScript","date":"2026-08-21","mtime":1787314402737.0613,"excerpt":"后续调用addEvent时，会直接使用重写后的版本，不会重复进行特性检测","mins":1},{"title":"ES 每个版本都引入了什么内容","url":"/zh/JavaScript/ESVersion","cat":"JavaScript","date":"2026-08-21","mtime":1787314402736.0564,"excerpt":"ECMAScript (ES) 是 JavaScript 的标准。自 ES6 (2015) 以来，ECMAScript 每年都会发布一个新的版本。","mins":7},{"title":"事件委托","url":"/zh/JavaScript/EventDelegation","cat":"JavaScript","date":"2026-08-21","mtime":1787314402736.0564,"excerpt":"简单来说，不在子元素（比如每个<li>）上单独设置事件监听器，而是把事件监听器设置在它们共同的父元素（比如<ul>）上，由父元素统一监听和处理子元素的事件","mins":4},{"title":"事件循环","url":"/zh/JavaScript/EventLoop","cat":"JavaScript","date":"2026-08-21","mtime":1787314402736.0564,"excerpt":"$ 1 \\rightarrow 4 \\rightarrow 8 \\rightarrow 5 \\rightarrow 7 \\rightarrow 2 \\rightarrow 3 \\rightarrow 6 $","mins":2},{"title":"Function Composition","url":"/zh/JavaScript/Function_Composition","cat":"JavaScript","date":"2026-08-21","mtime":1787314402736.0564,"excerpt":"通过一个compose或pipe函数来实现","mins":1},{"title":"垃圾回收","url":"/zh/JavaScript/Garbage_Collection","cat":"JavaScript","date":"2026-08-21","mtime":1787314402736.0564,"excerpt":"一些高级语言自带GC（Garbage Collection）比如java，python，javascript等，有些语言没有比如c和c++等需要手动管理内存","mins":4},{"title":"JavaScript 隐藏类（Hidden Classes）","url":"/zh/JavaScript/HiddenClass","cat":"JavaScript","date":"2026-08-21","mtime":1787314402736.0564,"excerpt":"JavaScript 是动态语言，对象可以随时新增、删除属性。但在底层实现里， 为了让属性访问更快，现代 JS 引擎（比如 V8）会为「形状相同」的对象 创建一种内部结构，叫作「隐藏类」（Hidden Class，也叫 Shape）。","mins":6},{"title":"Currying","url":"/zh/JavaScript/Curring","cat":"JavaScript","date":"2026-08-21","mtime":1787314402735.5498,"excerpt":"","mins":1},{"title":"数据类型","url":"/zh/JavaScript/DataTypes","cat":"JavaScript","date":"2026-08-21","mtime":1787314402735.5498,"excerpt":"ECMAScript 2020 (ES11) 规范中正式添加了一种新的数据类型：","mins":1},{"title":"Debouncing","url":"/zh/JavaScript/Debouncing","cat":"JavaScript","date":"2026-08-21","mtime":1787314402735.5498,"excerpt":"规定在事件触发后，等待一定时间再执行回调。如果在等待时间内事件再次触发，则重新计时。只有当事件停止触发一段时间后，回调函数才会执行","mins":1},{"title":"如何判断JavaScript的数据类型","url":"/zh/JavaScript/DetermineDataType","cat":"JavaScript","date":"2026-08-21","mtime":1787314402735.5498,"excerpt":"可以用来确定一个值得基本数据类型，返回一个表示数据类型的字符串","mins":3},{"title":"ES6 类继承","url":"/zh/JavaScript/ES6Inherit","cat":"JavaScript","date":"2026-08-21","mtime":1787314402735.5498,"excerpt":"原型链继承：","mins":2},{"title":"闭包","url":"/zh/JavaScript/Closure","cat":"JavaScript","date":"2026-08-21","mtime":1787314402735.0386,"excerpt":"闭包在 JavaScript 进阶开发中几乎无处不在，主要用于封装私有变量和保持状态。","mins":8},{"title":"浅拷贝和深拷贝","url":"/zh/JavaScript/Copy","cat":"JavaScript","date":"2026-08-21","mtime":1787314402735.0386,"excerpt":"JS分为原始类型和引用类型，并没有深浅拷贝的区别","mins":13},{"title":"turbo","url":"/zh/Engineering/turbo","cat":"Engineering","date":"2026-08-21","mtime":1787314402733.5273,"excerpt":"这会生成一个预设好apps和packages的项目结构。","mins":1},{"title":"Session 和 Cookie","url":"/zh/Interview/Session_Cookie","cat":"Interview","date":"2026-08-21","mtime":1787314402733.5273,"excerpt":"Cookie是服务器发送到用户浏览器并保存在本地的一小段数据","mins":2},{"title":"== 和 === 的区别","url":"/zh/JavaScript/==&===","cat":"JavaScript","date":"2026-08-21","mtime":1787314402733.5273,"excerpt":"答案","mins":1},{"title":"Array","url":"/zh/JavaScript/Array","cat":"JavaScript","date":"2026-08-21","mtime":1787314402733.5273,"excerpt":"获取最后一个元素我们可以不必使用fruits[fruits.length - 1]，需要些两次遍历名","mins":3},{"title":"事件冒泡和事件捕获","url":"/zh/JavaScript/Bubbling_Capturing","cat":"JavaScript","date":"2026-08-21","mtime":1787314402733.5273,"excerpt":"如果parent不启用事件捕获，点击按钮不会打印parent","mins":2},{"title":"Canvas","url":"/zh/JavaScript/Canvas","cat":"JavaScript","date":"2026-08-21","mtime":1787314402733.5273,"excerpt":"文字","mins":19},{"title":"链式调用","url":"/zh/JavaScript/ChainedCall","cat":"JavaScript","date":"2026-08-21","mtime":1787314402733.5273,"excerpt":"通过在对象的方法中返回对象自身（this）来实现","mins":1},{"title":"CLI","url":"/zh/Engineering/scaffold","cat":"Engineering","date":"2026-08-21","mtime":1787314402733.017,"excerpt":"命令行界面：Command Line Interface","mins":16},{"title":"tsup","url":"/zh/Engineering/tsup","cat":"Engineering","date":"2026-08-21","mtime":1787314402733.017,"excerpt":"创建一个 src/index.ts 文件，写入以下内容：","mins":4},{"title":"nrm","url":"/zh/Engineering/nrm","cat":"Engineering","date":"2026-08-21","mtime":1787314402732.5083,"excerpt":"nrm是一个专门用来管理npm镜像源的命令行工具。能让你在官方源、国内镜像源之间切换切换。","mins":1},{"title":"prompts","url":"/zh/Engineering/prompts","cat":"Engineering","date":"2026-08-21","mtime":1787314402732.5083,"excerpt":"Prompt propeties can be function too.Prompt Objects with type set to falsy value are skipped","mins":4},{"title":"cspell","url":"/zh/Engineering/cspell","cat":"Engineering","date":"2026-08-21","mtime":1787314402732.0051,"excerpt":"推荐使用 cspell.config.yaml 或 cspell.json。","mins":4},{"title":"cz-git","url":"/zh/Engineering/git-cz","cat":"Engineering","date":"2026-08-21","mtime":1787314402732.0051,"excerpt":"在 package.json 添加 commitlint 配置","mins":8},{"title":"Commander","url":"/zh/Engineering/commander","cat":"Engineering","date":"2026-08-21","mtime":1787314402731.395,"excerpt":"在程序中通过 .version() 设置版本号，默认对应的选项是 -V 和 --version。","mins":7},{"title":"consola","url":"/zh/Engineering/consola","cat":"Engineering","date":"2026-08-21","mtime":1787314402731.395,"excerpt":"输出更紧凑，减少空行，适合日志文件","mins":5},{"title":"Husky","url":"/zh/Engineering/Husky","cat":"Engineering","date":"2026-08-21","mtime":1787314402729.8914,"excerpt":"每次git commit 都会执行pnpm run lint:vue && pnpm lint:style && pnpm spellcheck","mins":2},{"title":"index","url":"/zh/misc/DesignPatterns/index","cat":"misc","date":"2026-08-21","mtime":1787314402729.8914,"excerpt":"Singleton Pattern","mins":1},{"title":"Strategy Pattern","url":"/zh/misc/DesignPatterns/Strategy","cat":"misc","date":"2026-08-21","mtime":1787314402729.8914,"excerpt":"核心思想是：定义一系列算法，把他们一个个封装起来，并且使他们可以相互替换","mins":3},{"title":"Decorator Pattern","url":"/zh/misc/DesignPatterns/Decorator","cat":"misc","date":"2026-08-21","mtime":1787314402728.89,"excerpt":"核心思想：在不改变原对象结构和其源代码的前提下，动态地给对象添加额外的功能","mins":2},{"title":"Factory Pattern","url":"/zh/misc/DesignPatterns/Factory","cat":"misc","date":"2026-08-21","mtime":1787314402728.89,"excerpt":"在代码中，不用到处使用new关键字去实例化类，而是调用一个”工厂方法“，让它根据我们提供的参数，决定返回哪种实例","mins":3},{"title":"MVVM","url":"/zh/misc/DesignPatterns/MVVM","cat":"misc","date":"2026-08-21","mtime":1787314402728.89,"excerpt":"Model-View-ViewModel，旨在通过“数据绑定”讲图形界面的开发与业务逻辑的开发完全分离","mins":2},{"title":"Observer Pattern","url":"/zh/misc/DesignPatterns/Observer","cat":"misc","date":"2026-08-21","mtime":1787314402728.89,"excerpt":"Vue2的核心逻辑就是观察者模式：","mins":3},{"title":"Pub-Sub Pattern","url":"/zh/misc/DesignPatterns/Pub-Sub","cat":"misc","date":"2026-08-21","mtime":1787314402728.89,"excerpt":"核心理念：解耦。让“发消息的人”和“接受消息的人”完全互不认识。","mins":3},{"title":"Singleton Pattern","url":"/zh/misc/DesignPatterns/Singleton","cat":"misc","date":"2026-08-21","mtime":1787314402728.89,"excerpt":"在程序开发中，有些对象只需要一个，多了反而会出现乱子或浪费资源","mins":2}],"label":{"JavaScript":"JavaScript","react":"React","vue":"Vue","backend":"后端","misc":"Misc","Engineering":"工程化","frontend":"前端","database":"数据库","devops":"DevOps","network":"网络","Security":"安全","os":"OS","Interview":"面试"}};
+
+/* 分类 → 封面渐变（暖色为主，保留少量冷色做区分） */
+const ART = {
+  'JavaScript' : ['#F0C36D','#E0963F'],
+  'react'      : ['#F0A888','#D06840'],
+  'vue'        : ['#E39BA8','#C2607A'],
+  'backend'    : ['#D9A07C','#A85E3C'],
+  'frontend'   : ['#F2B98A','#D98A4A'],
+  'Engineering': ['#C9A2D9','#9663B8'],
+  'database'   : ['#9FC0DA','#5A82AB'],
+  'devops'     : ['#9CCFD0','#55A0A2'],
+  'network'    : ['#A8C8B8','#5E9C82'],
+  'Security'   : ['#E8A0A0','#C05A5A'],
+  'os'         : ['#B8AEDD','#7C6FB8'],
+  'Interview'  : ['#E8B0C8','#C0608A'],
+  'misc'       : ['#CFC4BA','#94867A']
+};
+const DOT = {
+  'JavaScript':'#E0963F','react':'#D06840','vue':'#C2607A','backend':'#A85E3C',
+  'frontend':'#D98A4A','Engineering':'#9663B8','database':'#5A82AB','devops':'#55A0A2',
+  'network':'#5E9C82','Security':'#C05A5A','os':'#7C6FB8','Interview':'#C0608A','misc':'#94867A'
+};
+/* 路径片段 → 展示名 */
+const SEG = {
+  java:'Java',nodejs:'Node.js',springboot:'SpringBoot',mybatisPlus:'MyBatis-Plus',tool:'工具',
+  sql:'SQL',mysql:'MySQL',mongodb:'MongoDB',MongoDB:'MongoDB',redis:'Redis',
+  basic:'基础',lifecycle:'生命周期',uniapp:'uni-app',index:'索引',node:'Node',js:'JS',
+  css:'CSS',html:'HTML',ts:'TypeScript',tsconfig:'TS 配置',docker:'Docker',nginx:'Nginx',
+  git:'Git',jmeter:'JMeter',security:'安全',os:'OS',algorithm:'算法',jvm:'JVM',maven:'Maven',
+  gitflow:'Git Flow',mongodb2:'MongoDB'
+};
+const catLabel = (c) => (DATA.label && DATA.label[c]) || c;
+const hexA = (hex,a) => {
+  const n = parseInt(hex.slice(1),16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+};
+function segLabel(s){ return SEG[s] || (s.charAt(0).toUpperCase() + s.slice(1)); }
+function noteTags(url, cat){
+  const label = catLabel(cat);
+  const segs = url.split('/').filter(Boolean).slice(1);        // 丢掉 zh
+  const seen = new Set([label.toLowerCase(), cat.toLowerCase()]);
+  const rest = [];
+  segs.forEach(s => {
+    const t = segLabel(s), k = t.toLowerCase();
+    if (seen.has(k)) return;                                    // 跳过与分类重名的段
+    seen.add(k);
+    rest.push(t);
+  });
+  return { tags: [label, ...rest.slice(0,2)], extra: Math.max(0, rest.length - 2) };
+}
+
+/* ============================================================
+   主题
+   ============================================================ */
+const root = document.documentElement;
+function applyTheme(t){
+  root.setAttribute('data-theme', t);
+  try { localStorage.setItem('proto-theme', t); } catch(e){}
+}
+applyTheme((() => {
+  try {
+    const saved = localStorage.getItem('proto-theme');
+    if (saved) return saved;
+  } catch(e){}
+  return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+})());
+function toggleTheme(){ applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
+['themeBtn','fabTheme'].forEach(id => document.getElementById(id).addEventListener('click', toggleTheme));
+
+/* 背景图（渐变底色已在 CSS 中兜底） */
+(function(){
+  const img = document.getElementById('bgImg');
+  img.addEventListener('load', () => img.classList.add('is-ready'));
+  img.addEventListener('error', () => { img.remove(); });
+  img.src = 'https://t.alcy.cc/ycy';
+})();
+
+/* ============================================================
+   打字机
+   ============================================================ */
+(function(){
+  const el = document.getElementById('typed');
+  const words = ['前端开发者','持续学习者','技术记录者','热爱生活者'];
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches){ el.textContent = words[0]; return; }
+  let w = 0, i = 0, del = false;
+  (function tick(){
+    const cur = words[w];
+    el.textContent = cur.slice(0, i);
+    if (!del && i < cur.length){ i++; setTimeout(tick, 110); }
+    else if (!del){ del = true; setTimeout(tick, 1500); }
+    else if (i > 0){ i--; setTimeout(tick, 55); }
+    else { del = false; w = (w + 1) % words.length; setTimeout(tick, 260); }
+  })();
+})();
+
+/* ============================================================
+   涟漪按钮
+   ============================================================ */
+document.addEventListener('pointerdown', (e) => {
+  const el = e.target.closest('.rbtn');
+  if (!el) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const r = el.getBoundingClientRect();
+  const x = e.clientX - r.left, y = e.clientY - r.top;
+  const size = 2 * Math.max(
+    Math.hypot(x, y),
+    Math.hypot(r.width - x, y),
+    Math.hypot(x, r.height - y),
+    Math.hypot(r.width - x, r.height - y)
+  );
+  const wave = document.createElement('span');
+  wave.className = 'rbtn__wave';
+  wave.style.cssText = `left:${x}px;top:${y}px;width:${size}px;height:${size}px`;
+  el.appendChild(wave);
+  wave.addEventListener('animationend', () => wave.remove());
+});
+
+/* ============================================================
+   渲染：分类条 / 文章网格 / 页脚分类
+   ============================================================ */
+const grid = document.getElementById('grid');
+const catbar = document.getElementById('catbar');
+const gridCount = document.getElementById('gridCount');
+const PAGE = 9;
+let activeCat = null, shown = PAGE;
+
+const counts = {};
+DATA.feed.forEach(n => { counts[n.cat] = (counts[n.cat] || 0) + 1; });
+const cats = Object.keys(counts).sort((a,b) => counts[b] - counts[a]);
+
+document.getElementById('statNotes').textContent = DATA.feed.length;
+document.getElementById('statCats').textContent = cats.length;
+
+/* 分类条 */
+catbar.innerHTML = [
+  `<button class="pill is-on" data-cat=""><span class="pill__dot" style="--dot:var(--c-primary-500)"></span>全部<span class="pill__n">${DATA.feed.length}</span></button>`,
+  ...cats.map(c => `<button class="pill" data-cat="${c}"><span class="pill__dot" style="--dot:${DOT[c] || '#D07058'}"></span>${catLabel(c)}<span class="pill__n">${counts[c]}</span></button>`)
+].join('');
+catbar.addEventListener('click', (e) => {
+  const b = e.target.closest('.pill'); if (!b) return;
+  catbar.querySelectorAll('.pill').forEach(p => p.classList.toggle('is-on', p === b));
+  activeCat = b.dataset.cat || null;
+  shown = PAGE;
+  render();
+});
+
+/* 页脚分类 */
+document.getElementById('footerCats').innerHTML = cats.slice(0,5)
+  .map(c => `<a href="#posts" data-jump="${c}"><svg class="ic"><use href="#i-tag"/></svg>${catLabel(c)}</a>`).join('');
+document.getElementById('footerCats').addEventListener('click', (e) => {
+  const a = e.target.closest('[data-jump]'); if (!a) return;
+  const c = a.dataset.jump;
+  const pill = catbar.querySelector(`.pill[data-cat="${c}"]`);
+  if (pill) pill.click();
+});
+
+function cardHTML(n, idx){
+  const label = catLabel(n.cat);
+  const [c1, c2] = ART[n.cat] || ART.misc;
+  const { tags, extra } = noteTags(n.url, n.cat);
+  const initial = label.slice(0,1).toUpperCase();
+  const seed = n.url.split('').reduce((a,ch) => a + ch.charCodeAt(0), 0);
+  const ang = 112 + (seed % 56);
+  return `<article class="post-card" data-aos style="--d:${(idx % 3) * 70}ms">
+    <a class="post-cover" href="${n.url}" tabindex="-1" aria-hidden="true" style="--c1:${c1};--c2:${c2};--ang:${ang}deg">
+      <span class="post-cover__art"></span>
+      <span class="post-cover__glyph">${initial}</span>
+      <span class="post-cover__overlay"></span>
+      <span class="post-category">${label}</span>
+    </a>
+    <div class="post-content">
+      <h3 class="post-title"><a href="${n.url}">${n.title}</a></h3>
+      <div class="post-meta">
+        <span><svg class="ic"><use href="#i-calendar"/></svg>${n.date}</span>
+        <span><svg class="ic"><use href="#i-clock"/></svg>${n.mins} 分钟阅读</span>
+      </div>
+      <div class="post-tags">
+        ${tags.map(t => `<span class="post-tag">#${t}</span>`).join('')}
+        ${extra > 0 ? `<span class="post-tag">+${extra}</span>` : ''}
+      </div>
+      <p class="post-excerpt">${n.excerpt}</p>
+      <a class="read-more" href="${n.url}"><span>阅读全文</span><svg class="ic"><use href="#i-arrow"/></svg></a>
+    </div>
+  </article>`;
+}
+
+function render(){
+  const list = activeCat ? DATA.feed.filter(n => n.cat === activeCat) : DATA.feed;
+  const slice = list.slice(0, shown);
+  grid.innerHTML = slice.map((n,i) => cardHTML(n,i)).join('');
+  gridCount.textContent = `已显示 ${slice.length} / ${list.length} 篇`;
+  document.getElementById('moreBtn').style.display = slice.length >= list.length ? 'none' : '';
+  observeReveal();
+}
+document.getElementById('moreBtn').addEventListener('click', () => { shown += PAGE; render(); });
+
+/* ============================================================
+   滚动揭示
+   ============================================================ */
+let io = null;
+function revealNow(el){ el.classList.add('is-in'); }
+function observeReveal(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.querySelectorAll('[data-aos]').forEach(revealNow);
+    return;
+  }
+  if (!io){
+    io = new IntersectionObserver((entries) => {
+      entries.forEach(en => { if (en.isIntersecting){ revealNow(en.target); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+  }
+  const vh = innerHeight || 900;
+  document.querySelectorAll('[data-aos]:not(.is-in)').forEach(el => {
+    if (el.getBoundingClientRect().top < vh) revealNow(el);   // 首屏直接显示，不等观察器
+    else io.observe(el);
+  });
+}
+
+/* ============================================================
+   头部滚动态 / 回到顶部
+   ============================================================ */
+const header = document.getElementById('siteHeader');
+const fabTop = document.getElementById('fabTop');
+addEventListener('scroll', () => {
+  const y = scrollY;
+  header.classList.toggle('is-scrolled', y > 12);
+  fabTop.classList.toggle('is-on', y > 640);
+}, { passive:true });
+fabTop.addEventListener('click', () => scrollTo({ top:0, behavior:'smooth' }));
+
+/* ============================================================
+   搜索
+   ============================================================ */
+const modal = document.getElementById('searchModal');
+const input = document.getElementById('searchInput');
+const results = document.getElementById('searchResults');
+function openSearch(){
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.classList.add('is-locked');
+  renderResults('');
+  setTimeout(() => input.focus(), 30);
+}
+function closeSearch(){
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden','true');
+  document.body.classList.remove('is-locked');
+  input.value = '';
+}
+function renderResults(q){
+  const key = q.trim().toLowerCase();
+  const list = key
+    ? DATA.feed.filter(n => (n.title + ' ' + n.excerpt + ' ' + n.cat).toLowerCase().includes(key)).slice(0, 30)
+    : DATA.feed.slice(0, 8);
+  results.innerHTML = list.length
+    ? `<div class="sres">${list.map(n => `<a class="sres__item" href="${n.url}">
+        <div class="sres__t">${n.title}</div>
+        <div class="sres__d">${catLabel(n.cat)} · ${n.date} · ${n.excerpt}</div></a>`).join('')}</div>`
+    : `<div class="sres__empty">没找到「${q}」相关的笔记</div>`;
+}
+['searchBtn','fabSearch'].forEach(id => document.getElementById(id).addEventListener('click', openSearch));
+input.addEventListener('input', (e) => renderResults(e.target.value));
+modal.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeSearch(); });
+addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.classList.contains('is-open')) closeSearch();
+  if ((e.key === '/' || (e.key === 'k' && (e.metaKey || e.ctrlKey))) && !modal.classList.contains('is-open')){
+    e.preventDefault(); openSearch();
+  }
+});
+
+/* 启动 */
+render();
+observeReveal();
+</script>
+</body>
+</html>

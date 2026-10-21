@@ -14,45 +14,129 @@ JwtUtil.generate()                   StpUtil.login(10001)
 无法续期                              StpUtil.renewTimeout(3600)
 ```
 
-## 依赖
+## 引入
+
+### 依赖
 
 ```xml
-<!-- Spring Boot 2.x -->
-<dependency>
-    <groupId>cn.dev33</groupId>
-    <artifactId>sa-token-spring-boot-starter</artifactId>
-    <version>1.46.0</version>
-</dependency>
+        <sa-token.version>1.46.0</sa-token.version>
+        
 
-<!-- Spring Boot 3.x 换成这个，artifactId 不一样 -->
-<dependency>
-    <groupId>cn.dev33</groupId>
-    <artifactId>sa-token-spring-boot3-starter</artifactId>
-    <version>1.46.0</version>
-</dependency>
+		<!-- Sa-Token 登录认证（Spring Boot 3 专用 starter） -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
+        <!-- Sa-Token 登录态持久化到 Redis（配合本项目已有 Redis 使用） -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-template</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
+        <!-- Sa-Token 整合 Redis 官方要求的连接池 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
 ```
 
-Spring Boot 4.x 用 `sa-token-spring-boot4-starter`。**Spring Boot 3 一定要换成 `spring-boot3` 那个 starter**，用错会启动报错。
+### 拦截器配置
 
-## 配置
+```java
+/**
+ * Sa-Token 全局登录校验。
+ * SaInterceptor 对命中路径统一执行 StpUtil.checkLogin()，未登录会抛出 NotLoginException，
+ * 由 GlobalExceptionHandler 统一转为 401。
+ */
+@Configuration
+public class SaTokenConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin()))
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/auth/login",          // 登录接口本身不需要登录
+                        "/error",               // Spring Boot 默认错误页，放行避免 401 被覆盖
+                        // 接口文档相关资源放行，否则 Swagger/Knife4j 无法访问
+                        "/doc.html", "/webjars/**",
+                        "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                        "/favicon.ico");
+    }
+}
+
+```
+
+### 异常
+
+```java
+/**
+ * 业务异常，用于把可预期的失败（如用户名密码错误）与系统异常区分开，
+ * 由 GlobalExceptionHandler 统一转为 400 返回。
+ */
+public class BusinessException extends RuntimeException {
+
+    public BusinessException(String message) {
+        super(message);
+    }
+}
+
+```
+
+
+
+```java
+@Slf4j
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    /**
+     * 未登录 / token 失效：返回 401，前端据此跳转登录页。
+     * 不处理的话 Sa-Token 抛出的 NotLoginException 会被当作 500 返回。
+     */
+    @ExceptionHandler(NotLoginException.class)
+    public ResponseEntity<Map<String, Object>> handleNotLogin(NotLoginException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("code", 401, "msg", "未登录或登录已过期"));
+    }
+
+    /**
+     * 可预期的业务失败（如用户名密码错误）：返回 400 并带上提示信息。
+     */
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Map<String, Object>> handleBusiness(BusinessException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("code", 400, "msg", e.getMessage()));
+    }
+}
+
+```
+
+### 配置
 
 可以不配，零配置就能跑。常用配置：
 
 ```yaml
+# Sa-Token 登录认证配置
 sa-token:
-  # token 名称（同时也是 cookie 名称），决定前端传 token 时的参数名
+  # token 名称（同时也是请求头名称），前端以 header: satoken 携带
   token-name: satoken
-  # token 有效期，单位秒，默认 30 天，-1 代表永久有效
-  timeout: 2592000
-  # 最低活跃频率，超过这个时间没访问就冻结，-1 不限制
+  # token 有效期（秒），2 小时
+  timeout: 7200
+  # token 最低活跃频率（秒），-1 表示不限制，不因长时间未操作而失效
   active-timeout: -1
-  # 是否允许同一账号多地同时登录（false = 新登录挤掉旧登录）
+  # 是否允许同一账号多地同时登录
   is-concurrent: true
-  # 多人登录同一账号时是否共用一个 token
+  # 多人登录同一账号时是否共用同一个 token
   is-share: false
-  # token 风格：uuid、simple-uuid、random-32、random-64、random-128、tik
+  # token 风格：uuid
   token-style: uuid
-  # 是否输出操作日志
+  # 是否从请求头读取 token（前后端分离）
+  is-read-header: true
+  # 是否从 cookie 读取 token（前后端分离一般关闭）
+  is-read-cookie: false
+  # 是否打印操作日志
   is-log: true
 ```
 

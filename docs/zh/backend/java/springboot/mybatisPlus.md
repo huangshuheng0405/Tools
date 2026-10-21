@@ -38,23 +38,23 @@ mybatis-plus:
   # 1. 基础配置
   mapper-locations: classpath*:/mapper/**/*.xml
   type-aliases-package: com.example.demo.entity
-  config-location: classpath:mybatis-config.xml   # 指定外部 MyBatis 配置文件（一般不用）
+  config-location: classpath:mybatis-config.xml # 指定外部 MyBatis 配置文件（一般不用）
 
   # 2. 原生 MyBatis 配置（继承自 MyBatis）
   configuration:
-    map-underscore-to-camel-case: true            # 驼峰命名自动映射（默认 true）
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # 控制台打印 SQL（开发环境用）
-    cache-enabled: false                          # 关闭二级缓存
-    default-enum-type-handler: ...                # 枚举类型处理器（可选）
+    map-underscore-to-camel-case: true # 驼峰命名自动映射（默认 true）
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 控制台打印 SQL（开发环境用）
+    cache-enabled: false # 关闭二级缓存
+    default-enum-type-handler: ... # 枚举类型处理器（可选）
 
   # 3. 全局策略配置
   global-config:
-    banner: false                                 # 关闭控制台 Banner
+    banner: false # 关闭控制台 Banner
     db-config:
-      id-type: assign_id                          # 主键策略（默认雪花算法）
-      logic-delete-field: deleted                 # 逻辑删除字段名（全局配置）
-      logic-delete-value: 1                       # 逻辑已删除值
-      logic-not-delete-value: 0                   # 逻辑未删除值
+      id-type: assign_id # 主键策略（默认雪花算法）
+      logic-delete-field: deleted # 逻辑删除字段名（全局配置）
+      logic-delete-value: 1 # 逻辑已删除值
+      logic-not-delete-value: 0 # 逻辑未删除值
       # table-prefix: t_                          # 表名前缀（可选）
 ```
 
@@ -98,10 +98,10 @@ public class User {
 
     @TableField(fill = FieldFill.INSERT)  // 插入时自动填充
     private LocalDateTime createTime;
-    
+
     @TableField("`order`") 				  // 成员变量名与数据库关键字冲突
     private Integer order;
-    
+
     @TableField(exist = false)            // 在数据库中不存在
     private String address;
 
@@ -112,13 +112,13 @@ public class User {
 
 常用注解
 
-| 注解 | 作用 |
-|---|---|
-| `@TableName` | 指定表名 |
-| `@TableId` | 指定主键，`type` 指定生成策略 |
-| `@TableField` | 指定列名、排除字段、自动填充 |
-| `@TableLogic` | 逻辑删除字段 |
-| `@Version` | 乐观锁版本字段 |
+| 注解          | 作用                          |
+| ------------- | ----------------------------- |
+| `@TableName`  | 指定表名                      |
+| `@TableId`    | 指定主键，`type` 指定生成策略 |
+| `@TableField` | 指定列名、排除字段、自动填充  |
+| `@TableLogic` | 逻辑删除字段                  |
+| `@Version`    | 乐观锁版本字段                |
 
 `IdType` 常见取值
 
@@ -357,19 +357,19 @@ boolean removed = userService.remove(
 
 常用方法
 
-| 方法 | 对应 SQL |
-|---|---|
-| `eq` / `ne` | `=` / `!=` |
-| `gt` / `ge` / `lt` / `le` | `>` / `>=` / `<` / `<=` |
+| 方法                              | 对应 SQL                                 |
+| --------------------------------- | ---------------------------------------- |
+| `eq` / `ne`                       | `=` / `!=`                               |
+| `gt` / `ge` / `lt` / `le`         | `>` / `>=` / `<` / `<=`                  |
 | `like` / `likeLeft` / `likeRight` | `LIKE '%x%'` / `LIKE '%x'` / `LIKE 'x%'` |
-| `between` | `BETWEEN a AND b` |
-| `in` | `IN (...)` |
-| `isNull` / `isNotNull` | `IS NULL` / `IS NOT NULL` |
-| `and` / `or` | 连接条件 |
-| `orderByAsc` / `orderByDesc` | 排序 |
-| `groupBy` / `having` | 分组 / 过滤 |
-| `select` | 指定查询列 |
-| `last` | 追加 SQL 片段，如 `.last("limit 1")` |
+| `between`                         | `BETWEEN a AND b`                        |
+| `in`                              | `IN (...)`                               |
+| `isNull` / `isNotNull`            | `IS NULL` / `IS NOT NULL`                |
+| `and` / `or`                      | 连接条件                                 |
+| `orderByAsc` / `orderByDesc`      | 排序                                     |
+| `groupBy` / `having`              | 分组 / 过滤                              |
+| `select`                          | 指定查询列                               |
+| `last`                            | 追加 SQL 片段，如 `.last("limit 1")`     |
 
 条件方法第一个参数都是 `boolean`，为 `false` 时跳过该条件，适合动态拼接
 
@@ -392,8 +392,8 @@ Service实现
 
 ```java
 @Service
-public class UserServiceImpl 
-        extends ServiceImpl<UserMapper, User> 
+public class UserServiceImpl
+        extends ServiceImpl<UserMapper, User>
         implements UserService {
 }
 ```
@@ -476,7 +476,7 @@ public List<User> getUsers(String name, Integer minAge) {
 
 ## 分页插件
 
-v3.5.9 之后分页插件需要单独引入 `mybatis-plus-jsqlparser`
+`v3.5.9` 之后分页插件需要单独引入 `mybatis-plus-jsqlparser`
 
 ```xml
 <dependency>
@@ -495,21 +495,77 @@ public class MybatisPlusConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        // 创建分页插件 并指定数据库类型
+        PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor(DbType.MYSQL);
+        // 可以在此设置分页参数，例如最大分页数、默认分页数等
+        paginationInnerInterceptor.setMaxLimit(1000L); // 单页最大条数限制
+        // 添加分页插件
+        interceptor.addInnerInterceptor(paginationInnerInterceptor);
         return interceptor;
     }
 }
 ```
 
-使用
+### 使用
+
+定义查询参数和固定分页参数
 
 ```java
-Page<User> page = new Page<>(1, 10);                    // 第 1 页，每页 10 条
-Page<User> result = userMapper.selectPage(page, wrapper);
-result.getRecords();      // 当前页数据
-result.getTotal();        // 总条数
-result.getPages();        // 总页数
+@Data
+@Schema(description = "用户查询条件实体")
+public class UserPageQuery extends PageQuery {
+    @Schema(description = "用户名关键字")
+    private String name;
+    @Schema(description = "用户状态：1-正常，0-禁用")
+    private Integer status;
+}
 ```
+
+```java
+@Data
+public class PageQuery {
+    /**
+     * 当前页码
+     */
+    private Long pageNum = 1L;
+    /**
+     * 每页大小
+     */
+    private Long pageSize = 10L;
+
+    public Long getPageNum() {
+        return pageNum == null ? 1L : pageNum;
+    }
+
+    public Long getPageSize() {
+        return pageSize == null ? 10L : pageSize;
+    }
+}
+```
+
+实现类
+
+```java
+    @Override
+    public IPage<UserVO> queryUsersPage(UserPageQuery query) {
+        Page<User> page = new Page<>(query.getPageNum(), query.getPageSize());
+
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNoneBlank(query.getName()), User::getUsername, query.getName())
+                .eq(query.getStatus() != null, User::getStatus, query.getStatus())
+                .orderByDesc(User::getCreateTime);
+
+        Page<User> p = page(page, wrapper);
+
+        // 将分页的 User 转为 UserVO，同时保留分页信息
+        return p.convert(user -> BeanUtil.copyProperties(user, UserVO.class));
+    }
+
+```
+
+`p.convert(user -> BeanUtil.copyProperties(user, UserVO.class))`
+
+`convert`是mp的`IPage`接口二自带的方法，它会遍历当前页的每一条`User`记录，最后返回一个结构不变，只是`records`元素类型变了的分页对象（`total`、`pages`、`current`、`size`都不变）
 
 ## 逻辑删除
 
@@ -633,48 +689,189 @@ FastAutoGenerator.create("jdbc:mysql://localhost:3306/db", "root", "密码")
     .execute();
 ```
 
+## 枚举
+
+目标是让Java枚举与数据库字段自动完成映射
+
+### @EnumValue
+
+```java
+@Getter
+public enum StatusEnum {
+    ENABLE(1, "启用"),
+    DISABLE(0, "禁用");
+
+    @EnumValue // 标记这个字段的值会存入数据库
+    private final Integer code;
+    private final String desc;
+
+    StatusEnum(Integer code, String desc) {
+        this.code = code;
+        this.desc = desc;
+    }
+}
+```
+
+在实体类中直接使用
+
+```java
+@Data
+@TableName("user")
+public class User {
+    @TableId(type = IdType.AUTO)
+    private Long id;
+    private String name;
+    private StatusEnum status; // 直接用枚举类型
+}
+```
+
+当你执行`userService.save(user)`且`user.setStatus(StatusEnum.ENABLE)`时，存入数据库的`status`字段值就是`1`，查询时，数据库的`1`又会自动被映射回`StatusEnum.ENABLE`
+
+### 配置方式
+
+从`3.5.2`版本开始，通用枚举功能无需配置即可直接使用
+
+```xml
+mybatis-plus:
+  # 扫描枚举包路径（老版本需要）
+  type-enums-package: com.example.enums
+  configuration:
+    # 指定默认的枚举处理器
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
+```
+
+### @JsonValue
+
+返回给前端时枚举的某个具体值（比如描述文字），可以在对应字段加`@JsonValue`
+
+```java
+@Getter
+public enum StatusEnum {
+    ENABLE(1, "启用"),
+    DISABLE(0, "禁用");
+
+    @EnumValue
+    private final Integer code;
+
+    @JsonValue // 序列化成JSON时，返回desc字段
+    private final String desc;
+    // ...
+}
+```
+
+## JSON处理器
+
+MP提供了多种JSON处理器，都继承自`AbstractJsonHandler`，区别在于底层使用的JSON库不同
+
+这里推荐`JacksonTypeHandler`
+
+### 配置
+
+类级别：开启`autoResultMap`
+
+```java
+@TableName(value = "user", autoResultMap = true) // 必须加 autoResultMap = true
+public class User {
+    // ...
+}
+```
+
+字段级别：指定`typeHandler`
+
+```java
+@TableField(value = "addresses", typeHandler = JacksonTypeHandler.class)
+private List<Address> addresses;
+```
+
+### 使用
+
+假设数据库的`user`表，其中`addresses`字段是`json`类型，以下是实体类：
+
+```java
+@Data
+@TableName(value = "user", autoResultMap = true)
+public class User {
+    @TableId(type = IdType.AUTO)
+    private Long id;
+    private String name;
+
+    @TableField(value = "addresses", typeHandler = JacksonTypeHandler.class)
+    private List<Address> addresses; // 直接声明为 Java 对象/集合
+}
+```
+
+address对象
+
+```java
+@Data
+public class Address {
+    private String province;
+    private String city;
+    private String detail;
+}
+```
+
+使用
+
+```java
+// 插入：自动将 List<Address> 序列化为 JSON 字符串存入数据库
+User user = new User();
+user.setName("张三");
+user.setAddresses(List.of(
+    new Address("四川", "成都", "高新区"),
+    new Address("北京", "北京", "朝阳区")
+));
+userService.save(user);
+
+// 查询：自动将数据库中的 JSON 字符串反序列化为 List<Address>
+User queryUser = userService.getById(1L);
+List<Address> addresses = queryUser.getAddresses(); // 直接拿到对象列表
+```
+
+如果查询结果为`null`，可能忘记加`@TableName(autoResultMap = true)`
+
 ## 增删改查常用操作
 
 ### 增（Insert）
 
-| 操作 | 方法 | 说明 |
-|---|---|---|
-| 插入单条 | `insert(entity)` / `save(entity)` | id 自动回填 |
-| 批量插入 | `saveBatch(list)` | 默认分批 1000 条执行 |
-| 存在则更新，否则插入 | `saveOrUpdate(entity)` | 按主键判断 |
+| 操作                 | 方法                              | 说明                 |
+| -------------------- | --------------------------------- | -------------------- |
+| 插入单条             | `insert(entity)` / `save(entity)` | id 自动回填          |
+| 批量插入             | `saveBatch(list)`                 | 默认分批 1000 条执行 |
+| 存在则更新，否则插入 | `saveOrUpdate(entity)`            | 按主键判断           |
 
 ### 删（Delete）
 
-| 操作 | 方法 | 说明 |
-|---|---|---|
-| 按 id 删 | `deleteById(id)` / `removeById(id)` | |
-| 按 id 集合删 | `deleteByIds(ids)` / `removeByIds(ids)` | 对应 `IN (...)` |
-| 按条件删 | `delete(wrapper)` / `remove(wrapper)` | 用条件构造器指定 |
-| 逻辑删除 | 加 `@TableLogic` 后所有删除自动变 `UPDATE` | 不真删数据 |
+| 操作         | 方法                                       | 说明             |
+| ------------ | ------------------------------------------ | ---------------- |
+| 按 id 删     | `deleteById(id)` / `removeById(id)`        |                  |
+| 按 id 集合删 | `deleteByIds(ids)` / `removeByIds(ids)`    | 对应 `IN (...)`  |
+| 按条件删     | `delete(wrapper)` / `remove(wrapper)`      | 用条件构造器指定 |
+| 逻辑删除     | 加 `@TableLogic` 后所有删除自动变 `UPDATE` | 不真删数据       |
 
 ### 改（Update）
 
-| 操作 | 方法 | 说明 |
-|---|---|---|
-| 按 id 更新 | `updateById(entity)` | **只更新非 null 字段** |
-| 按条件更新 | `update(entity, wrapper)` | wrapper 指定更新范围 |
-| 按条件直接 set | `update(null, wrapper)` | 用 `UpdateWrapper.set("email", null)` 可清空字段 |
-| 批量更新 | `updateBatchById(list)` | 每条按各自 id |
-| 增量操作 | `setSql("age = age + 1")` | 数值加减，避免并发覆盖 |
+| 操作           | 方法                      | 说明                                             |
+| -------------- | ------------------------- | ------------------------------------------------ |
+| 按 id 更新     | `updateById(entity)`      | **只更新非 null 字段**                           |
+| 按条件更新     | `update(entity, wrapper)` | wrapper 指定更新范围                             |
+| 按条件直接 set | `update(null, wrapper)`   | 用 `UpdateWrapper.set("email", null)` 可清空字段 |
+| 批量更新       | `updateBatchById(list)`   | 每条按各自 id                                    |
+| 增量操作       | `setSql("age = age + 1")` | 数值加减，避免并发覆盖                           |
 
 ### 查（Select / Get / List）
 
-| 操作 | 方法 | 说明 |
-|---|---|---|
-| 按 id 查 | `selectById(id)` / `getById(id)` | 查不到返回 null |
-| 查全部 | `selectList(null)` / `list()` | |
-| 按条件查列表 | `selectList(wrapper)` / `list(wrapper)` | 最常用 |
-| 查一条 | `selectOne(wrapper)` / `getOne(wrapper)` | 结果多于一条会报错 |
-| 查计数 | `selectCount(wrapper)` / `count(wrapper)` | 返回 `long` |
-| 分页查 | `selectPage(page, wrapper)` / `page(page, wrapper)` | 需要分页插件 |
-| 按 id 批量查 | `selectBatchIds(ids)` / `listByIds(ids)` | 对应 `IN` |
-| 只查指定列 | `wrapper.select(User::getId, User::getName)` | 减少传输量 |
-| 链式查询 | `lambdaQuery().eq(...).list()` | 不用 new wrapper |
+| 操作         | 方法                                                | 说明               |
+| ------------ | --------------------------------------------------- | ------------------ |
+| 按 id 查     | `selectById(id)` / `getById(id)`                    | 查不到返回 null    |
+| 查全部       | `selectList(null)` / `list()`                       |                    |
+| 按条件查列表 | `selectList(wrapper)` / `list(wrapper)`             | 最常用             |
+| 查一条       | `selectOne(wrapper)` / `getOne(wrapper)`            | 结果多于一条会报错 |
+| 查计数       | `selectCount(wrapper)` / `count(wrapper)`           | 返回 `long`        |
+| 分页查       | `selectPage(page, wrapper)` / `page(page, wrapper)` | 需要分页插件       |
+| 按 id 批量查 | `selectBatchIds(ids)` / `listByIds(ids)`            | 对应 `IN`          |
+| 只查指定列   | `wrapper.select(User::getId, User::getName)`        | 减少传输量         |
+| 链式查询     | `lambdaQuery().eq(...).list()`                      | 不用 new wrapper   |
 
 ```java
 // 链式查询示例
@@ -687,14 +884,14 @@ userService.lambdaQuery()
 
 ### 对应关系
 
-| BaseMapper | IService |
-|---|---|
-| `insert` | `save` |
+| BaseMapper   | IService     |
+| ------------ | ------------ |
+| `insert`     | `save`       |
 | `deleteById` | `removeById` |
 | `updateById` | `updateById` |
-| `selectById` | `getById` |
-| `selectList` | `list` |
-| `selectPage` | `page` |
+| `selectById` | `getById`    |
+| `selectList` | `list`       |
+| `selectPage` | `page`       |
 
 日常开发几乎只用 Service 层，`save` / `removeById` / `updateById` / `list(wrapper)` / `page(page, wrapper)` 就能覆盖大部分场景
 

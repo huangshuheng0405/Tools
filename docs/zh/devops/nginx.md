@@ -95,13 +95,30 @@ location / {
 
 ## 反向代理
 
+### proxy_pass
+
+`location /api/v1/` 末尾有 `/`，`proxy_pass http://127.0.0.1:8080/` 末尾也有 `/`。Nginx 会自动把 `location` 匹配到的那段前缀替换掉。
+
 把 `/api` 开头的请求转发给后端
 
 ```
-location /api/ {
-    proxy_pass http://host.docker.internal:8080/;
+location /api/v1 {
+    proxy_pass http://127.0.0.1:8080/;
 }
 ```
+
+### rewrite
+
+这种写法`proxy_pass`末尾不加斜杠，`rewrite`处理过了
+
+```
+location /api/v1/ {
+    rewrite ^/api/v1/(.*)$ /$1 break;
+    proxy_pass http://127.0.0.1:8080;
+}
+```
+
+一般推荐第一种写法
 
 ### 结尾斜杠：双斜杠导致 404
 

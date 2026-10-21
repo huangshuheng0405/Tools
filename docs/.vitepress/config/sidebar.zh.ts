@@ -33,6 +33,7 @@ export default {
       items: [
         { text: 'Overview', link: '/zh/backend/java/index.md' },
         { text: 'basic', link: '/zh/backend/java/basic.md' },
+        { text: 'to MySQL', link: '/zh/backend/java/toMysql.md' },
       ],
     },
     {
@@ -108,6 +109,10 @@ export default {
           text: 'Configuration',
           link: '/zh/backend/java/springboot/configuration.md',
         },
+        {
+          text: 'application',
+          link: '/zh/backend/java/springboot/application.md',
+        },
         { text: 'Filter', link: '/zh/backend/java/springboot/filter.md' },
         {
           text: 'Interceptor',
@@ -129,6 +134,10 @@ export default {
         {
           text: 'WebSocket',
           link: '/zh/backend/java/springboot/websocket.md',
+        },
+        {
+          text: 'Tencent COS',
+          link: '/zh/backend/java/springboot/tencentCOS.md',
         },
       ],
     },
@@ -253,6 +262,8 @@ export default {
         { text: 'Nginx', link: '/zh/devops/nginx' },
         { text: 'Git', link: '/zh/devops/git' },
         { text: 'JMeter', link: '/zh/devops/jmeter' },
+        { text: 'SSH', link: '/zh/devops/ssh' },
+        { text: 'Navicat', link: '/zh/devops/navicat' },
       ],
     },
   ],
@@ -321,6 +332,10 @@ export default {
         { text: 'vibe coding', link: '/zh/misc/vibecoding' },
         { text: 'grill-me', link: '/zh/misc/grill-me' },
         { text: 'ui-ux-pro-max', link: '/zh/misc/uupm' },
+        { text: 'pinyin-pro', link: '/zh/misc/pinyin-pro' },
+        { text: 'salt', link: '/zh/misc/salt' },
+        { text: 'encrypt', link: '/zh/misc/encrypt' },
+        { text: 'RSA', link: '/zh/misc/rsa' },
       ],
     },
   ],
@@ -690,6 +705,7 @@ export default {
       items: [
         { text: 'http', link: '/zh/network/http' },
         { text: 'SSE', link: '/zh/network/SSE' },
+        { text: 'localhost', link: '/zh/network/localhost' },
       ],
     },
   ],
