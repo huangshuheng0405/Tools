@@ -235,6 +235,10 @@ export default {
   ],
   '/zh/frontend/': [
     {
+      text: 'html',
+      items: [{ text: 'flex', link: '/zh/frontend/html/flex' }],
+    },
+    {
       text: 'frontend',
       items: [
         { text: 'HTML', link: '/zh/frontend/html' },
@@ -251,6 +255,7 @@ export default {
           text: 'uview-plus',
           link: '/zh/frontend/uview-plus',
         },
+        { text: 'uniapp x', link: '/zh/frontend/uniappx'}
       ],
     },
   ],
@@ -264,6 +269,7 @@ export default {
         { text: 'JMeter', link: '/zh/devops/jmeter' },
         { text: 'SSH', link: '/zh/devops/ssh' },
         { text: 'Navicat', link: '/zh/devops/navicat' },
+        { text: 'bt', link: '/zh/devops/bt' },
       ],
     },
   ],

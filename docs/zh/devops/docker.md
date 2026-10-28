@@ -232,9 +232,6 @@ vi index.html
 -v ./mysql:/var/lib/mysql # 会被识别为当前目录下的mysql目录，运行时如果不存在会创建目录
 ```
 
-
-
-
 ## Dockerfile
 
 举个例子，从0部署一个Java应用，大概流程：
@@ -314,7 +311,7 @@ docker build -t docker-demo:1.0 .
 
 对于复杂的项目，会有各种各样的中间件，需要部署的东西很多，一个一个部署太麻烦了
 
-我们可以通过一个`docker-compose.yml`文件来定义一组相关联的应用容器，以`SpringBoot+Redis+MySQL`距离
+我们可以通过一个`docker-compose.yml`文件来定义一组相关联的应用容器，以`SpringBoot+Redis+MySQL`为例
 
 ```yml [docker-compose.yml]
 name: app
@@ -339,14 +336,18 @@ services:
       # 只绑到本机回环：外部无法直连数据库，避免公网扫描爆破
       # 应用是通过容器网络 mysql:3306 访问的，不依赖这个映射
       # 需要远程连库时临时改成 "3307:3306"，用完改回来
-      - "127.0.0.1:${MYSQL_HOST_PORT:-3307}:3306"
+      - '127.0.0.1:${MYSQL_HOST_PORT:-3307}:3306'
     volumes:
       - mysql-data:/var/lib/mysql
       # 建表 + 演示数据：仅在数据目录为空（首次启动）时自动执行
       - ./mysql/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       # $$ 是 compose 的转义，实际传给容器的变量是 $MYSQL_ROOT_PASSWORD
-      test: [ "CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent" ]
+      test:
+        [
+          'CMD-SHELL',
+          'mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent',
+        ]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -364,14 +365,25 @@ services:
       TZ: Asia/Shanghai
     # 必须开 requirepass：application 里配了密码，无密码的 Redis 连不上
     # 开 appendonly：登录态需要落盘，重启后 token 不丢
-    command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}", "--appendonly", "yes" ]
+    command:
+      [
+        'redis-server',
+        '--requirepass',
+        '${REDIS_PASSWORD}',
+        '--appendonly',
+        'yes',
+      ]
     ports:
       # 同样只绑回环，Redis 暴露到公网是高危项（无 TLS + 弱密码）
-      - "127.0.0.1:${REDIS_HOST_PORT:-6380}:6379"
+      - '127.0.0.1:${REDIS_HOST_PORT:-6380}:6379'
     volumes:
       - redis-data:/data
     healthcheck:
-      test: [ "CMD-SHELL", "redis-cli --no-auth-warning -a \"$$REDIS_PASSWORD\" ping | grep -q PONG" ]
+      test:
+        [
+          'CMD-SHELL',
+          'redis-cli --no-auth-warning -a "$$REDIS_PASSWORD" ping | grep -q PONG',
+        ]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -414,10 +426,14 @@ services:
       TENCENT_COS_REGION: ${TENCENT_COS_REGION:-ap-shanghai}
       TENCENT_COS_BUCKETNAME: ${TENCENT_COS_BUCKETNAME:-}
     ports:
-      - "${APP_HOST_PORT:-8080}:8080"
+      - '${APP_HOST_PORT:-8080}:8080'
     healthcheck:
       # 项目没引 actuator，这里用一个免登录接口探活
-      test: [ "CMD-SHELL", "curl -fsS http://127.0.0.1:8080/auth/publicKey >/dev/null || exit 1" ]
+      test:
+        [
+          'CMD-SHELL',
+          'curl -fsS http://127.0.0.1:8080/auth/publicKey >/dev/null || exit 1',
+        ]
       interval: 15s
       timeout: 5s
       retries: 10
@@ -433,10 +449,7 @@ volumes:
 networks:
   backend:
     driver: bridge
-
 ```
-
-
 
 ### ENV
 
@@ -449,8 +462,8 @@ services:
   app:
     image: my-app:latest
     env_file:
-      - ./app.env          # 使用相对路径
-      - ./secrets.env      # 可以指定多个文件
+      - ./app.env # 使用相对路径
+      - ./secrets.env # 可以指定多个文件
 ```
 
 - 路径解析：相对路径是相对于**Compose文件**所在的目录来解析的，不是执行命令的命令
@@ -485,9 +498,68 @@ services:
 3. `environment`属性：文件中的`environment:`段
 4. `env_file`属性：`env_file`指定的文件
 
-### Nginx
+### 命令
 
+`docker compose up`
 
+创建并启动所有服务。`-d`后台运行，`--build`启动前重新构建镜像
+
+`docker compose down`
+
+停止并删除容器、网络。加`-v`同时删除数据卷
+
+`docker compose start`
+
+启动已经存在的服务容器（不创建新的容器）
+
+`docker compose stop`
+
+停止服务容器，但不删除
+
+`docker compose restart`
+
+重启服务
+
+`docker compose ps`
+
+列出项目中各服务的容器状态
+
+`docker compose logs`
+
+查看服务日志。加`-f`实时跟踪，`-t`显示时间戳
+
+## 后续部署
+
+### 后端
+
+对于后端项目：
+
+本地打包，生成jar包
+
+```bash
+mvn clean package -DskipTests
+```
+
+重新构建
+
+```bash
+docker compose up -d --build app
+```
+
+- 根据`Dockerfile`重新构建`app:latest`镜像
+- 停掉旧的`app`容器
+- 用新镜像创建并启动新的`app`容器
+- 其他服务（mysql、redis、nginx）保持不动
+
+看日志是否启动成功
+
+```bash
+docker compose logs -f app
+```
+
+### 前端
+
+只要打包`pnpm build`后，把`dist`目录上传即可（覆盖原文件）
 
 ## MySQL
 
@@ -498,8 +570,6 @@ services:
 | `/var/lib/mysql`                 | 数据持久化 |
 | `/etc/mysql/conf.d`              | 自定义配置 |
 | `/docker-entrypoint-initdb.d:ro` | 初始化脚本 |
-
-
 
 ```bash
 docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v mysql_data:/var/lib/mysql mysql:latest
