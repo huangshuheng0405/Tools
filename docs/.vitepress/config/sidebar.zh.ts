@@ -142,6 +142,18 @@ export default {
       ],
     },
   ],
+  'zh/backend/kotlin/': [
+    {
+      text: 'Kotlin',
+      items: [
+        { text: 'introduce', link: '/zh/backend/kotlin/index.md' },
+        { text: 'basic', link: '/zh/backend/kotlin/basic.md' },
+        { text: 'dataType', link: '/zh/backend/kotlin/dataType.md' },
+        { text: 'Lambda', link: '/zh/backend/kotlin/lambda.md' },
+        { text: 'Class', link: '/zh/backend/kotlin/class.md' },
+      ]
+    },
+  ],
 
   '/zh/Engineering/': [
     {
@@ -269,7 +281,7 @@ export default {
         { text: 'JMeter', link: '/zh/devops/jmeter' },
         { text: 'SSH', link: '/zh/devops/ssh' },
         { text: 'Navicat', link: '/zh/devops/navicat' },
-        { text: 'bt', link: '/zh/devops/bt' },
+        { text: 'bao ta', link: '/zh/devops/bt' },
       ],
     },
   ],

@@ -14,6 +14,11 @@ export default defineConfig({
     // 代码块标题/代码组的图标由这个 md 插件注入（vite 插件只负责图标资源，两半缺一不可）
     config(md) {
       md.use(groupIconMdPlugin)
+      // juice@8.0.0 会把 SVG 的 viewBox 小写成 viewbox，浏览器不识别导致公式渲染成巨大字形；
+      // 升级 juice 到 8.1.0 后此补丁可移除
+      const render = md.renderer.render.bind(md.renderer)
+      md.renderer.render = (tokens, options, env) =>
+        render(tokens, options, env).replace(/viewbox=/g, 'viewBox=')
     },
   },
   vite: {
@@ -58,6 +63,7 @@ export default defineConfig({
             items: [
               { text: 'Java', link: '/zh/backend/java/' },
               { text: 'NodeJS', link: '/zh/backend/nodejs/index.md' },
+              { text: 'Kotlin', link: '/zh/backend/kotlin/index.md' },
             ],
           },
           {
