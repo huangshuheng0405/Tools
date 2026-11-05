@@ -343,6 +343,7 @@ export default {
         { text: 'encrypt', link: '/zh/misc/encrypt' },
         { text: 'RSA', link: '/zh/misc/rsa' },
         { text: 'qrcode', link: '/zh/misc/qrcode' },
+        { text: 'ollama', link: '/zh/misc/ollama' },
       ],
     },
   ],
