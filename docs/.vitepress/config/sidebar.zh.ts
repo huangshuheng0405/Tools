@@ -32,6 +32,7 @@ export default {
       text: 'Java',
       items: [
         { text: 'Overview', link: '/zh/backend/java/index.md' },
+        { text: 'config', link: '/zh/backend/java/config.md' },
         { text: 'basic', link: '/zh/backend/java/basic.md' },
         { text: 'to MySQL', link: '/zh/backend/java/toMysql.md' },
       ],
