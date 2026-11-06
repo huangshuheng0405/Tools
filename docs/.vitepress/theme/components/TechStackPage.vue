@@ -22,6 +22,7 @@ const groups: { title: string; icons: string[] }[] = [
       'promises.svg',
       'go.svg',
       'rust.svg',
+      'kotlin.svg',
     ],
   },
   {
@@ -290,6 +291,195 @@ const label = (file: string) =>
   NAME[file] ??
   file.replace(/\.(svg|png)$/, '').replace(/^./, (c) => c.toUpperCase())
 
+const URL: Record<string, string> = {
+  'javascript.svg': 'https://developer.mozilla.org/zh-CN/docs/Web/JavaScript',
+  'typescript.svg': 'https://www.typescriptlang.org/',
+  'python.svg': 'https://www.python.org/',
+  'java.svg': 'https://www.java.com/zh-CN/',
+  'html.svg': 'https://developer.mozilla.org/zh-CN/docs/Web/HTML',
+  'css-3.svg': 'https://developer.mozilla.org/zh-CN/docs/Web/CSS',
+  'markdown.svg': 'https://www.markdownguide.org/',
+  'c.svg': 'https://en.cppreference.com/w/c',
+  'c-plusplus.svg': 'https://isocpp.org/',
+  'dart.svg': 'https://dart.dev/',
+  'lua.svg': 'https://www.lua.org/',
+  'yaml.svg': 'https://yaml.org/',
+  'promises.svg':
+    'https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise',
+  'go.svg': 'https://go.dev/',
+  'rust.svg': 'https://www.rust-lang.org/',
+  'kotlin.svg': 'https://kotlinlang.org/',
+
+  'vue.svg': 'https://cn.vuejs.org/',
+  'react.svg': 'https://react.dev/',
+  'angular.svg': 'https://angular.dev/',
+  'nuxt.svg': 'https://nuxt.com/',
+  'nextjs.svg': 'https://nextjs.org/',
+  'electron.svg': 'https://www.electronjs.org/',
+  'uniapp.png': 'https://uniapp.dcloud.net.cn/',
+  'redux.svg': 'https://redux.js.org/',
+  'immer.svg': 'https://immerjs.github.io/immer/',
+  'pinia.svg': 'https://pinia.vuejs.org/zh/',
+  'vueuse.svg': 'https://vueuse.org/zh/',
+  'axios.svg': 'https://axios-http.com/zh/',
+  'lodash.svg': 'https://lodash.com/',
+  'd3.svg': 'https://d3js.org/',
+  'socket-io.svg': 'https://socket.io/',
+  'flutter.svg': 'https://flutter.dev/',
+  'nestjs.svg': 'https://nestjs.com/',
+  'spring.svg': 'https://spring.io/',
+  'springboot.svg': 'https://spring.io/projects/spring-boot',
+  'express.svg': 'https://expressjs.com/',
+  'koa.svg': 'https://koajs.com/',
+  'fastapi.svg': 'https://fastapi.tiangolo.com/zh/',
+  'mybatis.png': 'https://mybatis.org/',
+  'sequelize.svg': 'https://sequelize.org/',
+  'volar.svg': 'https://volarjs.dev/',
+  'docusaurus.svg': 'https://docusaurus.io/',
+  'gin.svg': 'https://gin-gonic.com/',
+  'minio.svg': 'https://min.io/',
+
+  'element.svg': 'https://element-plus.org/zh-CN/',
+  'ant-design.svg': 'https://ant.design/index-cn',
+  'vant.png': 'https://vant-ui.github.io/vant/',
+  'nutui.png': 'https://nutui.jd.com/',
+  'echarts.svg': 'https://echarts.apache.org/zh/index.html',
+  'threejs.svg': 'https://threejs.org/',
+  'gsap.svg': 'https://gsap.com/',
+  'figma.svg': 'https://www.figma.com/',
+
+  'turborepo.svg': 'https://turbo.build/',
+  'tailwind.svg': 'https://tailwindcss.com/',
+  'windicss.svg': 'https://windicss.org/',
+  'unocss.svg': 'https://unocss.dev/',
+  'eslint.svg': 'https://eslint.org/',
+  'sass.svg': 'https://sass-lang.com/',
+  'less.svg': 'https://lesscss.org/',
+  'prettier.svg': 'https://prettier.io/',
+  'stylelint.svg': 'https://stylelint.io/',
+  'vitest.svg': 'https://vitest.dev/',
+  'npm.svg': 'https://www.npmjs.com/',
+  'pnpm.svg': 'https://pnpm.io/',
+  'yarn.svg': 'https://yarnpkg.com/',
+  'bun.svg': 'https://bun.sh/',
+  'nvm.svg': 'https://github.com/nvm-sh/nvm',
+  'leaflet.svg': 'https://leafletjs.com/',
+  'jest.svg': 'https://jestjs.io/',
+  'deno.svg': 'https://deno.com/',
+
+  'node.svg': 'https://nodejs.org/',
+  'maven.svg': 'https://maven.apache.org/',
+  'jwt.svg': 'https://jwt.io/',
+  'kafka.svg': 'https://kafka.apache.org/',
+  'rabbitmq.svg': 'https://www.rabbitmq.com/',
+  'zookeeper.svg': 'https://zookeeper.apache.org/',
+  'elasticsearch.svg': 'https://www.elastic.co/elasticsearch',
+
+  'linux.svg': 'https://www.kernel.org/',
+  'docker.svg': 'https://www.docker.com/',
+  'kubernetes.svg': 'https://kubernetes.io/',
+  'nginx.svg': 'https://nginx.org/',
+  'jenkins.svg': 'https://www.jenkins.io/',
+  'apache.svg': 'https://httpd.apache.org/',
+  'jmeter.svg': 'https://jmeter.apache.org/',
+  'ubuntu.svg': 'https://ubuntu.com/',
+  'vercel.svg': 'https://vercel.com/',
+  'cloudflare.svg': 'https://www.cloudflare.com/',
+  'git.svg': 'https://git-scm.com/',
+  'github.svg': 'https://github.com/',
+  'gitea.svg': 'https://about.gitea.com/',
+  'pm2.svg': 'https://pm2.keymetrics.io/',
+  'supabase.svg': 'https://supabase.com/',
+  'railway.svg': 'https://railway.com/',
+  'playwright.svg': 'https://playwright.dev/',
+  'gitlab.svg': 'https://about.gitlab.com/',
+
+  'visual-studio-code.svg': 'https://code.visualstudio.com/',
+  'sublimetext.svg': 'https://www.sublimetext.com/',
+  'trae.svg': 'https://www.trae.ai/',
+  'jetbrains-icon.svg': 'https://www.jetbrains.com/',
+  'intellij-idea.svg': 'https://www.jetbrains.com/idea/',
+  'clion.svg': 'https://www.jetbrains.com/clion/',
+  'datagrip.svg': 'https://www.jetbrains.com/datagrip/',
+  'webstorm.svg': 'https://www.jetbrains.com/webstorm/',
+  'pycharm.svg': 'https://www.jetbrains.com/pycharm/',
+  'apifox.svg': 'https://apifox.com/',
+  'obs.svg': 'https://obsproject.com/',
+  'obsidian.svg': 'https://obsidian.md/',
+  'typora.svg': 'https://typora.io/',
+  'vmware.svg': 'https://www.vmware.com/',
+
+  'claude.svg': 'https://claude.ai/',
+  'claude-code.svg': 'https://www.anthropic.com/claude-code',
+  'codex.svg': 'https://openai.com/codex/',
+  'chatgpt.svg': 'https://chatgpt.com/',
+  'deepseek.svg': 'https://www.deepseek.com/',
+  'langchain.svg': 'https://www.langchain.com/',
+  'langgraph.svg': 'https://www.langchain.com/langgraph',
+  'langsmith.svg': 'https://www.langchain.com/langsmith',
+  'dify.svg': 'https://dify.ai/',
+  'gemini.svg': 'https://gemini.google.com/',
+  'mcp.svg': 'https://modelcontextprotocol.io/',
+  'harness.svg': 'https://www.harness.io/',
+  'xiaomi-mimo.svg': 'https://github.com/XiaomiMiMo/MiMo',
+  'qwen.svg': 'https://qwen.ai/',
+  'cursor.svg': 'https://cursor.com/',
+  'nvidia.svg': 'https://www.nvidia.com/',
+  'copilot.svg': 'https://github.com/features/copilot',
+  'ollama.svg': 'https://ollama.com/',
+  'minimax.svg': 'https://www.minimax.io/',
+  'manus.svg': 'https://manus.im/',
+  'grok.svg': 'https://grok.com/',
+  'bytedance.svg': 'https://www.bytedance.com/',
+  'antigravity.svg': 'https://antigravity.google/',
+
+  'chrome.svg': 'https://www.google.com/chrome/',
+  'firefox.svg': 'https://www.mozilla.org/zh-CN/firefox/',
+  'edge.svg': 'https://www.microsoft.com/zh-cn/edge',
+  'safari.svg': 'https://www.apple.com/cn/safari/',
+  'chromium.svg': 'https://www.chromium.org/',
+  'bing.svg': 'https://cn.bing.com/',
+
+  'babel.svg': 'https://babeljs.io/',
+  'esbuild.svg': 'https://esbuild.github.io/',
+  'swc.svg': 'https://swc.rs/',
+  'rollup.svg': 'https://rollupjs.org/',
+  'webpack.svg': 'https://webpack.js.org/',
+  'turbopack.svg': 'https://turbo.build/pack',
+  'rspack.svg': 'https://rspack.dev/',
+  'rsbuild.svg': 'https://rsbuild.dev/',
+  'postcss.svg': 'https://postcss.org/',
+  'rolldown.svg': 'https://rolldown.rs/',
+  'oxc.svg': 'https://oxc.rs/',
+  'vite.svg': 'https://cn.vitejs.dev/',
+  'webassembly.svg': 'https://webassembly.org/',
+
+  'redis.svg': 'https://redis.io/',
+  'mysql.svg': 'https://www.mysql.com/',
+  'mongodb.svg': 'https://www.mongodb.com/',
+  'postgresql.svg': 'https://www.postgresql.org/',
+  'sqlite.svg': 'https://www.sqlite.org/',
+  'prisma.svg': 'https://www.prisma.io/',
+
+  'luogu.svg': 'https://www.luogu.com.cn/',
+  'atcoder.svg': 'https://atcoder.jp/',
+  'leetcode.svg': 'https://leetcode.cn/',
+  'mdn.svg': 'https://developer.mozilla.org/zh-CN/',
+  'duolingo.svg': 'https://www.duolingo.com/',
+  'codeforces.svg': 'https://codeforces.com/',
+  'rog.svg': 'https://rog.asus.com/',
+  'steam.svg': 'https://store.steampowered.com/',
+  'bilibili.svg': 'https://www.bilibili.com/',
+
+  'vivo.svg': 'https://www.vivo.com.cn/',
+  'huawei.svg': 'https://www.huawei.com/cn/',
+  'oneplus.svg': 'https://www.oneplus.com/cn',
+  'xiaomi.svg': 'https://www.mi.com/',
+  'oppo.svg': 'https://www.oppo.com/cn/',
+  'samsung.svg': 'https://www.samsung.com/cn/',
+  'apple.svg': 'https://www.apple.com/cn/',
+}
+
 // 纯黑单色图形，暗色主题下会糊进背景，反色处理。
 // 带彩色的不能反，会把配色翻掉
 const invert = new Set([
@@ -314,19 +504,26 @@ const invert = new Set([
         <div class="group__title">{{ group.title }}</div>
         <ul class="group__icons">
           <li v-for="file in group.icons" :key="file" class="icon-wrap">
-            <img
-              class="icon"
-              :class="{ 'icon--invert': invert.has(file) }"
-              :src="`/icons/${file}`"
-              :alt="label(file)"
-              :title="label(file)"
-              width="44"
-              height="44"
-              loading="lazy"
-              decoding="async"
-              draggable="false"
-            />
-            <span class="icon__name">{{ label(file) }}</span>
+            <a
+              class="icon-link"
+              :href="URL[file]"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                class="icon"
+                :class="{ 'icon--invert': invert.has(file) }"
+                :src="`/icons/${file}`"
+                :alt="label(file)"
+                :title="label(file)"
+                width="44"
+                height="44"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              />
+              <span class="icon__name">{{ label(file) }}</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -402,6 +599,23 @@ const invert = new Set([
   flex-direction: column;
   align-items: center;
   gap: 6px;
+}
+
+.icon-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.icon-link:focus-visible {
+  outline: none;
+}
+
+.icon-link:focus-visible .icon {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
 }
 
 .icon {
