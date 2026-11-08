@@ -148,6 +148,9 @@ export default {
       text: 'Kotlin',
       items: [
         { text: 'introduce', link: '/zh/backend/kotlin/index.md' },
+        { text: 'kotlinc', link: '/zh/backend/kotlin/kotlinc.md' },
+        { text: 'function', link: '/zh/backend/kotlin/function.md' },
+        { text: 'loop', link: '/zh/backend/kotlin/loop.md' },
         { text: 'basic', link: '/zh/backend/kotlin/basic.md' },
         { text: 'dataType', link: '/zh/backend/kotlin/dataType.md' },
         { text: 'Lambda', link: '/zh/backend/kotlin/lambda.md' },
@@ -872,4 +875,9 @@ export default {
     },
   ],
   '/zh/os/': [],
+  '/zh/android/': [
+    { text: 'introduce', link: '/zh/android/index' },
+    { text: 'Compose', link: '/zh/android/compose' },
+    { text: 'State', link: '/zh/android/state' },
+  ]
 }

@@ -10,6 +10,7 @@ import BackToTop from './components/BackToTop.vue'
 import SpotlightCard from './components/SpotlightCard.vue'
 import CountUpStat from './components/CountUpStat.vue'
 import RippleButton from './components/RippleButton.vue'
+import ColorBarCard from './components/ColorBarCard.vue'
 // 忽略对虚拟模块的类型检查
 // @ts-ignore
 import 'virtual:group-icons.css'
@@ -29,6 +30,7 @@ export default {
     app.component('SpotlightCard', SpotlightCard)
     app.component('CountUpStat', CountUpStat)
     app.component('RippleButton', RippleButton)
+    app.component('ColorBarCard', ColorBarCard)
     // 未配置 root locale，访问首页时重定向到默认语言 zh
     if (typeof window !== 'undefined' && window.location.pathname === '/') {
       window.location.replace('/zh/')
