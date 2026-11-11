@@ -53,7 +53,6 @@ export default defineConfig({
               { text: 'JavaScript', link: '/zh/JavaScript/' },
               { text: 'Vue', link: '/zh/vue/lifecycle' },
               { text: 'React', link: '/zh/react/index' },
-              { text: 'uniapp', link: '/zh/frontend/uniapp' },
               { text: 'Engineering', link: '/zh/Engineering/' },
               { text: 'Other', link: '/zh/frontend/index' },
             ],
@@ -64,6 +63,14 @@ export default defineConfig({
               { text: 'Java', link: '/zh/backend/java/' },
               { text: 'NodeJS', link: '/zh/backend/nodejs/index.md' },
               { text: 'Kotlin', link: '/zh/backend/kotlin/index.md' },
+            ],
+          },
+          {
+            text: 'mobile',
+            items: [
+              { text: 'Android', link: '/zh/android/index' },
+              { text: 'uniapp', link: '/zh/frontend/uniapp' },
+              { text: 'uniapp x', link: '/zh/frontend/uniappx' },
             ],
           },
           {
