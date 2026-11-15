@@ -880,5 +880,6 @@ export default {
     { text: 'Compose', link: '/zh/android/compose' },
     { text: 'State', link: '/zh/android/state' },
     { text: 'Side Effect', link: '/zh/android/sideEffect' },
+    { text: 'Scaffold', link: '/zh/android/scaffold' },
   ]
 }
