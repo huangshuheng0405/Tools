@@ -882,5 +882,6 @@ export default {
     { text: 'Side Effect', link: '/zh/android/sideEffect' },
     { text: 'Scaffold', link: '/zh/android/scaffold' },
     { text: 'Navigation', link: '/zh/android/navigation' },
+    { text: 'Network', link: '/zh/android/network' },
   ]
 }
